@@ -23,6 +23,4 @@ class Image {
         }
 };
 
-#include "image.cpp"
-
 #endif
