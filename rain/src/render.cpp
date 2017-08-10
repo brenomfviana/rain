@@ -2,6 +2,8 @@
 #include "../utility/vec3.h"
 #include "../utility/ray.h"
 
+using namespace utility;
+
 /*
  * In the near future we'll want to refactor our project to become something
  * like the code below.
@@ -20,14 +22,14 @@ Image Raytrace (Camera cam, Scene scene, int width, int height) {
 }
 #endif
 
-RGB color(const Ray& r_) {
-    RGB bottom(0.5, 0.7, 0);
-    RGB top(1, 1, 1);
-    // TODO: determine the background color, which is an linear interpolation between bottom->top.
-    // The interpolation is based on where the ray hits the background.
-    // Imagine that the background is attached to the view-plane; in other words,
-    // the virtual world we want to visualize is empty!
-    return top; // Stub, replace it accordingly
+RGB color(const Ray& r) {
+    RGB top(0.5, 0.7, 1);
+    RGB bottom(1, 1, 1);
+    // 
+    auto unitRay = unitVector(r.getDirection());
+    auto y = unitRay.y();
+    auto t = (y + 1) * 0.5;
+    return (bottom * (1 - t) + top * (t));
 }
 
 int main(int argc, char *argv[]) {
@@ -56,7 +58,7 @@ int main(int argc, char *argv[]) {
             // (b) To get the end point of ray we just have to 'walk' from the
             // vp's origin + horizontal displacement (proportional to 'col') +
             // vertical displacement (proportional to 'row').
-            Point3 end_point = lower_left_corner + u * horizontal + v * vertical;
+            Point3 end_point = lower_left_corner + (u * horizontal) + (v * vertical);
             // The ray:
             Ray r(origin, end_point - origin);
             // Determine the color of the ray, as it travels through the virtual space.

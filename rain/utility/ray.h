@@ -3,49 +3,53 @@
 
 #include "vec3.h"
 
-class Ray {
+namespace utility {
 
-	private:
-		// Ray origin
-		Point3 origin;
-		// Ray direction
-		Vec3 direction;
+	class Ray {
 
-	public:
-		// Alias
-		typedef float RealType;
+		private:
+			// Ray origin
+			Point3 origin;
+			// Ray direction
+			Vec3 direction;
 
-		/**
-		 * Ray constructor.
-		 *
-		 * @param origin_ Ray origin
-		 * @param direction_ Ray direction
-		 */
-		Ray(Point3 origin_ = Point3(), Vec3 direction_ = Vec3()) :
-			origin(origin_), direction(direction_) { /* Empty */ }
+		public:
+			// Alias
+			typedef float RealType;
 
-		/* ------------------------ Access Methods -------------------------- */
+			/**
+			 * Ray constructor.
+			 *
+			 * @param origin_ Ray origin
+			 * @param direction_ Ray direction
+			 */
+			Ray(Point3 origin_ = Point3(), Vec3 direction_ = Vec3()) :
+				origin(origin_), direction(direction_) { /* Empty */ }
 
-		/**
-		 * Get ray direction.
-		 *
-		 * @return Ray direction
-		 */
-		inline Vec3 getDirection(void) const { return direction; }
+			/* ------------------------ Access Methods -------------------------- */
 
-		/**
-		 * Get ray origin.
-		 *
-		 * @return Ray origin
-		 */
-		inline Vec3 getOrigin(void) const { return origin; }
+			/**
+			 * Get ray direction.
+			 *
+			 * @return Ray direction
+			 */
+			inline Vec3 getDirection(void) const { return direction; }
 
-		/**
-		 * TO COMMENT.
-		 */
-		Point3 pointAt(RealType t_) const {
-			return origin + t_ * direction;
-		}
-};
+			/**
+			 * Get ray origin.
+			 *
+			 * @return Ray origin
+			 */
+			inline Vec3 getOrigin(void) const { return origin; }
+
+			/**
+			 * TO COMMENT.
+			 */
+			Point3 pointAt(RealType t_) const {
+				return origin + t_ * direction;
+			}
+	};
+
+}
 
 #endif
