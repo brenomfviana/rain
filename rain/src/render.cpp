@@ -22,9 +22,20 @@ Image Raytrace (Camera cam, Scene scene, int width, int height) {
 }
 #endif
 
+bool hitSphere(const Ray& r, const Point3 c, float radius) {
+    auto oc = r.getOrigin() - c;
+    auto A = dot(r.getDirection(), r.getDirection());
+    auto B = 2 * dot(oc, r.getDirection());
+    auto C = dot(oc, oc) - (radius * radius);
+    return (B * B - 4 * A * C) >= 0;
+}
+
 RGB color(const Ray& r) {
     RGB top(0.5, 0.7, 1);
     RGB bottom(1, 1, 1);
+    if (hitSphere(r, Vec3(0, 0, -5), 0.8)) {
+        return RGB(1, 0, 0);
+    }
     // 
     auto unitRay = unitVector(r.getDirection());
     auto y = unitRay.y();
@@ -33,8 +44,8 @@ RGB color(const Ray& r) {
 }
 
 int main(int argc, char *argv[]) {
-    int n_cols{ 200 };
-    int n_rows{ 100 };
+    int n_cols{ 1024 };
+    int n_rows{ 1024 };
     std::cout << "P3\n"
               << n_cols << " " << n_rows << "\n"
               << "255\n";
