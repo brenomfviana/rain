@@ -156,7 +156,7 @@ class Vec3 {
         inline void makeUnitVector(void);
 };
 
-typedef Vec3 Color;
+typedef Vec3 RGB;
 typedef Vec3 Offset;
 typedef Vec3 Point3;
 
