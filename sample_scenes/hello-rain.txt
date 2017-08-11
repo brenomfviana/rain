@@ -1,9 +1,10 @@
-NAME = hello-rain.ppm
-TYPE = PPM
-CODIFICATION = ascii # aqui poderia ser: binary
-WIDTH = 200
-HEIGHT = 100
-UPPER_LEFT = 0 255 0    # Cor do canto superior esquerdo (verde)
-LOWER_LEFT = 0 0 0      # Cor do canto inferior esquerdo (preto)
-UPPER_RIGHT = 255 255 0 # Cor do canto superior direito  (amarelo)
-LOWER_RIGHT = 255 0 0   # Cor do canto inferior direito  (vermelho)
+NAME: hello-rain.ppm
+TYPE: PPM
+CODIFICATION: ascii # aqui poderia ser: binary
+WIDTH: 200
+HEIGHT: 100
+BACKGROUND:
+    UPPER_LEFT: 0 255 0    # Cor do canto superior esquerdo (verde)
+    LOWER_LEFT: 0 0 0      # Cor do canto inferior esquerdo (preto)
+    UPPER_RIGHT: 255 255 0 # Cor do canto superior direito  (amarelo)
+    LOWER_RIGHT: 255 0 0   # Cor do canto inferior direito  (vermelho)

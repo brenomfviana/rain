@@ -1,0 +1,10 @@
+NAME: sky.ppm
+TYPE: PPM
+CODIFICATION: ascii # aqui poderia ser: binary
+WIDTH: 200
+HEIGHT: 100
+BACKGROUND:
+    UPPER_LEFT: 128 179 255  # Cor do canto superior esquerdo (verde)
+    LOWER_LEFT: 255 255 255  # Cor do canto inferior esquerdo (preto)
+    UPPER_RIGHT: 128 179 255 # Cor do canto superior direito  (amarelo)
+    LOWER_RIGHT: 255 255 255 # Cor do canto inferior direito  (vermelho)
