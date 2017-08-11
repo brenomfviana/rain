@@ -1,6 +1,9 @@
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
 
+/*!
+ * This class represents an image.
+ */
 class Image {
 
     public:
@@ -11,7 +14,7 @@ class Image {
         // Image height
         unsigned int height;
 
-        /**
+        /*!
          * Image constructor.
          *
          * @param width_ Image width

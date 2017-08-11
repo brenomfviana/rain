@@ -5,7 +5,7 @@ CXXFLAGS = -std=c++11 -Wall -Wextra -g
 # Executable
 TARGET = render
 # Header's inclusion
-INCLUDES = -I ./include -I ./utility
+INCLUDES = -I ./include
 # Binary directory
 BIN_DIR = ./bin
 # Source

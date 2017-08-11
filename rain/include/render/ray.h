@@ -3,6 +3,9 @@
 
 #include "vec3.h"
 
+/*!
+ * This class represents a ray.
+ */
 class Ray {
 
 	private:
@@ -15,7 +18,7 @@ class Ray {
 		// Alias
 		typedef float RealType;
 
-		/**
+		/*!
 		 * Ray constructor.
 		 *
 		 * @param origin_ Ray origin
@@ -26,21 +29,21 @@ class Ray {
 
 		/* ------------------------ Access Methods -------------------------- */
 
-		/**
+		/*!
 		 * Get ray direction.
 		 *
 		 * @return Ray direction
 		 */
 		inline Vec3 getDirection(void) const { return direction; }
 
-		/**
+		/*!
 		 * Get ray origin.
 		 *
 		 * @return Ray origin
 		 */
 		inline Vec3 getOrigin(void) const { return origin; }
 
-		/**
+		/*!
 		 * Get the point to which the vector points.
 		 *
 		 * @return The point to which the vector points
