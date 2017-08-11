@@ -125,32 +125,56 @@ namespace utility {
             inline Vec3 operator-(void) const { return Vec3(-e[X], -e[Y], -e[Z]); }
 
             /*!
-             * TO COMMENT.
+             * Sum operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator+=(const Vec3&);
 
             /*!
-             * TO COMMENT.
+             * Subtraction operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator-=(const Vec3&);
 
             /*!
-             * TO COMMENT.
+             * Product operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator*=(const Vec3&);
 
             /*!
-             * TO COMMENT.
+             * Division operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator/=(const Vec3&);
 
             /*!
-             * TO COMMENT.
+             * Scalar product operator.
+             *
+             * @param t ValueType
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator*=(const ValueType);
 
             /*!
-             * TO COMMENT.
+             * Scalar division operator.
+             *
+             * @param t ValueType
+             *
+             * @return Vector resulting from the operation
              */
             inline Vec3& operator/=(const ValueType);
 

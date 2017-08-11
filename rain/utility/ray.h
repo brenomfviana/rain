@@ -43,10 +43,12 @@ namespace utility {
 			inline Vec3 getOrigin(void) const { return origin; }
 
 			/**
-			 * TO COMMENT.
+			 * Get the point to which the vector points.
+			 *
+			 * @return The point to which the vector points
 			 */
 			Point3 pointAt(RealType t_) const {
-				return origin + t_ * direction;
+				return origin + (t_ * direction);
 			}
 	};
 
