@@ -1,7 +1,7 @@
 #ifndef _RAY_H_
 #define _RAY_H_
 
-#include "vec3.h"
+#include "utils/vec3.h"
 
 /*!
  * This class represents a ray.
