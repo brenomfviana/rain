@@ -1,7 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "vec3.h"
+#include "utils/vec3.h"
 #include "render/ray.h"
+#include "image/image.h"
 #include "scene/scene_reader.h"
 
 /**
@@ -35,9 +36,9 @@ int main(int argc, char *argv[]) {
 		// Read file
 		Scene scene = SceneReader::read(argv[1]);
 		// Create image
-		std::ofstream img(scene.name);
-	    img << "P3\n" << scene.width << " " << scene.height << "\n" << "255\n";
-		// -- Camera
+		Image img(scene.width, scene.height, scene.name,
+                  scene.type, scene.codification);
+		// Create camera
 		// Lower left corner of the view plane.
 		Point3 lower_left_corner(-2, -1, -1);
 		// Horizontal dimension of the view plane.
@@ -46,13 +47,14 @@ int main(int argc, char *argv[]) {
 	    Vec3 vertical(0, 2, 0);
 		// The camera's origin.
 	    Point3 origin(0, 0, 0);
+
 		// Print image
-	   	for (int row{(signed int) scene.height - 1}; row >= 0 ; --row) { // Y
-		   	for(unsigned int col{0}; col < scene.width; col++) {         // X
-				// Walked u% of the horizontal dimension of the view plane.
-				float u = float(col) / float(scene.width);
-				// Walked v% of the vertical dimension of the view plane.
-				float v = float(row) / float(scene.height);
+	   	for (int row = (scene.height - 1); row >= 0; --row) {     // Y
+		   	for(unsigned int col = 0; col < scene.width; col++) { // X
+				// Walked u% of the horizontal dimension of the view plane
+				float u = float(col) / float(img.width);
+				// Walked v% of the vertical dimension of the view plane
+				float v = float(row) / float(img.height);
 				Point3 end_point = lower_left_corner + (u * horizontal) + (v * vertical);
 				// The ray
 				Ray r(origin, end_point - origin);
@@ -61,10 +63,20 @@ int main(int argc, char *argv[]) {
 				int ir = int(255.99f * c[RGB::R]);
 				int ig = int(255.99f * c[RGB::G]);
 				int ib = int(255.99f * c[RGB::B]);
-				img << ir << " " << ig << " " << ib << "\n";
+                img.pixels[(row * img.width * 3) + (col * 3)] = ir;
+                img.pixels[(row * img.width * 3) + (col * 3) + 1] = ig;
+                img.pixels[(row * img.width * 3) + (col * 3) + 2] = ib;
 			}
 		}
-		img.close();
+
+        std::ofstream outfile(scene.name, std::ofstream::binary);
+
+    	outfile << "P6" << std::endl;
+    	outfile << img.width << " " << img.height << std::endl;
+    	outfile << "255" << std::endl;
+
+    	outfile.write(img.pixels, img.width * img.height * 3);
+      	outfile.close();
 	}
     return 0;
 }
