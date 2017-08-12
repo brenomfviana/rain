@@ -2,8 +2,9 @@
 #define _SCENE_H_
 
 #include <string>
-#include "vec3.h"
+#include "utils/vec3.h"
 #include "components/background.h"
+#include "image/image_file_formats.h"
 
 /*!
  * This class represents a scene.
@@ -14,9 +15,9 @@ class Scene {
         // Image name
         std::string name;
         // Image type
-        std::string type;
+        ImageFileFormats type;
         // Image codification
-        std::string codification;
+        Codifications codification;
         // Image width
         unsigned int width;
         // Image height
@@ -35,7 +36,7 @@ class Scene {
          * @param height_ Image height
          * @param background_ Scene background
          */
-        Scene(std::string name_, std::string type_, std::string codification_,
+        Scene(std::string name_, ImageFileFormats type_, Codifications codification_,
             unsigned int width_, unsigned int height_, Background background_) :
             name(name_), type(type_), codification(codification_), width(width_),
             height(height_), background(background_)

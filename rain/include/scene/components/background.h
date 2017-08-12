@@ -1,7 +1,7 @@
 #ifndef _BACKGROUND_H_
 #define _BACKGROUND_H_
 
-#include "vec3.h"
+#include "utils/vec3.h"
 
 /*!
  * This class represents a background of a scene.
