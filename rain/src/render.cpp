@@ -18,7 +18,7 @@ RGB color(const Ray& r, Scene scene) {
 	RGB ll = scene.background.lowerLeft;
 	RGB ur = scene.background.upperRight;
 	RGB lr = scene.background.lowerRight;
-    // Interpolation bilinear
+    // Bilinear interpolation
     auto rd = r.getDirection();
     auto w = (rd.x() * 0.25) + 0.5;
     auto t = (rd.y() * 0.5) + 0.5;

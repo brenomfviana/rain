@@ -61,26 +61,30 @@ class SceneReader {
 
     private:
         /*!
-         * Split a string and get an array with three cells.
+         * Split a string and get the RGB corresponding to this string.
          *
          * @param str String to be splited
          *
-         * @return An array with RGB values
+         * @return The RGB corresponding to this string
          */
-        static std::string* splitRGB(std::string str) {
-            //
+        static RGB splitRGB(std::string str) {
+            // Auxiliary vector
             std::string* vstr = new std::string[3];
-            //
+            // Conversion
             for (int i = 0; i < 3; i++) {
                 int pos = str.find(" ");
                 std::string t = str.substr(0, pos);
                 vstr[i] = t;
                 str.erase(0, pos + 1);
             }
-            return vstr;
+            // Generate RGB
+            RGB rgb = RGB((atof(vstr[0].c_str()) / 255),
+                          (atof(vstr[1].c_str()) / 255),
+                          (atof(vstr[2].c_str()) / 255));
+            return rgb;
         }
 
-        /**
+        /*!
          * Interpret the scene file.
          *
          * @param lines File lines
@@ -105,75 +109,50 @@ class SceneReader {
             // Get image name
             if ((*itr).find(header[NAME]) == 0) {
                 std::string n = header[NAME];
-                std::string as = *(itr);
-                name = as.replace(0, n.length(), "");
-                itr++;
+                std::string aux = *(itr);
+                name = aux.replace(0, n.length(), "");
                 // Get image type
                 if ((*itr).find(header[TYPE]) == 0) {
                     std::string n = header[TYPE];
-                    std::string as = *(itr);
-                    type = as.replace(0, n.length(), "");
-                    itr++;
+                    std::string aux = *(++itr);
+                    type = aux.replace(0, n.length(), "");
                     // Get image codification
                     if ((*itr).find(header[CODIFICATION]) == 0) {
                         std::string n = header[CODIFICATION];
-                        std::string as = *(itr);
-                        codification = as.replace(0, n.length(), "");
-                        itr++;
+                        std::string aux = *(++itr);
+                        codification = aux.replace(0, n.length(), "");
                         // Get image width
                         if ((*itr).find(header[WIDTH]) == 0) {
                             std::string n = header[WIDTH];
-                            std::string as = *(itr);
-                            width = std::stoi(as.replace(0, n.length(), ""));
-                            itr++;
+                            std::string aux = *(++itr);
+                            width = std::stoi(aux.replace(0, n.length(), ""));
                             // Get image height
                             if ((*itr).find(header[HEIGHT]) == 0) {
                                 std::string n = header[HEIGHT];
-                                std::string as = *(itr);
-                                height = std::stoi(as.replace(0, n.length(), ""));
-                                itr++;
+                                std::string aux = *(++itr);
+                                height = std::stoi(aux.replace(0, n.length(), ""));
                                 // Get scene background
                                 if ((*itr).find(header[BACKGROUND]) == 0) {
                                     // Upper left corner
                                     std::string n = "UPPER_LEFT: ";
-                                    ++itr;
-                                    std::string as = *(itr);
-                                    as.replace(0, n.length(), "");
-                                    std::string* t0 = splitRGB(as);
-                                    background->upperLeft = RGB(
-                                        (atof(t0[0].c_str()) / 255),
-                                        (atof(t0[1].c_str()) / 255),
-                                        (atof(t0[2].c_str())) / 255);
+                                    std::string aux = *(++itr);
+                                    aux.replace(0, n.length(), "");
+                                    background->upperLeft = splitRGB(aux);
                                     // Lower left corner
                                     n = "LOWER_LEFT: ";
-                                    ++itr;
-                                    as = *(itr);
-                                    as.replace(0, n.length(), "");
-                                    std::string* t1 = splitRGB(as);
-                                    background->lowerLeft = RGB(
-                                        (atof(t1[0].c_str()) / 255),
-                                        (atof(t1[1].c_str()) / 255),
-                                        (atof(t1[2].c_str())) / 255);
+                                    aux = *(++itr);
+                                    aux.replace(0, n.length(), "");
+                                    background->lowerLeft = splitRGB(aux);
                                     // Upper right corner
                                     n = "UPPER_RIGHT: ";
-                                    ++itr;
-                                    as = *(itr);
-                                    as.replace(0, n.length(), "");
-                                    std::string* t2 = splitRGB(as);
-                                    background->upperRight = RGB(
-                                        (atof(t2[0].c_str()) / 255),
-                                        (atof(t2[1].c_str()) / 255),
-                                        (atof(t2[2].c_str())) / 255);
+                                    aux = *(++itr);
+                                    aux.replace(0, n.length(), "");
+                                    background->upperRight = splitRGB(aux);
                                     // Lower right corner
                                     n = "LOWER_RIGHT: ";
-                                    ++itr;
-                                    as = *(itr);
-                                    as.replace(0, n.length(), "");
-                                    std::string* t3 = splitRGB(as);
-                                    background->lowerRight = RGB(
-                                        (atof(t3[0].c_str()) / 255),
-                                        (atof(t3[1].c_str()) / 255),
-                                        (atof(t3[2].c_str())) / 255);
+                                    aux = *(++itr);
+                                    aux.replace(0, n.length(), "");
+                                    background->lowerRight = splitRGB(aux);
                                     // Return scene
                                     return Scene(name, type, codification, width, height, *background);
                                 } else {
