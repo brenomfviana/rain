@@ -1,10 +1,10 @@
 NAME: hello-rain.ppm
 TYPE: PPM
-CODIFICATION: ascii # aqui poderia ser: binary
+CODIFICATION: ascii # or binary
 WIDTH: 200
 HEIGHT: 100
 BACKGROUND:
-    UPPER_LEFT: 0 255 0    # Cor do canto superior esquerdo (verde)
-    LOWER_LEFT: 0 0 0      # Cor do canto inferior esquerdo (preto)
-    UPPER_RIGHT: 255 255 0 # Cor do canto superior direito  (amarelo)
-    LOWER_RIGHT: 255 0 0   # Cor do canto inferior direito  (vermelho)
+    UPPER_LEFT: 0 255 0    # Upper left corner color  (green)
+    LOWER_LEFT: 0 0 0      # Lower left corner color  (black)
+    UPPER_RIGHT: 255 255 0 # Upper right corner color (yellow)
+    LOWER_RIGHT: 255 0 0   # Lower right corner color (red)
