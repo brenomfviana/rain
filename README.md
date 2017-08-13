@@ -6,9 +6,9 @@ Rain is an image renderer that uses the [_ray tracing_](https://en.wikipedia.org
 
 ### About
 
-This image renderer is a homework of Computer Graphics course of the Federal University of Rio Grande do Norte (UFRN).
+This image renderer is a project of Computer Graphics course of the Federal University of Rio Grande do Norte (UFRN).
 
-The name rain is an acronym to **RA**y trac**IN**g.
+The name rain is an acronym for **RA**y trac**IN**g.
 
 ## Features and TO DOs
 
@@ -49,11 +49,11 @@ The name rain is an acronym to **RA**y trac**IN**g.
 
 ## How to compile
 
-To compile the renderer just use the ```make``` command.
+Use the ```make``` command to compile the renderer.
 
 ## How to use
 
-To render an image choose a scene and run the renderer passing the file path of the scene as an argument.
+Choose a scene and run the renderer passing the file path of the scene as an argument to render an image.
 
 ```bash
 # ./render scenefile.txt
