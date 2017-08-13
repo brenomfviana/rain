@@ -2,14 +2,24 @@
 
 ## Description
 
-Rain is an image renderer that uses the [_ray tracing_](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) technique. Rain is an acronym to **RA**y trac**IN**g.
+Rain is an image renderer that uses the [_ray tracing_](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) technique.
+
+### About
+
+This image renderer is a homework of Computer Graphics course of the Federal University of Rio Grande do Norte (UFRN).
+
+The name rain is an acronym to **RA**y trac**IN**g.
 
 ## Features and TO DOs
 
 - [ ] Ray Tracing
 - [x] Scene
-- [x] Scene reader
-- [ ] Printer
+  - [x] Scene reader
+  - [ ] Scene components
+- [x] Printer
+  - [x] ASCII
+  - [x] Binary
+  - [ ] Choose location to save the image file
 
 #### Shapes
 
@@ -57,11 +67,11 @@ To render an image choose a scene and run the renderer passing the file path of 
 ```txt
 NAME: hello-rain.ppm
 TYPE: PPM
-CODIFICATION: ascii # binary codification is not implemented yet
+CODIFICATION: ascii # or binary
 WIDTH: 200
 HEIGHT: 100
 BACKGROUND:
-    UPPER_LEFT: 0 255 0    # Upper left corner color  (gree)
+    UPPER_LEFT: 0 255 0    # Upper left corner color  (green)
     LOWER_LEFT: 0 0 0      # Lower left corner color  (black)
     UPPER_RIGHT: 255 255 0 # Upper right corner color (yellow)
     LOWER_RIGHT: 255 0 0   # Lower right corner color (red)
@@ -72,14 +82,14 @@ BACKGROUND:
 ```txt
 NAME: sky.ppm
 TYPE: PPM
-CODIFICATION: ascii
+CODIFICATION: binary # or ascii
 WIDTH: 200
 HEIGHT: 100
 BACKGROUND:
-    UPPER_LEFT: 128 179 255
-    LOWER_LEFT: 255 255 255
-    UPPER_RIGHT: 128 179 255
-    LOWER_RIGHT: 255 255 255
+    UPPER_LEFT: 128 179 255  # Upper left corner color
+    LOWER_LEFT: 255 255 255  # Lower left corner color
+    UPPER_RIGHT: 128 179 255 # Upper right corner color
+    LOWER_RIGHT: 255 255 255 # Lower right corner color
 ```
 
 ## Author
