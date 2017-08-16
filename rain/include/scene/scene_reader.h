@@ -7,6 +7,7 @@
 #include <list>
 #include "utils/vec3.h"
 #include "scene.h"
+#include "image/image.h"
 #include "image/image_file_formats.h"
 #include "components/background.h"
 
@@ -23,7 +24,7 @@ class SceneReader {
          *
          * @return Readed scene
          */
-        static Scene read(const std::string path);
+        static void read(const std::string path, Scene& scene, Image& img);
 
     private:
         /*!
@@ -31,9 +32,18 @@ class SceneReader {
          *
          * @param str String to be splited
          *
-         * @return The RGB corresponding to this string
+         * @return A RGB value
          */
-        static RGB splitRGB(std::string str);
+        static RGB getRGB(std::string str);
+
+        /*!
+         * Interpret header of the scene file.
+         *
+         * @param lines File lines
+         *
+         * @return Interpreted image
+         */
+        static Image* interpretImage(std::list<std::string>& lines);
 
         /*!
          * Interpret the scene file.
@@ -42,7 +52,7 @@ class SceneReader {
          *
          * @return Interpreted scene
          */
-        static Scene interpretFile(std::list<std::string> lines);
+        static Scene* interpretScene(std::list<std::string>& lines);
 };
 
 #endif

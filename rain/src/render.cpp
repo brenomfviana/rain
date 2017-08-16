@@ -5,7 +5,26 @@
 #include "scene/scene_reader.h"
 #include "printer/printer.h"
 
-/**
+/*!
+ * .
+ */
+float hitSphere(const Ray& r, const Point3 center, float radius) {
+    auto oc = r.getOrigin() - center;
+    auto A = dot(r.getDirection(), r.getDirection());
+    auto B = 2 * dot(oc, r.getDirection());
+    auto C = dot(oc, oc) - (radius * radius);
+    float delta = (B * B - 4 * A * C);
+    //
+    if (delta >= 0) {
+       auto t = (-B - sqrt(delta)) / (2 * A);
+       // auto t2 = (-B + sqrt(delta)) / (2 * A);
+       return t;
+    }
+    return -1;
+}
+
+
+/*!
  * Get the color of the reached pixel.
  *
  * @param r Ray
@@ -19,6 +38,14 @@ RGB color(const Ray& r, Scene scene) {
 	RGB ll = scene.background.lowerLeft;
 	RGB ur = scene.background.upperRight;
 	RGB lr = scene.background.lowerRight;
+
+    Point3 center = Vec3(1, 1, -4);
+    float tde = hitSphere(r, center, 1);
+    if (tde > 0) {
+        Vec3 normal = unitVector((r.pointAt(tde) - center));
+        auto N = (normal + Vec3(1, 1, 1)) * 0.5;
+        return N;
+    }
     // Bilinear interpolation
     auto rd = r.getDirection();
     auto w = (rd.x() * 0.25) + 0.5;
@@ -33,11 +60,10 @@ int main(int argc, char *argv[]) {
 		// ERROR
 		std::cout << "Error: Invalid number of arguments!" << std::endl;
 	} else {
+        Scene scene;
+        Image img;
 		// Read file
-		Scene scene = SceneReader::read(argv[1]);
-		// Create image
-		Image img(scene.width, scene.height, scene.name,
-                  scene.type, scene.codification);
+        SceneReader::read(argv[1], scene, img);
 		// Create camera
 		// Lower left corner of the view plane
 		Point3 llc(-2, -1, -1);
