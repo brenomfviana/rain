@@ -6,12 +6,15 @@
 // Supported file formats
 enum ImageFileFormats {PPM = 0, BMP = 1, JPG = 2, PNG = 3,
                        TIFF = 4, GIF = 5};
-
 // Codifications
 enum Codifications {ASCII = 0, BINARY = 1};
 
 /*!
- * TO COMMENT.
+ * Get image file format.
+ *
+ * @param str String that matches the image file format
+ *
+ * @return Image file format
  */
 inline ImageFileFormats getImageFileFormat(std::string str) {
     // Check file format
@@ -34,7 +37,11 @@ inline ImageFileFormats getImageFileFormat(std::string str) {
 }
 
 /*!
- * TO COMMENT.
+ * Get file codification.
+ *
+ * @param str String that matches the file codification
+ *
+ * @return File codification
  */
 inline Codifications getCodification(std::string str) {
     // Check file format
