@@ -1,9 +1,22 @@
 #include <iostream>
+#include <limits>
+#include <cmath>
 #include "utils/vec3.h"
 #include "render/ray.h"
 #include "image/image.h"
 #include "scene/scene_reader.h"
 #include "printer/printer.h"
+
+
+struct Sphere {
+    Point3 center;
+    float radius;
+};
+
+Sphere s[4] = {{Point3(0, -100.5, -3), 99.f},
+               {Point3(0.3,    0, -1),  0.4},
+               {Point3(0,      1, -2),  0.6},
+               {Point3(-0.4,   0, -3),  0.7}};
 
 /*!
  * .
@@ -23,35 +36,31 @@ float hitSphere(const Ray& r, const Point3 center, float radius) {
     return -1;
 }
 
-
 /*!
  * Get the color of the reached pixel.
  *
- * @param r Ray
- * @param scene Scene
- *
  * @return The color of the reached pixel
  */
-RGB color(const Ray& r, Scene scene) {
-	// Get background corners colors
-    RGB ul = scene.background.upperLeft;
-	RGB ll = scene.background.lowerLeft;
-	RGB ur = scene.background.upperRight;
-	RGB lr = scene.background.lowerRight;
-
-    Point3 center = Vec3(1, 1, -4);
-    float tde = hitSphere(r, center, 1);
-    if (tde > 0) {
-        Vec3 normal = unitVector((r.pointAt(tde) - center));
-        auto N = (normal + Vec3(1, 1, 1)) * 0.5;
-        return N;
+RGB color(const Ray& r, RGB depth_foreground, RGB depth_background, float depth) {
+    Point3 center;
+    float t = std::numeric_limits<float>::infinity();
+    for (int i = 0; i < 4; i++) {
+        float aux = hitSphere(r, s[i].center, s[i].radius);
+        if (aux > -1 && t > aux) {
+            t = aux;
+            center = s[i].center;
+        }
     }
-    // Bilinear interpolation
-    auto rd = r.getDirection();
-    auto w = (rd.x() * 0.25) + 0.5;
-    auto t = (rd.y() * 0.5) + 0.5;
-    return ((ll * (1 - t) * (1 - w)) + (ul * t * (1 - w)) +
-			(lr * (1 - t) * w) + (ur * t *w));
+
+    if (t > 0 && t < std::numeric_limits<float>::infinity()) {
+        if (t >= 0 && t <= depth) {
+            t = t / depth;
+            return (depth_foreground * (1 - t)) + depth_background * t;
+        } else {
+            return depth_background;
+        }
+    }
+    return depth_background;
 }
 
 int main(int argc, char *argv[]) {
@@ -74,6 +83,13 @@ int main(int argc, char *argv[]) {
 		// The camera's origin
 	    Point3 origin(0, 0, 0);
 
+        float depth = 3;
+        // Black -> White
+        RGB depth_foreground = RGB(0, 0, 0);
+        RGB depth_background = RGB(1, 1, 1);
+        // White -> Black
+        // RGB depth_foreground = RGB(1, 1, 1);
+        // RGB depth_background = RGB(0, 0, 0);
 		// Print image
 	   	for (unsigned int row = 0, i = (img.height - 1); row < img.height; row++, i--) {   // Y
             // Walked v% of the vertical dimension of the view plane
@@ -84,7 +100,7 @@ int main(int argc, char *argv[]) {
 				Point3 endPoint = llc + (u * horizontal) + (v * vertical);
 				// The ray
 				Ray r(origin, endPoint - origin);
-				auto c = color(r, scene);
+				auto c = color(r, depth_foreground, depth_background, depth);
 				// Print pixel
 				int ir = int(255.99f * c[RGB::R]);
 				int ig = int(255.99f * c[RGB::G]);
