@@ -21,27 +21,24 @@ The name rain is an acronym for **RA**y trac**IN**g.
   - [x] Binary
   - [ ] Choose location to save the image file
 
-#### Shapes
+- [ ] Shapes
+  - [ ] Sphere
+  - [ ] Cube
+  - [ ] Cuboid
+  - [ ] Cone
+  - [ ] Cylinder
 
-- [ ] Sphere
-- [ ] Cube
-- [ ] Cuboid
-- [ ] Cone
-- [ ] Cylinder
+- [ ] Materials
+  - [ ] Glass
+  - [ ] Metal
 
-#### Materials
-
-- [ ] Glass
-- [ ] Metal
-
-#### Supported image file formats
- 
-- [x] PPM
-- [ ] BMP
-- [ ] JPG
-- [ ] PNG
-- [ ] TIFF
-- [ ] GIF
+- [ ] Supported image file formats
+  - [x] PPM
+  - [ ] BMP
+  - [ ] JPG
+  - [ ] PNG
+  - [ ] TIFF
+  - [ ] GIF
 
 ## Dependencies
 
