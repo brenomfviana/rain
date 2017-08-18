@@ -1,8 +1,8 @@
 NAME: sky.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
-WIDTH: 200
-HEIGHT: 100
+WIDTH: 2000
+HEIGHT: 1000
 BACKGROUND:
     UPPER_LEFT: 128 179 255  # Upper left corner color
     LOWER_LEFT: 255 255 255  # Lower left corner color
