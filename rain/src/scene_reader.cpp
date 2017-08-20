@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <fstream>
 #include "utils/vec3.h"
 #include "utils/split.h"
 #include "scene/scene_reader.h"
@@ -109,6 +110,7 @@ Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
         // ERROR
         throw "Invalid file!";
     }
+    // Look for other scene components
     // Empty scene
     return (new Scene());
 }

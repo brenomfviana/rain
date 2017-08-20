@@ -1,15 +1,10 @@
 #ifndef _SCENE_READER_H_
 #define _SCENE_READER_H_
 
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <list>
-#include "utils/vec3.h"
-#include "scene.h"
+#include <string>
 #include "image/image.h"
-#include "image/image_file_formats.h"
-#include "components/background.h"
+#include "scene.h"
 
 /*!
  * This class is responsible for reading the scene.

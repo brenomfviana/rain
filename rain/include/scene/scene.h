@@ -1,10 +1,9 @@
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
-#include <string>
-#include "utils/vec3.h"
+#include <list>
 #include "components/background.h"
-#include "image/image_file_formats.h"
+#include "components/shape/shape.h"
 
 /*!
  * This class represents a scene.
@@ -15,6 +14,12 @@ class Scene {
         // Scene background
         Background background;
         // Scene components
+        std::list<Shape*> components;
+
+        /*!
+         * Empty scene.
+         */
+        Scene() { /* empty */ }
 
         /*!
          * Scene constructor.
@@ -24,9 +29,13 @@ class Scene {
         Scene(Background background_) : background(background_) { /* empty */ }
 
         /*!
-         * Empty scene.
+         * Add a shape to the scene.
+         *
+         * @param shape Shape to be added to the scene
          */
-        Scene() { /* empty */ }
+        void addShape(Shape* shape) {
+            components.push_back(shape);
+        }
 };
 
 #endif
