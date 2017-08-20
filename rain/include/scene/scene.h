@@ -33,9 +33,7 @@ class Scene {
          *
          * @param shape Shape to be added to the scene
          */
-        void addShape(Shape* shape) {
-            components.push_back(shape);
-        }
+        inline void addShape(Shape* shape) { components.push_back(shape); }
 };
 
 #endif

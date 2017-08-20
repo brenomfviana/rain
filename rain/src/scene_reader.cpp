@@ -1,30 +1,37 @@
-#include <string>
-#include <vector>
-#include <fstream>
-#include "utils/vec3.h"
 #include "utils/split.h"
-#include "scene/scene_reader.h"
+#include "render/io/scene_reader.h"
 
-void SceneReader::read(const std::string path, Scene& scene, Image& img) {
+void SceneReader::read(const std::string path, Scene& scene, OutputSettings& os) {
     // Open scene file
     std::ifstream file(path.c_str());
     // Check if the file exists
     if (!file) {
         // ERROR
-        std::cout << "Error: The file is not exists." << std::endl;
+        throw "Error: The file is not exists.";
     } else
         // Check if the file is open
         if (!file.is_open()) {
         // ERROR
-        std::cout << "Error: The file could not be opened." << std::endl;
+        throw "Error: The file could not be opened.";
     } else {
         std::list<std::string> lines;
         // Read all lines of file and removes useless chars
         std::string line;
         while (getline(file, line)) {
             // Remove comments
-            if (line.find("#") < line.length()) {
-                line = line.replace(line.find("#"), line.length() - 1, "");
+            int i = line.find("#");
+            if (i < line.length()) {
+                std::string aux;
+                if (i == 0) {
+                    aux = line.replace(i, line.length(), "");
+                } else {
+                    aux = line.replace(i, line.length() - 1, "");
+                }
+                if (aux.length() > 0) {
+                    line = aux;
+                } else {
+                    continue;
+                }
             }
             // Remove indentation
             if (line.find("    ") == 0) {
@@ -36,22 +43,12 @@ void SceneReader::read(const std::string path, Scene& scene, Image& img) {
         // Close file
         file.close();
         // Interprets file
-        img = *(interpretImage(lines));
+        os = *(interpretOutputSettings(lines));
         scene = *(interpretScene(lines));
     }
 }
 
-RGB SceneReader::getRGB(std::string str) {
-    // Auxiliary vector
-    std::vector<std::string> v = split(str, ' ');
-    // Generate RGB
-    RGB rgb = RGB((atof(v[0].c_str()) / 255.f),
-                  (atof(v[1].c_str()) / 255.f),
-                  (atof(v[2].c_str()) / 255.f));
-    return rgb;
-}
-
-Image* SceneReader::interpretImage(std::list<std::string>& lines) {
+OutputSettings* SceneReader::interpretOutputSettings(std::list<std::string>& lines) {
     // Header size
     int hsize = 5;
     // Scene header format
@@ -73,9 +70,9 @@ Image* SceneReader::interpretImage(std::list<std::string>& lines) {
     // Remove interpreted lines
     lines.erase(ib, itr);
     // Create image
-    Image* img = new Image(std::stoi(header[3]), std::stoi(header[4]), header[0],
-        getImageFileFormat(header[1]), getCodification(header[2]));
-    return img;
+    OutputSettings* os = new OutputSettings(std::stoi(header[3]), std::stoi(header[4]), header[0],
+        OutputSettings::getImageFileFormat(header[1]), OutputSettings::getCodification(header[2]));
+    return os;
 }
 
 Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
@@ -113,4 +110,14 @@ Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
     // Look for other scene components
     // Empty scene
     return (new Scene());
+}
+
+RGB SceneReader::getRGB(std::string str) {
+    // Auxiliary vector
+    std::vector<std::string> v = split(str, ' ');
+    // Generate RGB
+    RGB rgb = RGB((atof(v[0].c_str()) / 255.f),
+                  (atof(v[1].c_str()) / 255.f),
+                  (atof(v[2].c_str()) / 255.f));
+    return rgb;
 }

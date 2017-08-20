@@ -2,10 +2,9 @@
 #include "utils/vec3.h"
 #include "render/ray.h"
 #include "image/image.h"
-#include "printer/printer.h"
-#include "scene/scene_reader.h"
+#include "render/io/printer.h"
+#include "render/io/scene_reader.h"
 #include "scene/components/shape/sphere.h"
-
 
 /*!
  * Get the color of the reached pixel.
@@ -45,9 +44,11 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error: Invalid number of arguments!" << std::endl;
 	} else {
         Scene scene;
-        Image img;
+        OutputSettings os;
 		// Read file
-        SceneReader::read(argv[1], scene, img);
+        SceneReader::read(argv[1], scene, os);
+
+        Image img(os.width, os.height);
 
         //
         Shape* s = new Sphere(Point3(0, 0, -5), 1);
@@ -86,7 +87,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
         // Print image
-        Printer::print(img, "");
+        Printer::print(img, os, "");
 	}
     return 0;
 }
