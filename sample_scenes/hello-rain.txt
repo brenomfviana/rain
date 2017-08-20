@@ -1,8 +1,10 @@
+# Output settings
 NAME: hello-rain.ppm
 TYPE: PPM
 CODIFICATION: ascii # or binary
 WIDTH: 200
 HEIGHT: 100
+# Scene description
 BACKGROUND:
     UPPER_LEFT: 0 255 0    # Upper left corner color  (green)
     LOWER_LEFT: 0 0 0      # Lower left corner color  (black)
