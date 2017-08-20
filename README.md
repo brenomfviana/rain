@@ -12,13 +12,10 @@ The name rain is an acronym for **RA**y trac**IN**g.
 
 ## Features and TO DOs
 
-- [ ] Ray Tracing
-  - [ ]
-  - [ ]
-
-- [x] Scene
+- [ ] Scene
   - [x] Scene reader
   - [x] Scene components
+  - [ ] Camera
 
 - [x] Printer
   - [x] ASCII
