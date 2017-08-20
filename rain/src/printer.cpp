@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include "printer/printer.h"
 #include "image/image.h"
-#include "image/image_file_formats.h"
+#include "printer/printer.h"
+#include "printer/image_file_formats.h"
 
 void Printer::print(Image& img, std::string targetFolder) {
     // Check image file format
