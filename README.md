@@ -13,32 +13,41 @@ The name rain is an acronym for **RA**y trac**IN**g.
 ## Features and TO DOs
 
 - [ ] Ray Tracing
+  - [ ]
+  - [ ]
+
 - [x] Scene
   - [x] Scene reader
-  - [ ] Scene components
+  - [x] Scene components
+
 - [x] Printer
   - [x] ASCII
   - [x] Binary
   - [ ] Choose location to save the image file
+  - [ ] Supported image file formats
+    - [x] PPM
+    - [ ] BMP
+    - [ ] JPG
+    - [ ] PNG
+    - [ ] TIFF
+    - [ ] GIF
 
 - [ ] Shapes
-  - [ ] Sphere
+  - [x] Sphere
   - [ ] Cube
   - [ ] Cuboid
   - [ ] Cone
   - [ ] Cylinder
 
 - [ ] Materials
-  - [ ] Glass
+  - [ ] Diffuse
   - [ ] Metal
+  - [ ] Glass
+  - [ ] Blur
 
-- [ ] Supported image file formats
-  - [x] PPM
-  - [ ] BMP
-  - [ ] JPG
-  - [ ] PNG
-  - [ ] TIFF
-  - [ ] GIF
+- [ ] Light
+
+- [ ] Texture
 
 ## Dependencies
 
