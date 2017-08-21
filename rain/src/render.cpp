@@ -17,26 +17,38 @@
  * @return The color of the reached pixel
  */
 RGB color(const Ray& r, Scene scene) {
-	// Get background corners colors
-    RGB ul = scene.background.upperLeft;
-	RGB ll = scene.background.lowerLeft;
-	RGB ur = scene.background.upperRight;
-	RGB lr = scene.background.lowerRight;
 
     // Check hit
+    float tMin = -std::numeric_limits<float>::infinity();
+    float tMax = -std::numeric_limits<float>::infinity();
     for (auto &shape : scene.components) {
-        //
-        if (shape->hit(r, 0, 0)) {
-            return RGB(1, 1, 0);
+        float t0 = -std::numeric_limits<float>::infinity();
+        float t1 = -std::numeric_limits<float>::infinity();
+        if (shape->hit(r, t0, t1)) {
+            if (t0 > -1 && t0 > tMin) {
+                tMin = t0;
+            }
+            if (t1 > -1 && t1 > tMax) {
+                tMax = t1;
+            }
         }
     }
+    if (tMin > 0) {
+        return RGB(1, 1, 0);
+    }
+
+    // Get background corners colors
+    RGB ul = scene.background.upperLeft;
+    RGB ll = scene.background.lowerLeft;
+    RGB ur = scene.background.upperRight;
+    RGB lr = scene.background.lowerRight;
 
     // Bilinear interpolation
     auto rd = r.getDirection();
     auto w = (rd.x() * 0.25) + 0.5;
     auto t = (rd.y() * 0.5) + 0.5;
     return ((ll * (1 - t) * (1 - w)) + (ul * t * (1 - w)) +
-			(lr * (1 - t) * w) + (ur * t *w));
+            (lr * (1 - t) * w) + (ur * t *w));
 }
 
 int main(int argc, char *argv[]) {
@@ -46,18 +58,16 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error: Invalid number of arguments!" << std::endl;
 	} else {
         Scene scene;
+        Camera cam;
         OutputSettings os;
 		// Read file
-        SceneReader::read(argv[1], scene, os);
+        SceneReader::read(argv[1], scene, cam, os);
 
         Image img(os.width, os.height);
 
         //
         // Shape* s = new Sphere(Point3(0, 0, -5), 1);
         // scene.addShape(s);
-
-		// Create camera
-        Camera cam(Point3(-2, -1, -1), Point3(4, 0, 0), Point3(0, 2, 0), Point3(0, 0, 0));
 
 		// Print image
         // Y

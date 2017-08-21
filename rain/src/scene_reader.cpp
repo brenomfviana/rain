@@ -1,7 +1,7 @@
 #include "utils/split.h"
 #include "render/io/scene_reader.h"
 
-void SceneReader::read(const std::string path, Scene& scene, OutputSettings& os) {
+void SceneReader::read(const std::string path, Scene& scene, Camera& cam, OutputSettings& os) {
     // Open scene file
     std::ifstream file(path.c_str());
     // Check if the file exists
@@ -18,6 +18,10 @@ void SceneReader::read(const std::string path, Scene& scene, OutputSettings& os)
         // Read all lines of file and removes useless chars
         std::string line;
         while (getline(file, line)) {
+            // Remove indentation
+            while (line.find("    ") == 0) {
+                line = line.replace(line.find("    "), 4, "");
+            }
             // Remove comments
             int i = line.find("#");
             if (i < line.length()) {
@@ -33,10 +37,6 @@ void SceneReader::read(const std::string path, Scene& scene, OutputSettings& os)
                     continue;
                 }
             }
-            // Remove indentation
-            if (line.find("    ") == 0) {
-                line = line.replace(line.find("    "), 4, "");
-            }
             // Adds in list
             lines.push_back(line);
         }
@@ -44,6 +44,7 @@ void SceneReader::read(const std::string path, Scene& scene, OutputSettings& os)
         file.close();
         // Interprets file
         os = *(interpretOutputSettings(lines));
+        cam = *(interpretCamera(lines));
         scene = *(interpretScene(lines));
     }
 }
@@ -75,11 +76,46 @@ OutputSettings* SceneReader::interpretOutputSettings(std::list<std::string>& lin
     return os;
 }
 
+Camera* SceneReader::interpretCamera(std::list<std::string>& lines) {
+    // Header size
+    int hsize = 4;
+    // Camara header format
+    std::string header[] = {"LLC: ", "H: ", "V: ", "O: "};
+    // Interpret file
+    std::list<std::string>::iterator itr = lines.begin(), ib = lines.begin();
+    for (int i = 0; i < hsize; i++) {
+        // Check header
+        if ((*itr).find(header[i]) == 0) {
+            std::string n = header[i];
+            std::string aux = *(itr++);
+            header[i] = aux.replace(0, n.length(), "");
+        } else {
+            // ERROR
+            throw "Invalid file!";
+        }
+    }
+    // Remove interpreted lines
+    lines.erase(ib, itr);
+    Camera* cam = new Camera(getVec3(header[0]), getVec3(header[1]),
+        getVec3(header[2]), getVec3(header[3]));
+    return cam;
+}
+
+Vec3 SceneReader::getVec3(std::string str) {
+    // Auxiliary vector
+    std::vector<std::string> v = split(str, ' ');
+    // Generate Vec3
+    RGB rgb = Vec3(atof(v[0].c_str()),
+                  atof(v[1].c_str()),
+                  atof(v[2].c_str()));
+    return rgb;
+}
+
 Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
     // Scene attributes
     Background* background = new Background();
     // Interpret scene file
-    std::list<std::string>::iterator itr = lines.begin();
+    std::list<std::string>::iterator itr = lines.begin(), ib = lines.begin();
     if ((*itr).find("BACKGROUND:") == 0) {
         // Upper left corner
         std::string n = "UPPER_LEFT: ";
@@ -101,15 +137,28 @@ Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
         aux = *(++itr);
         aux.replace(0, n.length(), "");
         background->lowerRight = getRGB(aux);
-        // Return scene
-        return (new Scene(*background));
     } else {
         // ERROR
         throw "Invalid file!";
     }
+    Scene* scene = new Scene(*background);
+    // Remove interpreted lines
+    itr++;
+    lines.erase(ib, itr);
     // Look for other scene components
-    // Empty scene
-    return (new Scene());
+    if ((*(itr)).find("COMPONENTS:") == 0) {
+        lines.erase(itr);
+        for (itr = lines.begin(); !lines.empty(); ) {
+            //
+            if ((*(itr)).find("SPHERE:") == 0) {
+                lines.erase(itr);
+                Sphere* s = getSphere(lines);
+                scene->addShape(s);
+                itr = lines.begin();
+            }
+        }
+    }
+    return scene;
 }
 
 RGB SceneReader::getRGB(std::string str) {
@@ -120,4 +169,28 @@ RGB SceneReader::getRGB(std::string str) {
                   (atof(v[1].c_str()) / 255.f),
                   (atof(v[2].c_str()) / 255.f));
     return rgb;
+}
+
+Sphere* SceneReader::getSphere(std::list<std::string>& lines) {
+    // Header size
+    int hsize = 2;
+    // Camara header format
+    std::string header[] = {"O: ", "RADIUS: "};
+    // Interpret file
+    std::list<std::string>::iterator itr = lines.begin(), ib = lines.begin();
+    for (int i = 0; i < hsize; i++) {
+        // Check header
+        if ((*itr).find(header[i]) == 0) {
+            std::string n = header[i];
+            std::string aux = *(itr++);
+            header[i] = aux.replace(0, n.length(), "");
+        } else {
+            // ERROR
+            throw "Invalid file!";
+        }
+    }
+    // Remove interpreted lines
+    lines.erase(ib, itr);
+    Sphere* s = new Sphere(getVec3(header[0]), atof(header[1].c_str()));
+    return s;
 }
