@@ -37,7 +37,7 @@ class Shape {
          *
          * @return True if the ray has hit the shape and false otherwise
          */
-        virtual bool hit(Ray r, float tMin, float tMax) = 0;
+        virtual bool hit(Ray r, float& tMin, float& tMax) = 0;
 };
 
 #endif
