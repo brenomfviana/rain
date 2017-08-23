@@ -1,0 +1,17 @@
+# Output settings
+NAME: hello-rain.ppm
+TYPE: PPM
+CODIFICATION: ascii # or binary
+WIDTH: 200
+HEIGHT: 100
+# Camera
+LLC: -2 -1 -1 # Lower left corner of the view plane
+H: 4 0 0      # Horizontal dimension of the view plane
+V: 0 2 0      # Vertical dimension of the view plane
+O: 0 0 0      # The camera's origin
+# Scene description
+BACKGROUND:
+    UPPER_LEFT: 0 255 0    # Upper left corner color  (green)
+    LOWER_LEFT: 0 0 0      # Lower left corner color  (black)
+    UPPER_RIGHT: 255 255 0 # Upper right corner color (yellow)
+    LOWER_RIGHT: 255 0 0   # Lower right corner color (red)
