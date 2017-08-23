@@ -23,7 +23,7 @@ void SceneReader::read(const std::string path, Scene& scene, Camera& cam, Output
                 line = line.replace(line.find("    "), 4, "");
             }
             // Remove comments
-            int i = line.find("#");
+            unsigned int i = line.find("#");
             if (i < line.length()) {
                 std::string aux;
                 if (i == 0) {
@@ -146,7 +146,7 @@ Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
     itr++;
     lines.erase(ib, itr);
     // Look for other scene components
-    if ((*(itr)).find("COMPONENTS:") == 0) {
+    if (!lines.empty() && (*(itr)).find("COMPONENTS:") == 0) {
         lines.erase(itr);
         for (itr = lines.begin(); !lines.empty(); ) {
             //

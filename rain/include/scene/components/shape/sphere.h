@@ -29,10 +29,11 @@ class Sphere : public Shape {
          * @param r Ray
          * @param tMin
          * @param tMax
+         * @param hr Hit record
          *
          * @return True if the ray has hit the sphere and false otherwise
          */
-        bool hit(Ray r, float& tMin, float& tMax) {
+        bool hit(Ray r, float tMin, float tMax, HitRecord& hr) {
             auto oc = r.getOrigin() - origin;
             auto a = dot(r.getDirection(), r.getDirection());
             auto b = 2 * dot(oc, r.getDirection());
@@ -41,13 +42,12 @@ class Sphere : public Shape {
             //
             if (delta >= 0) {
                 auto t1 = (-b - sqrt(delta)) / (2 * a);
-                auto t2 = (-b + sqrt(delta)) / (2 * a);
-                if (t1 > t2) {
-                    tMax = t1;
-                    tMin = t2;
+                // auto t2 = (-b + sqrt(delta)) / (2 * a);
+                if (t1 > tMin && t1 < tMax) {
+                    hr.t = t1;
+                    hr.origin = origin;
                 } else {
-                    tMax = t2;
-                    tMin = t1;
+                    hr.t = -1;
                 }
             }
             return delta >= 0;

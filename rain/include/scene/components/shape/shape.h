@@ -6,7 +6,8 @@
 
 //
 struct HitRecord {
-    // TODO
+    float t;
+    Vec3 origin;
 };
 
 /*!
@@ -34,10 +35,11 @@ class Shape {
          * @param r Ray
          * @param tMin
          * @param tMax
+         * @param hr Hit record
          *
          * @return True if the ray has hit the shape and false otherwise
          */
-        virtual bool hit(Ray r, float& tMin, float& tMax) = 0;
+        virtual bool hit(Ray r, float tMin, float tMax, HitRecord& hr) = 0;
 };
 
 #endif
