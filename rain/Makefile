@@ -3,7 +3,7 @@ CXX = g++
 # Flags
 CXXFLAGS = -std=c++11 -Wall -Wextra -g
 # Executable
-TARGET = render
+TARGET = rain
 # Header's inclusion
 INCLUDES = -I ./include
 # Binary directory
