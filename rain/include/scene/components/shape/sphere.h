@@ -41,11 +41,12 @@ class Sphere : public Shape {
             float delta = (b * b - 4 * a * c);
             //
             if (delta >= 0) {
-                auto t1 = (-b - sqrt(delta)) / (2 * a);
-                // auto t2 = (-b + sqrt(delta)) / (2 * a);
-                if (t1 > tMin && t1 < tMax) {
-                    hr.t = t1;
+                auto t = (-b - sqrt(delta)) / (2 * a);
+                if (t > tMin && t < tMax) {
+                    hr.t = t;
                     hr.origin = origin;
+                    hr.normal = (unitVector((r.pointAt(t) - origin))
+                        + Vec3(1, 1, 1)) * 0.5;
                 } else {
                     hr.t = -1;
                 }

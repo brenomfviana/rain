@@ -8,6 +8,7 @@
 struct HitRecord {
     float t;
     Vec3 origin;
+    Vec3 normal;
 };
 
 /*!
