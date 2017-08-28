@@ -93,7 +93,7 @@ class RayTrace {
             if (t > 0 && t < std::numeric_limits<float>::infinity()) {
                 //
                 if (nrays-- <= 0) {
-                    return normal;
+                    return RGB(1, 0, 0);
                 }
                 return 0.5 * color(r, scene, nrays);
             }
