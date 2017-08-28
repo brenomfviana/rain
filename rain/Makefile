@@ -1,5 +1,5 @@
 # Language
-CXX = g++
+CXX = g++ -pthread
 # Flags
 CXXFLAGS = -std=c++11 -Wall -Wextra -g
 # Executable
