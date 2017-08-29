@@ -1,55 +1,13 @@
-#include "utils/split.h"
-#include "render/io/scene_reader.h"
+#include "scene_reader.h"
 
-void SceneReader::read(const std::string path, Scene& scene, Camera& cam, OutputSettings& os) {
-    // Open scene file
-    std::ifstream file(path.c_str());
-    // Check if the file exists
-    if (!file) {
-        // ERROR
-        throw "Error: The file is not exists.";
-    } else
-        // Check if the file is open
-        if (!file.is_open()) {
-        // ERROR
-        throw "Error: The file could not be opened.";
-    } else {
-        std::list<std::string> lines;
-        // Read all lines of file and removes useless chars
-        std::string line;
-        while (getline(file, line)) {
-            // Remove indentation
-            while (line.find("    ") == 0) {
-                line = line.replace(line.find("    "), 4, "");
-            }
-            // Remove comments
-            unsigned int i = line.find("#");
-            if (i < line.length()) {
-                std::string aux;
-                if (i == 0) {
-                    aux = line.replace(i, line.length(), "");
-                } else {
-                    aux = line.replace(i, line.length() - 1, "");
-                }
-                if (aux.length() > 0) {
-                    line = aux;
-                } else {
-                    continue;
-                }
-            }
-            // Adds in list
-            lines.push_back(line);
-        }
-        // Close file
-        file.close();
-        // Interprets file
-        os = *(interpretOutputSettings(lines));
-        cam = *(interpretCamera(lines));
-        scene = *(interpretScene(lines));
-    }
-}
-
-OutputSettings* SceneReader::interpretOutputSettings(std::list<std::string>& lines) {
+/*!
+ * Interpret output settings of the scene file.
+ *
+ * @param lines File lines
+ *
+ * @return Output settings
+ */
+static OutputSettings* interpretOutputSettings(std::list<std::string>& lines) {
     // Header size
     int hsize = 5;
     // Scene header format
@@ -76,7 +34,7 @@ OutputSettings* SceneReader::interpretOutputSettings(std::list<std::string>& lin
     return os;
 }
 
-Camera* SceneReader::interpretCamera(std::list<std::string>& lines) {
+static Camera* interpretCamera(std::list<std::string>& lines) {
     // Header size
     int hsize = 4;
     // Camara header format
@@ -101,7 +59,7 @@ Camera* SceneReader::interpretCamera(std::list<std::string>& lines) {
     return cam;
 }
 
-Vec3 SceneReader::getVec3(std::string str) {
+static Vec3 getVec3(std::string str) {
     // Auxiliary vector
     std::vector<std::string> v = split(str, ' ');
     // Generate Vec3
@@ -111,7 +69,7 @@ Vec3 SceneReader::getVec3(std::string str) {
     return rgb;
 }
 
-Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
+static Scene* interpretScene(std::list<std::string>& lines) {
     // Scene attributes
     Background* background = new Background();
     // Interpret scene file
@@ -161,7 +119,7 @@ Scene* SceneReader::interpretScene(std::list<std::string>& lines) {
     return scene;
 }
 
-RGB SceneReader::getRGB(std::string str) {
+static RGB getRGB(std::string str) {
     // Auxiliary vector
     std::vector<std::string> v = split(str, ' ');
     // Generate RGB
@@ -171,7 +129,7 @@ RGB SceneReader::getRGB(std::string str) {
     return rgb;
 }
 
-Sphere* SceneReader::getSphere(std::list<std::string>& lines) {
+static Sphere* getSphere(std::list<std::string>& lines) {
     // Header size
     int hsize = 2;
     // Camara header format

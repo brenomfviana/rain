@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include "utils/vec3.h"
+#include "utils/split.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
 #include "output_settings.h"
@@ -29,57 +30,56 @@ class SceneReader {
          * @return Readed scene
          */
         static void read(const std::string path, Scene& scene, Camera& cam,
-            OutputSettings& os);
+            OutputSettings& os) {
+            // Open scene file
+            std::ifstream file(path.c_str());
+            // Check if the file exists
+            if (!file) {
+                // ERROR
+                throw "Error: The file is not exists.";
+            } else
+                // Check if the file is open
+                if (!file.is_open()) {
+                // ERROR
+                throw "Error: The file could not be opened.";
+            } else {
+                std::list<std::string> lines;
+                // Read all lines of file and removes useless chars
+                std::string line;
+                while (getline(file, line)) {
+                    // Remove indentation
+                    while (line.find("    ") == 0) {
+                        line = line.replace(line.find("    "), 4, "");
+                    }
+                    // Remove comments
+                    unsigned int i = line.find("#");
+                    if (i < line.length()) {
+                        std::string aux;
+                        if (i == 0) {
+                            aux = line.replace(i, line.length(), "");
+                        } else {
+                            aux = line.replace(i, line.length() - 1, "");
+                        }
+                        if (aux.length() > 0) {
+                            line = aux;
+                        } else {
+                            continue;
+                        }
+                    }
+                    // Adds in list
+                    lines.push_back(line);
+                }
+                // Close file
+                file.close();
+                // Interprets file
+                os = *(interpretOutputSettings(lines));
+                cam = *(interpretCamera(lines));
+                scene = *(interpretScene(lines));
+            }
+        }
 
     private:
-        /*!
-         * Interpret output settings of the scene file.
-         *
-         * @param lines File lines
-         *
-         * @return Output settings
-         */
-        static OutputSettings* interpretOutputSettings(std::list<std::string>& lines);
-
-        /*!
-         * Interpret camera of the scene file.
-         *
-         * @param lines File lines
-         *
-         * @return Interpreted camera
-         */
-        static Camera* interpretCamera(std::list<std::string>& lines);
-
-        /*!
-         * Split a string and return the Vec3 corresponding to this string.
-         *
-         * @param str String to be splited
-         *
-         * @return A Vec3 value
-         */
-        static Vec3 getVec3(std::string str);
-
-        /*!
-         * Interpret the scene file.
-         *
-         * @param lines File lines
-         *
-         * @return Interpreted scene
-         */
-        static Scene* interpretScene(std::list<std::string>& lines);
-
-        /*!
-         * Split a string and return the RGB corresponding to this string.
-         *
-         * @param str String to be splited
-         *
-         * @return A RGB value
-         */
-        static RGB getRGB(std::string str);
-
-
-
-       static Sphere* getSphere(std::list<std::string>& lines);
+        #include "scene_reader.inl"
 };
 
 #endif
