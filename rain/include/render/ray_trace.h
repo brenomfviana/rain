@@ -4,6 +4,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <cmath>
 #include <iostream>
 #include "render/ray.h"
 
@@ -65,6 +66,8 @@ class RayTrace {
                     c += color(r, scene, nrays);
                 }
                 c /= float(nsamples);
+                // Gamma correction
+                c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
                 // Convert color formart
                 int ir = int(255.99f * c[RGB::R]);
                 int ig = int(255.99f * c[RGB::G]);
@@ -90,9 +93,9 @@ class RayTrace {
             if (intersect(r, scene, hr)) {
                 //
                 if (nrays-- <= 0) {
-                    return RGB(1, 0, 0);
+                    return RGB(1, 1, 1);
                 }
-                return 0.5 * Vec3(1, 1, 1) * color(r, scene, nrays);
+                return dot(-Vec3(-0.5, 0.5, -1), hr.normal) * RGB(0, 0, 0.95) * Vec3(1, 1, 1);
             }
             // Get background corners colors
             RGB ul = scene.background.upperLeft;
