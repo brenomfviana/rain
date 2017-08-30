@@ -1,13 +1,18 @@
 #ifndef _RAY_TRACE_H_
 #define _RAY_TRACE_H_
 
+#include <cmath>
 #include <random>
 #include <thread>
 #include <vector>
-#include <cmath>
 #include <iostream>
-#include "render/ray.h"
+#include "ray.h"
+#include "shader/shader.h"
+#include "scene/components/hit_record.h"
 
+/*!
+ * .
+ */
 class RayTrace {
 
     public:
@@ -22,7 +27,7 @@ class RayTrace {
          *
          * @return Rendered image
          */
-        static Image* render(Camera& cam, Scene& scene, unsigned int width,
+        static Image* render(Camera& cam, Scene& scene, Shader* shader, unsigned int width,
             unsigned int height, unsigned int nsamples) {
             // Create image
             Image* img = new Image(width, height);
@@ -31,7 +36,8 @@ class RayTrace {
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;
                 row++, i--) {
-                std::thread* t = new std::thread(xAxis, img, row, i, std::ref(cam), std::ref(scene), nsamples, nrays);
+                std::thread* t = new std::thread(xAxis, img, row, i, std::ref(cam),
+                    std::ref(scene), shader, nsamples, nrays);
                 ts.push_back(t);
     		}
             //
@@ -46,7 +52,7 @@ class RayTrace {
          * .
          */
         static void xAxis(Image* img, unsigned int row, unsigned int i, Camera& cam, Scene& scene,
-            int nsamples, int nrays) {
+            Shader* shader, int nsamples, int nrays) {
             // Seed to generate random numbers
             std::mt19937 gen(1);
             // X axis
@@ -63,7 +69,7 @@ class RayTrace {
                         (v * cam.vertical);
                     // The ray
                     Ray r(cam.origin, endPoint - cam.origin);
-                    c += color(r, scene, nrays);
+                    c += shader->color(r, scene, nrays);
                 }
                 c /= float(nsamples);
                 // Gamma correction
@@ -77,63 +83,6 @@ class RayTrace {
                 img->pixels[(i * img->width * 3) + (col * 3) + 1] = ig;
                 img->pixels[(i * img->width * 3) + (col * 3) + 2] = ib;
             }
-        }
-
-        /*!
-        * Get the color of the reached pixel.
-        *
-        * @param r Ray
-        * @param scene Scene
-        *
-        * @return The color of the reached pixel
-        */
-        static RGB color(const Ray& r, Scene scene, int nrays) {
-            // Check hit
-            HitRecord hr;
-            if (intersect(r, scene, hr)) {
-                //
-                if (nrays-- <= 0) {
-                    return RGB(1, 1, 1);
-                }
-                return dot(-Vec3(-0.5, 0.5, -1), hr.normal) * RGB(0, 0, 0.95) * Vec3(1, 1, 1);
-            }
-            // Get background corners colors
-            RGB ul = scene.background.upperLeft;
-            RGB ll = scene.background.lowerLeft;
-            RGB ur = scene.background.upperRight;
-            RGB lr = scene.background.lowerRight;
-            // Bilinear interpolation
-            auto rd = r.getDirection();
-            auto w = (rd.x() * 0.25) + 0.5;
-            auto x = (rd.y() * 0.5) + 0.5;
-            return ((ll * (1 - x) * (1 - w)) + (ul * x * (1 - w)) +
-                (lr * (1 - x) * w) + (ur * x *w));
-        }
-
-        /*!
-         * .
-         */
-        static bool intersect(const Ray& r, Scene scene, HitRecord& hr) {
-            // Check hit
-            float tMin = 0;
-            float tMax = 10;
-            //
-            hr.t = std::numeric_limits<float>::infinity();
-            //
-            for (auto &shape : scene.components) {
-                //
-                HitRecord haux;
-                //
-                if (shape->hit(r, tMin, tMax, haux)) {
-                    //
-                    if (haux.t > -1 && hr.t > haux.t) {
-                        hr.t = haux.t;
-                        hr.origin = haux.origin;
-                        hr.normal = haux.normal;
-                    }
-                }
-            }
-            return (hr.t > 0 && hr.t < std::numeric_limits<float>::infinity());
         }
 };
 
