@@ -3,13 +3,7 @@
 
 #include "utils/vec3.h"
 #include "render/ray.h"
-
-//
-struct HitRecord {
-    float t;
-    Vec3 origin;
-    Vec3 normal;
-};
+#include "scene/components/hit_record.h"
 
 /*!
  * This class represents a shape.
