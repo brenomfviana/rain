@@ -1,5 +1,5 @@
 # Output settings
-NAME: sky.ppm
+NAME: spheres.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -15,3 +15,16 @@ BACKGROUND:
     LOWER_LEFT: 255 255 255  # Lower left corner color
     UPPER_RIGHT: 128 179 255 # Upper right corner color
     LOWER_RIGHT: 255 255 255 # Lower right corner color
+COMPONENTS:
+    SPHERE:
+        O: 0 -100.5 -3
+        RADIUS: 99
+    SPHERE:
+        O: 0.3 0 -1
+        RADIUS: 0.4
+    SPHERE:
+        O: 0 1 -2
+        RADIUS: 0.6
+    SPHERE:
+        O: -0.4 0 -3
+        RADIUS: 0.7
