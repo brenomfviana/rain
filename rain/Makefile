@@ -15,7 +15,7 @@ CPP_SRC = $(wildcard $(SRC)/*.cpp)
 
 OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(CPP_SRC:.cpp=.o)))
 
-all: $(TARGET)
+all: clean $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
