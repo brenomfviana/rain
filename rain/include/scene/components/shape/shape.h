@@ -3,6 +3,7 @@
 
 #include "utils/vec3.h"
 #include "render/ray.h"
+#include "materials/material.h"
 #include "scene/components/hit_record.h"
 
 /*!
@@ -13,9 +14,11 @@ class Shape {
     protected:
         // Shape origin
         Vec3 origin;
-        // Material
 
     public:
+        // Material
+        Material material;
+
         /*!
          * Shape constructor.
          *

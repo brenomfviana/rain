@@ -2,6 +2,7 @@
 #include "image/image.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
+#include "scene/components/shape/sphere.h"
 #include "render/ray_trace.h"
 #include "render/io/printer.h"
 #include "render/io/scene_reader.h"
@@ -20,7 +21,10 @@ int main(int argc, char *argv[]) {
 		// Read file
         SceneReader::read(argv[1], scene, cam, os);
 		// TODO: Check shader
-		Shader* shader = new LambertianShader();
+		Shader* shader = new BlinnPhongShader();
+		Sphere* s = new Sphere(Point3(0, 0, -1), 0.4);
+		s->material = Material(Vec3(0, 1, 0), Vec3(0.3, 0.3, 0.3), Vec3(1, 1, 1), 10);
+		scene.addShape(s);
         // Render
         Image img = *(RayTrace::render(cam, scene, shader, os.width, os.height, 10));
         // Print image

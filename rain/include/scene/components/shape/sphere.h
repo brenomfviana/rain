@@ -12,6 +12,7 @@ class Sphere : public Shape {
         // Sphere radius
         float radius;
 
+
     public:
         /*!
          * Sphere constructor.
@@ -47,6 +48,7 @@ class Sphere : public Shape {
                     hr.origin = origin;
                     hr.normal = (unitVector((r.pointAt(t) - origin))
                         + Vec3(1, 1, 1)) * 0.5;
+                    hr.material = material;
                 } else {
                     hr.t = -1;
                 }

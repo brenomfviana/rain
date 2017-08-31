@@ -13,6 +13,8 @@ class HitRecord {
         Vec3 normal;
         // Shape origin
         Vec3 origin;
+        //
+        Material material;
 };
 
 #endif
