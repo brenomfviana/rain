@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 		// TODO: Check shader
 		Shader* shader = new BlinnPhongShader();
 		Sphere* s = new Sphere(Point3(0, 0, -1), 0.4);
-		s->material = Material(Vec3(0, 1, 0), Vec3(0.3, 0.3, 0.3), Vec3(1, 1, 1), 10);
+		s->material = Material(Vec3(0.f, 0.3, 0.8), Vec3(0.9, 0.9, 0.9), Vec3(1, 1, 1), 64.f);
 		scene.addShape(s);
         // Render
         Image img = *(RayTrace::render(cam, scene, shader, os.width, os.height, 10));

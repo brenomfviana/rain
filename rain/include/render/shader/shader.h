@@ -38,6 +38,7 @@ class Shader {
                         hr.t = haux.t;
                         hr.origin = haux.origin;
                         hr.normal = haux.normal;
+                        hr.material = haux.material;
                     }
                 }
             }

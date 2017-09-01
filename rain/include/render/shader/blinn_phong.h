@@ -18,10 +18,13 @@ class BlinnPhongShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                Vec3 light(-8,2,0);
-                Vec3 H = (light + r.getDirection()) / (light + r.getDirection()).length();
-                float lambertian = std::max(0.0, dot(hr.normal, light));
-                float specular = std::max(0.0, std::pow(dot(hr.normal, H), 64.f));
+                Vec3 light1(-8,2,0);
+                Vec3 light2(2,1,2);
+                light1 = unitVector(light1);
+                Vec3 H = unitVector(-light1 + r.getDirection());
+                float lambertian = std::max(0.f, dot(hr.normal, -light1));
+                float specular = std::max(0.f, dot(hr.normal, H));
+                specular = std::pow(specular, hr.material.p);
                 return Vec3(1,1,1) * lambertian * hr.material.kd +
                         Vec3(1,1,1) * specular * hr.material.ks;
             } else {
