@@ -4,6 +4,7 @@
 #include <cmath>
 #include "shader.h"
 #include "utils/vec3.h"
+#include "scene/components/light.h"
 
 /*!
  * .
@@ -18,18 +19,12 @@ class BlinnPhongShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                Vec3 light1(-8,2,0);
-                Vec3 light2(2,1,2);
-                Vec3 ls[2] = {light1, light2};
-                Vec3 i1(0.5,0.5,0);
-                Vec3 i2(1,1,1);
-                Vec3 is[2] = {i1, i2};
-                //
                 RGB c;
-                for (int i = 0; i < 2; i++) {
-                    c += d(ls[i], is[i], r, hr);
+                // RGB c = hr.material.ka * scene.alight.intensity;
+                for (auto &light : scene.lights) {
+                    c += blinnPhong(r, light, hr);
                 }
-                //
+                // Return resulting color
                 return c;
             } else {
                 // Get background corners colors
@@ -47,15 +42,25 @@ class BlinnPhongShader : public Shader {
         }
 
     private:
-        //
-        RGB d(Vec3 light, Vec3 i, const Ray& r, HitRecord& hr) const {
-            light = unitVector(light);
-            Vec3 H = unitVector(light + r.getDirection());
-            float lambertian = std::max(0.f, dot(hr.normal, -light));
-            float specular = std::max(0.f, dot(hr.normal, H));
-            specular = std::pow(specular, hr.material.p);
-            return i * lambertian * hr.material.kd +
-                    i * specular * hr.material.ks;
+        /*!
+         * .
+         */
+        RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
+            // L.N
+            // std::cout << light->intensity << "\n";
+            Vec3 ld = unitVector(light->direction - r.getDirection());
+            float lambertian = std::max(0.f, dot(ld, hr.normal));
+            float specular = 0.0;
+            //
+            if (lambertian > 0.0) {
+                // Blinn Phong
+                Vec3 H = unitVector(ld + unitVector(-r.getDirection()));
+                // N.H
+                specular = std::max(0.f, dot(hr.normal, H));
+                specular = std::pow(specular, hr.material.p);
+            }
+            return hr.material.kd * lambertian * light->intensity +
+                hr.material.ks * specular * light->intensity;
         }
 };
 
