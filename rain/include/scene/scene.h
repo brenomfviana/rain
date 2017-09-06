@@ -2,6 +2,7 @@
 #define _SCENE_H_
 
 #include <list>
+#include "components/light.h"
 #include "components/background.h"
 #include "components/shape/shape.h"
 
@@ -13,6 +14,10 @@ class Scene {
     public:
         // Scene background
         Background background;
+        // Ambient light
+        Light alight;
+        // Scene lights
+        std::list<Light*> lights;
         // Scene components
         std::list<Shape*> components;
 
@@ -34,6 +39,13 @@ class Scene {
          * @param shape Shape to be added to the scene
          */
         inline void addShape(Shape* shape) { components.push_back(shape); }
+
+        /*!
+         * Add a light to the scene.
+         *
+         * @param light Light to be added to the scene
+         */
+        inline void addLight(Light* light) { lights.push_back(light); }
 };
 
 #endif

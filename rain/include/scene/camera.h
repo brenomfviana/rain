@@ -3,6 +3,9 @@
 
 #include "utils/vec3.h"
 
+/*!
+ * This class respresents a camera.
+ */
 class Camera {
 
     public:

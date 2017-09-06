@@ -15,6 +15,8 @@ class Material {
         Vec3 ks;
         //
         float p;
+        //
+        Vec3 ka;
 
         /*!
          * Material constructor.
@@ -26,7 +28,8 @@ class Material {
          *
          * @param kd
          */
-        Material(Vec3 kd_, Vec3 ks_, float p_) : kd(kd_), ks(ks_), p(p_)  { /* empty */ }
+        Material(Vec3 kd_, Vec3 ks_, float p_, Vec3 ka_) :
+            kd(kd_), ks(ks_), p(p_), ka(ka_)  { /* empty */ }
 };
 
 #endif

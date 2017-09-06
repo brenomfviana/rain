@@ -45,9 +45,8 @@ class Sphere : public Shape {
                 auto t = (-b - sqrt(delta)) / (2 * a);
                 if (t > tMin && t < tMax) {
                     hr.t = t;
-                    hr.origin = origin;
-                    hr.normal = (unitVector((r.pointAt(t) - origin))
-                        + Vec3(1, 1, 1)) * 0.5;
+                    hr.origin = r.pointAt(t);
+                    hr.normal = (unitVector((hr.origin - origin) / radius));
                     hr.material = material;
                 } else {
                     hr.t = -1;

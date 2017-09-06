@@ -14,6 +14,8 @@ class Light {
         // Intensity
         Vec3 intensity;
 
+        Light() { /* empty */ }
+
         /*!
          * Light constructor.
          *
