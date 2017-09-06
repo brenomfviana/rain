@@ -13,7 +13,7 @@
 /*!
  * .
  */
-class RayTrace {
+class RayTracer {
 
     public:
         /*!
@@ -31,7 +31,7 @@ class RayTrace {
             unsigned int height, unsigned int nsamples) {
             // Create image
             Image* img = new Image(width, height);
-            int nrays = 10;
+            int nrays = 100;
             std::vector<std::thread*> ts;
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;

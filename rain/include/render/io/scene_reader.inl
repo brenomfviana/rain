@@ -70,6 +70,10 @@ static Vec3 getVec3(std::string str) {
 }
 
 static Scene* interpretScene(std::list<std::string>& lines) {
+    // Check if scene description is empty
+    if (lines.empty()) {
+        return new Scene();
+    }
     // Scene attributes
     Background* background = new Background();
     // Interpret scene file

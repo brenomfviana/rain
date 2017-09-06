@@ -6,7 +6,7 @@
 /*!
  * This class respresents a normal shader.
  */
-class NormalShader : public Shader {
+class Normal2RGBShader : public Shader {
 
     public:
         /*!
