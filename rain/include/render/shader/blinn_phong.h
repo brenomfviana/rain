@@ -19,10 +19,18 @@ class BlinnPhongShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                RGB c;
-                // RGB c = hr.material.ka * scene.alight.intensity;
+                RGB c = hr.material.ka * scene.alight.intensity;
                 for (auto &light : scene.lights) {
                     c += blinnPhong(r, light, hr);
+                }
+                if (c[0] > 1) {
+                    c[0] = 1;
+                }
+                if (c[1] > 1) {
+                    c[1] = 1;
+                }
+                if (c[2] > 1) {
+                    c[2] = 1;
                 }
                 // Return resulting color
                 return c;
@@ -47,18 +55,15 @@ class BlinnPhongShader : public Shader {
          */
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
             // L.N
-            // std::cout << light->intensity << "\n";
-            Vec3 ld = unitVector(light->direction - r.getDirection());
-            float lambertian = std::max(0.f, dot(ld, hr.normal));
+            Vec3 ln = unitVector(light->direction - r.getDirection());
+            float lambertian = std::max(0.f, dot(ln, hr.normal));
             float specular = 0.0;
+            // Blinn Phong
+            Vec3 H = unitVector(ln + unitVector(-r.getDirection()));
+            // N.H
+            specular = std::max(0.f, dot(hr.normal, H));
+            specular = std::pow(specular, hr.material.p);
             //
-            if (lambertian > 0.0) {
-                // Blinn Phong
-                Vec3 H = unitVector(ld + unitVector(-r.getDirection()));
-                // N.H
-                specular = std::max(0.f, dot(hr.normal, H));
-                specular = std::pow(specular, hr.material.p);
-            }
             return hr.material.kd * lambertian * light->intensity +
                 hr.material.ks * specular * light->intensity;
         }
