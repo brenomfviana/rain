@@ -4,15 +4,16 @@
 #include <string>
 
 /*!
- * This class represents the output settings.
+ * This class is responsible for the image output settings. Output settings are
+ * the image file format and file codification.
  */
 class OutputSettings {
 
     public:
         // Supported file formats
-        enum ImageFileFormats : int {PPM = 0, BMP = 1, JPG = 2, PNG = 3, TIFF = 4, GIF = 5};
-        // Codifications
-        enum Codifications : int {ASCII = 0, BINARY = 1};
+        enum ImageFileFormats : int {PPM = 0, BMP, JPG, PNG, TIFF, GIF};
+        // File codifications
+        enum Codifications : int {ASCII = 0, BINARY};
 
         // Image width
         unsigned int width;
@@ -34,20 +35,23 @@ class OutputSettings {
          * @param fileFormat_ Image file format
          * @param codification_ Image file codification
          */
-        OutputSettings(int width_ = 0, int height_ = 0, std::string name_ = "unknown",
-            ImageFileFormats fileFormat_ = PPM, Codifications codification_ = BINARY) :
-            width(width_), height(height_), name(name_), fileFormat(fileFormat_),
+        OutputSettings(int width_ = 0, int height_ = 0,
+                       std::string name_ = "unknown",
+                       ImageFileFormats fileFormat_ = PPM,
+                       Codifications codification_ = BINARY) :
+            width(width_), height(height_), name(name_),
+            fileFormat(fileFormat_),
             codification(codification_) { /* empty */ }
 
         /*!
          * Get image file format.
          *
-         * @param str String that matches the image file format
+         * @param str String that corresponds the image file format
          *
          * @return Image file format
          */
         inline static ImageFileFormats getImageFileFormat(std::string str) {
-            // Check file format
+            // Check image file format
             if (str.find("PPM") == 0) {
                 return PPM;
             } else if (str.find("BMP") == 0) {
@@ -69,7 +73,7 @@ class OutputSettings {
         /*!
          * Get file codification.
          *
-         * @param str String that matches the file codification
+         * @param str String that corresponds the file codification
          *
          * @return File codification
          */
