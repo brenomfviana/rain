@@ -29,15 +29,53 @@ class Background {
         }
 
         /*!
-         * Background constructor.
+         * Single-color background constructor.
          *
-         * @param upperLeft_ Upper left corner
-         * @param lowerLeft_ Lower left corner
-         * @param upperRight_ Upper right corner
-         * @param lowerRight_ Lower right corner
+         * @param color_ Color
          */
-        Background(RGB upperLeft_, RGB lowerLeft_, RGB upperRight_, RGB lowerRight_) :
-            upperLeft(upperLeft_), lowerLeft(lowerLeft_), upperRight(upperRight_),
+        Background(RGB color_) :
+            upperLeft(color_),
+            lowerLeft(color_),
+            upperRight(color_),
+            lowerRight(color_) { /* empty */ }
+
+        /*!
+         * Two-color background constructor. Need to choose orientation, true to
+         * vertical, and false to horizontal. Vertical top=c1_ and bottom=c2_.
+         * Horizontal left=c1_ and right=c2_.
+         *
+         * @param c1 First color
+         * @param c2 Second color
+         * @param orientation_ Orientation
+         */
+        Background(RGB c1_, RGB c2_, bool orientation_) {
+            // Check orientation
+            if (orientation_) {
+                upperLeft = c1_;
+                lowerLeft = c2_;
+                upperRight = c1_;
+                lowerRight = c2_;
+            } else {
+                upperLeft = c1_;
+                lowerLeft = c1_;
+                upperRight = c2_;
+                lowerRight = c2_;
+            }
+        }
+
+        /*!
+         * Four-color background constructor. Choose a color for each corner.
+         *
+         * @param upperLeft_ Upper left corner color
+         * @param lowerLeft_ Lower left corner color
+         * @param upperRight_ Upper right corner color
+         * @param lowerRight_ Lower right corner color
+         */
+        Background(RGB upperLeft_, RGB lowerLeft_,
+            RGB upperRight_, RGB lowerRight_) :
+            upperLeft(upperLeft_),
+            lowerLeft(lowerLeft_),
+            upperRight(upperRight_),
             lowerRight(lowerRight_) { /* empty */ }
 };
 
