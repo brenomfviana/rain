@@ -1,5 +1,5 @@
 # Output settings
-NAME: blinn_phong.ppm
+NAME: blinn_phong3.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -21,6 +21,12 @@ COMPONENTS:
     LIGHT:
         DIRECTION: 20 10 5
         INTENSITY: 255 255 255
+    LIGHT:
+        DIRECTION: -20 10 5
+        INTENSITY: 255 255 255
+    LIGHT:
+        DIRECTION: -2 50 5
+        INTENSITY: 155 0 0
     SPHERE:
         ORIGIN: 0 -100.5 -1
         RADIUS: 100

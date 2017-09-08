@@ -5,7 +5,10 @@ CODIFICATION: ascii # or binary
 WIDTH: 200
 HEIGHT: 100
 # Camera
-LLC: -2 -1 -1 # Lower left corner of the view plane
-H: 4 0 0      # Horizontal dimension of the view plane
-V: 0 2 0      # Vertical dimension of the view plane
-O: 0 0 0      # The camera's origin
+CAMERA:
+    LLC: -2 -1 -1 # Lower left corner of the view plane
+    H: 4 0 0      # Horizontal dimension of the view plane
+    V: 0 2 0      # Vertical dimension of the view plane
+    O: 0 0 0      # The camera's origin
+SHADER:
+    BACKGROUND

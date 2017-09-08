@@ -1,5 +1,5 @@
 # Output settings
-NAME: lambertian.ppm
+NAME: depht_map_black_background.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -11,15 +11,21 @@ CAMERA:
     V: 0 2 0      # Vertical dimension of the view plane
     O: 0 0 0      # The camera's origin
 # Scene description
-BACKGROUND:
-    UPPER_LEFT: 128 179 255  # Upper left corner color
-    LOWER_LEFT: 255 255 255  # Lower left corner color
-    UPPER_RIGHT: 128 179 255 # Upper right corner color
-    LOWER_RIGHT: 255 255 255 # Lower right corner color
+SHADER:
+    DEPTHMAP
+    DEPTH: 4
+    FOREGROUND: 255 255 255
+    BACKGROUND: 0 0 0
 COMPONENTS:
     SPHERE:
-        O: 0 -100.5 -1
-        RADIUS: 100
+        ORIGIN: 0 -100.5 -3
+        RADIUS: 99
     SPHERE:
-        O: 0 0 -1
-        RADIUS: 0.5
+        ORIGIN: 0.3 0 -1
+        RADIUS: 0.4
+    SPHERE:
+        ORIGIN: 0 1 -2
+        RADIUS: 0.6
+    SPHERE:
+        ORIGIN: -0.4 0 -3
+        RADIUS: 0.7
