@@ -12,7 +12,6 @@ class Sphere : public Shape {
         // Sphere radius
         float radius;
 
-
     public:
         /*!
          * Sphere constructor.
@@ -20,8 +19,8 @@ class Sphere : public Shape {
          * @param radius_ Sphere radius
          * @param origin_ Sphere origin point
          */
-        Sphere(Point3 origin_, float radius_) : Shape(origin_), radius(radius_)
-            { /* empty */ }
+        Sphere(Point3 origin_, float radius_, Material* material_) :
+            Shape(origin_, material_), radius(radius_) { /* empty */ }
 
         /*!
          * Check if the ray has hit the sphere. Returns true if the ray has hit
@@ -46,7 +45,7 @@ class Sphere : public Shape {
                 if (t > tMin && t < tMax) {
                     hr.t = t;
                     hr.origin = r.pointAt(t);
-                    hr.normal = (unitVector((hr.origin - origin) / radius));
+                    hr.normal = unitVector((hr.origin - origin) / radius);
                     hr.material = material;
                 } else {
                     hr.t = -1;

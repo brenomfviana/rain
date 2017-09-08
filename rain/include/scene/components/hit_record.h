@@ -1,6 +1,8 @@
 #ifndef _HIT_RECORD_H_
 #define _HIT_RECORD_H_
 
+class Material;
+
 /*!
  * Hit record of a point reached.
  */
@@ -14,7 +16,7 @@ class HitRecord {
         // Shape origin
         Vec3 origin;
         // Shape material
-        Material material;
+        Material* material;
 };
 
 #endif

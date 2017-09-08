@@ -14,8 +14,6 @@ class Scene {
     public:
         // Scene background
         Background background;
-        // Ambient light
-        Light alight;
         // Scene lights
         std::list<Light*> lights;
         // Scene components

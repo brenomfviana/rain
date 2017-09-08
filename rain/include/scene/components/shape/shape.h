@@ -14,17 +14,29 @@ class Shape {
     protected:
         // Shape origin
         Vec3 origin;
+        // Shape material
+        Material* material;
 
     public:
-        // Material
-        Material material;
 
         /*!
          * Shape constructor.
          *
          * @param origin_ Shape origin
+         * @param material_ Shape material
          */
-        Shape(Vec3 origin_) : origin(origin_) { /* empty */ }
+        Shape(Vec3 origin_, Material* material_) :
+            origin(origin_), material(material_)
+                { /* empty */ }
+
+        /*!
+         * Get shape material.
+         *
+         * @return Shape material
+         */
+        inline Material* getMaterial() {
+            return material;
+        }
 
         /*!
          * Check if the ray has hit the shape. Returns true if the ray has hit
