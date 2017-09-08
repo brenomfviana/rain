@@ -48,6 +48,7 @@ class BlinnPhongShader : public Shader {
                 c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
                 // Return resulting color
                 return c;
+                nrays = nrays; // Remove warning
             } else {
                 // Get background corners colors
                 RGB ul = scene.background.upperLeft;

@@ -29,6 +29,7 @@ class LambertianShader : public Shader {
                 auto x = (rd.y() * 0.5) + 0.5;
                 return ((ll * (1 - x) * (1 - w)) + (ul * x * (1 - w)) +
                     (lr * (1 - x) * w) + (ur * x *w));
+                nrays = nrays; // Remove warning
             }
         }
 };

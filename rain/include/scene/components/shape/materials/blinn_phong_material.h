@@ -36,6 +36,7 @@ class BlinnPhongMaterial : public Material {
                 // No attenuation
                 attenuation = Vec3(1, 1, 1);
                 return true;
+                std::cout << hitRecord.t; // Remove warning
             }
 };
 

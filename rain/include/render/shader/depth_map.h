@@ -38,6 +38,7 @@ class DepthMapShader : public Shader {
                 }
             }
             return background;
+            nrays = nrays; // Remove warning
         }
 };
 

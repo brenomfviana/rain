@@ -27,8 +27,8 @@ class RayTracer {
          *
          * @return Rendered image
          */
-        static Image* render(Camera& cam, Scene& scene, Shader* shader, unsigned int width,
-            unsigned int height, unsigned int nsamples) {
+        static Image* render(Camera& cam, Scene& scene, Shader* shader,
+            unsigned int width, unsigned int height, unsigned int nsamples) {
             // Create image
             Image* img = new Image(width, height);
             int nrays = 100;
@@ -52,7 +52,7 @@ class RayTracer {
          * .
          */
         static void xAxis(Image* img, unsigned int row, unsigned int i, Camera& cam, Scene& scene,
-            Shader* shader, int nsamples, int nrays) {
+            Shader* shader, unsigned int nsamples, int nrays) {
             // Seed to generate random numbers
             std::mt19937 gen(1);
             // X axis
