@@ -11,7 +11,17 @@
  */
 class BlinnPhongShader : public Shader {
 
+    private:
+        //
+        RGB ambientLight;
+
     public:
+        /*!
+         * .
+         */
+        BlinnPhongShader(RGB ambientLight_) : ambientLight(ambientLight_)
+            {/* empty */}
+
         /*!
          * .
          */
@@ -19,7 +29,9 @@ class BlinnPhongShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                RGB c = hr.material.ka * scene.alight.intensity;
+                BlinnPhongMaterial* material =
+                    dynamic_cast<BlinnPhongMaterial*>(hr.material);
+                RGB c = material->ka * ambientLight;
                 for (auto &light : scene.lights) {
                     c += blinnPhong(r, light, hr);
                 }
@@ -32,6 +44,8 @@ class BlinnPhongShader : public Shader {
                 if (c[2] > 1) {
                     c[2] = 1;
                 }
+                // Gamma correction
+                c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
                 // Return resulting color
                 return c;
             } else {
@@ -55,6 +69,7 @@ class BlinnPhongShader : public Shader {
          */
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
             // L.N
+            BlinnPhongMaterial* material = dynamic_cast<BlinnPhongMaterial*>(hr.material);
             Vec3 ln = unitVector(light->direction - r.getDirection());
             float lambertian = std::max(0.f, dot(ln, hr.normal));
             float specular = 0.0;
@@ -62,10 +77,10 @@ class BlinnPhongShader : public Shader {
             Vec3 H = unitVector(ln + unitVector(-r.getDirection()));
             // N.H
             specular = std::max(0.f, dot(hr.normal, H));
-            specular = std::pow(specular, hr.material.p);
+            specular = std::pow(specular, material->p);
             //
-            return hr.material.kd * lambertian * light->intensity +
-                hr.material.ks * specular * light->intensity;
+            return material->kd * lambertian * light->intensity +
+                material->ks * specular * light->intensity;
         }
 };
 

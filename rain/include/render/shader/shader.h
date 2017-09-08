@@ -46,9 +46,10 @@ class Shader {
         }
 };
 
-#include "normal2rgb.h"
-#include "lambertian.h"
+#include "background.h"
+#include "normals2rgb.h"
 #include "depth_map.h"
 #include "blinn_phong.h"
+#include "lambertian.h"
 
 #endif

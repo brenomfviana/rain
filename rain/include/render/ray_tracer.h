@@ -72,8 +72,6 @@ class RayTracer {
                     c += shader->color(r, scene, nrays);
                 }
                 c /= float(nsamples);
-                // Gamma correction
-                c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
                 // Convert color formart
                 int ir = int(255.99f * c[RGB::R]);
                 int ig = int(255.99f * c[RGB::G]);
