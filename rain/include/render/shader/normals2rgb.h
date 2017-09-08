@@ -1,12 +1,12 @@
-#ifndef _NORMAL_SHADER_H_
-#define _NORMAL_SHADER_H_
+#ifndef _NORMALS_2_RGB_SHADER_H_
+#define _NORMALS_2_RGB_SHADER_H_
 
 #include "shader.h"
 
 /*!
  * This class respresents a normal shader.
  */
-class Normal2RGBShader : public Shader {
+class Normals2RGBShader : public Shader {
 
     public:
         /*!
@@ -16,7 +16,7 @@ class Normal2RGBShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                return hr.normal;
+                return ((hr.normal + Vec3(1,1,1)) * 0.5);
             } else {
                 // Get background corners colors
                 RGB ul = scene.background.upperLeft;
