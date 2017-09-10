@@ -1,0 +1,49 @@
+# Output settings
+NAME: android.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Camera
+CAMERA:
+    LLC: -2 -1 -1 # Lower left corner of the view plane
+    H: 4 0 0      # Horizontal dimension of the view plane
+    V: 0 2 0      # Vertical dimension of the view plane
+    O: 0 0 0      # The camera's origin
+# Scene description
+SHADER:
+    LAMBERTIAN
+BACKGROUND:
+    TOP: 128 179 255     # Top color
+    BOTTOM: 255 255 255  # Bottom color
+COMPONENTS:
+    SPHERE:
+        ORIGIN: 0 -100.5 -1
+        RADIUS: 98
+        LAMBERTIAN:
+            ALBEDO: 0 100 0
+    SPHERE:
+        ORIGIN: 0 -2 -9
+        RADIUS: 6
+        LAMBERTIAN:
+            ALBEDO: 0 100 0
+    SPHERE:
+        ORIGIN: 2 1.1 -5
+        RADIUS: 1
+        LAMBERTIAN:
+            ALBEDO: 0 100 0
+    SPHERE:
+        ORIGIN: -2 1.1 -5
+        RADIUS: 1
+        LAMBERTIAN:
+            ALBEDO: 0 100 0
+    SPHERE:
+        ORIGIN: 0.3 -0.3 -1
+        RADIUS: 0.07
+        LAMBERTIAN:
+            ALBEDO: 5 5 5
+    SPHERE:
+        ORIGIN: -0.3 -0.3 -1
+        RADIUS: 0.07
+        LAMBERTIAN:
+            ALBEDO: 5 5 5
