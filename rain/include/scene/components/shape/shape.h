@@ -30,6 +30,13 @@ class Shape {
                 { /* empty */ }
 
         /*!
+         * Shape constructor.
+         *
+         * @param origin_ Shape origin
+         */
+        Shape(Vec3 origin_) : origin(origin_) { /* empty */ }
+
+        /*!
          * Get shape material.
          *
          * @return Shape material

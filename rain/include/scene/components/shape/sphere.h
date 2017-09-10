@@ -23,6 +23,15 @@ class Sphere : public Shape {
             Shape(origin_, material_), radius(radius_) { /* empty */ }
 
         /*!
+         * Sphere constructor.
+         *
+         * @param radius_ Sphere radius
+         * @param origin_ Sphere origin point
+         */
+        Sphere(Point3 origin_, float radius_) :
+            Shape(origin_), radius(radius_) { /* empty */ }
+
+        /*!
          * Check if the ray has hit the sphere. Returns true if the ray has hit
          * the sphere and false otherwise.
          *

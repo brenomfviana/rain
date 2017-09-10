@@ -24,9 +24,11 @@ class Material {
          * @return true if the there is any scattered ray and false otherwise.
          */
         virtual bool scatter(const Ray& incomingRay, const HitRecord& hitRecord,
-            Vec3& attenuation, Ray& scatteredRay) = 0;
+            RGB& attenuation, Ray& scatteredRay) = 0;
 };
 
 #include "blinn_phong_material.h"
+#include "lambertian_material.h"
+#include "metal_material.h"
 
 #endif

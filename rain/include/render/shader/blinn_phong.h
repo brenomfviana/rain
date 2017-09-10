@@ -44,8 +44,6 @@ class BlinnPhongShader : public Shader {
                 if (c[2] > 1) {
                     c[2] = 1;
                 }
-                // Gamma correction
-                c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
                 // Return resulting color
                 return c;
                 nrays = nrays; // Remove warning

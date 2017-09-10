@@ -30,7 +30,7 @@ class BlinnPhongMaterial : public Material {
             kd(kd_), ks(ks_), p(p_), ka(ka_)  { /* empty */ }
 
         bool scatter(const Ray& incomingRay, const HitRecord& hitRecord,
-            Vec3& attenuation, Ray& scatteredRay) {
+            RGB& attenuation, Ray& scatteredRay) {
                 //
                 scatteredRay = incomingRay;
                 // No attenuation

@@ -60,7 +60,8 @@ class SceneReader {
                         typeid(*shader) == typeid(Normals2RGBShader) ||
                         typeid(*shader) == typeid(DepthMapShader)) {
                         scene  = *(interpretScene(lines, false));
-                    } else if (typeid(*shader) == typeid(BlinnPhongShader*)) {
+                    } else if (typeid(*shader) == typeid(BlinnPhongShader) ||
+                               typeid(*shader) == typeid(LambertianShader)) {
                         scene  = *(interpretScene(lines, true));
                     } else {
                         throw "ERROR";
@@ -205,6 +206,8 @@ class SceneReader {
                     return getDephtMapShader(lines);
                 } else if (aux.find("BLINNPHONG") == 0) {
                     return getBlinnPhongShader(lines);
+                } else if (aux.find("LAMBERTIAN") == 0) {
+                    return (new LambertianShader());
                 } else {
                     throw "Invalid shader!";
                 }

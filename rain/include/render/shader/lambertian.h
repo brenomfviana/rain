@@ -2,6 +2,7 @@
 #define _LAMBERTIAN_SHADER_H_
 
 #include "shader.h"
+#include "scene/components/shape/materials/material.h"
 
 /*!
  * This class respresents a normal shader.
@@ -12,24 +13,26 @@ class LambertianShader : public Shader {
         /*!
          * .
          */
-        RGB color(const Ray& r, Scene& scene, int nrays) const {
-            // Check hit
-            HitRecord hr;
-            if (intersect(r, scene, hr)) {
-                return dot(-Vec3(-0.5, 0.5, -1), hr.normal) * RGB(0, 0, 0.95) * Vec3(1, 1, 1);
+        RGB color(const Ray& r, const Scene& scene, int nrays) const {
+            if (nrays-- == 0) {
+                return RGB(1, 1, 1);
             } else {
-                // Get background corners colors
-                RGB ul = scene.background.upperLeft;
-                RGB ll = scene.background.lowerLeft;
-                RGB ur = scene.background.upperRight;
-                RGB lr = scene.background.lowerRight;
-                // Bilinear interpolation
-                auto rd = r.getDirection();
-                auto w = (rd.x() * 0.25) + 0.5;
-                auto x = (rd.y() * 0.5) + 0.5;
-                return ((ll * (1 - x) * (1 - w)) + (ul * x * (1 - w)) +
-                    (lr * (1 - x) * w) + (ur * x *w));
-                nrays = nrays; // Remove warning
+                // Check hit
+                HitRecord hr;
+                if (intersect(r, scene, hr)) {
+                    //
+                    LambertianMaterial* m = dynamic_cast<LambertianMaterial*>(hr.material);
+                    Ray scatteredRay;
+                    RGB attenuation;
+                    //
+                    if (m->scatter(r, hr, attenuation, scatteredRay)) {
+                        RGB c = 0.5 * attenuation * color(scatteredRay, scene, nrays);
+                        return c;
+                    }
+                    return RGB(1, 1, 1);
+                } else {
+                    return background(r, scene);
+                }
             }
         }
 };
