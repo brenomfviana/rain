@@ -28,7 +28,7 @@ class DepthMapShader : public Shader {
         /*!
          * .
          */
-        RGB color(const Ray& r, Scene& scene, int nrays) const {
+        RGB color(const Ray& r, const Scene& scene, int nrays) const {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {

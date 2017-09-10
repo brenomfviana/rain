@@ -13,9 +13,10 @@ static Material* getMaterial(std::list<std::string>& lines) {
     if ((*itr).find("BLINN_PHONG_MATERIAL") == 0) {
         lines.erase(itr);
         return getBlinnPhongMaterial(lines);
-    /* } else if (aux.find("METAL") == 0) {
-    } else if (aux.find("LAMBERTIAN") == 0) {
-        return (new );*/
+    /*} else if (aux.find("LAMBERTIAN") == 0) {
+        return (new getLambertianMaterial(lines));
+    } else if (aux.find("METAL") == 0) {
+        return (new getMetalMaterial(lines));*/
     } else {
         throw "Invalid shader!";
     }

@@ -15,13 +15,31 @@ class Shader {
         /*!
          * .
          */
-        virtual RGB color(const Ray& r, Scene& scene, int nrays) const = 0;
+        virtual RGB color(const Ray& r, const Scene& scene, int nrays) const = 0;
 
     protected:
         /*!
          * .
          */
-        bool intersect(const Ray& r, Scene& scene, HitRecord& hr) const {
+        inline RGB background(const Ray& r, const Scene& scene) const {
+            // Get background corners colors
+            RGB ul = scene.background.upperLeft;
+            RGB ll = scene.background.lowerLeft;
+            RGB ur = scene.background.upperRight;
+            RGB lr = scene.background.lowerRight;
+            // Bilinear interpolation
+            auto rd = r.getDirection();
+            auto w = (rd.x() * 0.25) + 0.5;
+            auto x = (rd.y() * 0.5) + 0.5;
+            return ((ll * (1 - x) * (1 - w)) + (ul * x * (1 - w)) +
+                (lr * (1 - x) * w) + (ur * x *w));
+        }
+
+
+        /*!
+         * .
+         */
+        bool intersect(const Ray& r, const Scene& scene, HitRecord& hr) const {
             // Check hit
             float tMin = 0;
             float tMax = 10;

@@ -32,10 +32,11 @@ static RGB getRGB(std::string str) {
  * Interpret a scene file.
  *
  * @param lines File lines
+ * @param md If needs material description
  *
  * @return Interpreted scene
  */
-static Scene* interpretScene(std::list<std::string>& lines) {
+static Scene* interpretScene(std::list<std::string>& lines, bool md) {
     // Check if scene description is empty
     if (lines.empty()) {
         return new Scene();
@@ -74,7 +75,7 @@ static Scene* interpretScene(std::list<std::string>& lines) {
                 // Erase
                 lines.erase(itr);
                 // Add sphere
-                Sphere* s = getSphere(lines);
+                Sphere* s = getSphere(lines, md);
                 scene->addShape(s);
                 // Next component
                 itr = lines.begin();
@@ -197,7 +198,7 @@ static Light* getLight(std::list<std::string>& lines) {
  *
  * @return Sphere
  */
-static Sphere* getSphere(std::list<std::string>& lines) {
+static Sphere* getSphere(std::list<std::string>& lines, bool md) {
     // Format size
     int fsize = 2;
     // Sphere format
@@ -217,8 +218,13 @@ static Sphere* getSphere(std::list<std::string>& lines) {
     }
     // Remove interpreted lines
     lines.erase(begin, itr);
-    Sphere* s = new Sphere(getVec3(format[0]), atof(format[1].c_str()),
-        getMaterial(lines));
+    Sphere* s;
+    if (md) {
+        s = new Sphere(getVec3(format[0]), atof(format[1].c_str()),
+            getMaterial(lines));
+    } else {
+        s = new Sphere(getVec3(format[0]), atof(format[1].c_str()));
+    }
     return s;
 }
 

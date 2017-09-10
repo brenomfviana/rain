@@ -39,52 +39,74 @@ class SceneReader {
             // Check if the file exists
             if (!file) {
                 // ERROR
-                throw "Error: The file is not exists.";
+                throw "Error: The file is not exists!";
             } else
                 // Check if the file is open
                 if (!file.is_open()) {
                     // ERROR
-                    throw "Error: The file could not be opened.";
+                    throw "Error: The file could not be opened!";
                 } else {
+                    // Get file lines
                     std::list<std::string> lines;
-                    // Read all lines of file and removes useless chars
-                    std::string line;
-                    while (getline(file, line)) {
-                        // Remove indentation
-                        while (line.find(" ") == 0) {
-                            line = line.replace(line.find(" "), 1, "");
-                        }
-                        // Remove comments
-                        unsigned int i = line.find("#");
-                        if (i < line.length()) {
-                            std::string aux;
-                            // Check if the entire line is a comment
-                            if (i == 0) {
-                                aux = line.replace(i, line.length(), "");
-                            } else {
-                                aux = line.replace(i, line.length() - 1, "");
-                            }
-                            // Check if the line is not empty
-                            if (aux.length() > 0) {
-                                line = aux;
-                            } else {
-                                continue;
-                            }
-                        }
-                        // Adds in list
-                        lines.push_back(line);
-                    }
+                    getFormattedLines(lines, file);
                     // Close file
                     file.close();
                     // Interprets file
                     os     = *(interpretOutputSettings(lines));
                     cam    = *(interpretCamera(lines));
                     shader =   interpretShader(lines);
-                    scene  = *(interpretScene(lines));
+                    // Check shader
+                    if (typeid(*shader) == typeid(BackgroundShader) ||
+                        typeid(*shader) == typeid(Normals2RGBShader) ||
+                        typeid(*shader) == typeid(DepthMapShader)) {
+                        scene  = *(interpretScene(lines, false));
+                    } else if (typeid(*shader) == typeid(BlinnPhongShader*)) {
+                        scene  = *(interpretScene(lines, true));
+                    } else {
+                        throw "ERROR";
+                    }
                 }
         }
 
     private:
+        /*!
+         * Clears all useless content from the scene description file.
+         *
+         * @param lines Get file lines already formatted
+         * @param file Readed file
+         */
+        static void getFormattedLines(std::list<std::string>& lines,
+                                      std::ifstream& file) {
+            // Read all lines of file and removes useless chars
+            lines.clear();
+            std::string line;
+            while (getline(file, line)) {
+                // Remove indentation
+                while (line.find(" ") == 0) {
+                    line = line.replace(line.find(" "), 1, "");
+                }
+                // Remove comments
+                unsigned int i = line.find("#");
+                if (i < line.length()) {
+                    std::string aux;
+                    // Check if the entire line is a comment
+                    if (i == 0) {
+                        aux = line.replace(i, line.length(), "");
+                    } else {
+                        aux = line.replace(i, line.length() - 1, "");
+                    }
+                    // Check if the line is not empty
+                    if (aux.length() > 0) {
+                        line = aux;
+                    } else {
+                        continue;
+                    }
+                }
+                // Adds in list
+                lines.push_back(line);
+            }
+        }
+
         /*!
          * Interpret output settings of the scene file.
          *
@@ -101,14 +123,14 @@ class SceneReader {
             // Interpret file
             std::list<std::string>::iterator itr = lines.begin();
             std::list<std::string>::iterator begin = lines.begin();
-                // Check format
+            // Check format
             for (int i = 0; i < fsize; i++) {
                 if ((*itr).find(format[i]) == 0) {
                     std::string aux = *(itr++);
                     format[i] = aux.replace(0, format[i].length(), "");
                 } else {
                     // ERROR
-                    throw "Invalid file!";
+                    throw "Invalid file format!";
                 }
             }
             // Remove interpreted lines
@@ -145,7 +167,7 @@ class SceneReader {
                         format[i] = aux.replace(0, format[i].length(), "");
                     } else {
                         // ERROR
-                        throw "Invalid file!";
+                        throw "Invalid file format in camera description!";
                     }
                 }
                 // Remove interpreted lines
@@ -155,7 +177,7 @@ class SceneReader {
                 return cam;
             } else {
                 // ERROR
-                throw "Invalid file format.";
+                throw "Invalid file format! Needs the camera description.";
             }
         }
 
@@ -188,7 +210,7 @@ class SceneReader {
                 }
             } else {
                 // ERROR
-                throw "Invalid file format.";
+                throw "Invalid file format! Needs the shader description.";
             }
         }
 
