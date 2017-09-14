@@ -14,8 +14,8 @@ CAMERA:
 SHADER:
     LAMBERTIAN
 BACKGROUND:
-    TOP: 128 179 255     # Top color
-    BOTTOM: 255 255 255  # Bottom color
+    TOP: 0.5 0.7 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     LIGHT:
         DIRECTION: 20 10 5

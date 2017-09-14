@@ -14,36 +14,39 @@ CAMERA:
 SHADER:
     LAMBERTIAN
 BACKGROUND:
-    TOP: 128 179 255     # Top color
-    BOTTOM: 255 255 255  # Bottom color
+    TOP: 0.5 0.6 1     # Top color
+    BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
+    LIGHT:
+        DIRECTION: 20 10 15
+        INTENSITY: 1 1 1
     SPHERE:
         ORIGIN: 0 -100.5 -1
         RADIUS: 98
         LAMBERTIAN:
-            ALBEDO: 0 100 0
+            ALBEDO: 0 0.4 0
     SPHERE:
         ORIGIN: 0 -2 -9
         RADIUS: 6
         LAMBERTIAN:
-            ALBEDO: 0 100 0
+            ALBEDO: 0 0.4 0
     SPHERE:
         ORIGIN: 2 1.1 -5
         RADIUS: 1
         LAMBERTIAN:
-            ALBEDO: 0 100 0
+            ALBEDO: 0 0.4 0
     SPHERE:
         ORIGIN: -2 1.1 -5
         RADIUS: 1
         LAMBERTIAN:
-            ALBEDO: 0 100 0
+            ALBEDO: 0 0.4 0
     SPHERE:
         ORIGIN: 0.3 -0.3 -1
         RADIUS: 0.07
         LAMBERTIAN:
-            ALBEDO: 5 5 5
+            ALBEDO: 0.01 0.01 0.01
     SPHERE:
         ORIGIN: -0.3 -0.3 -1
         RADIUS: 0.07
         LAMBERTIAN:
-            ALBEDO: 5 5 5
+            ALBEDO: 0.01 0.01 0.01

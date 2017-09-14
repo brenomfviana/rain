@@ -14,7 +14,7 @@ CAMERA:
 SHADER:
     BACKGROUND
 BACKGROUND:
-    UPPER_LEFT: 0 255 0    # Upper left corner color  (green)
+    UPPER_LEFT: 0 1 0    # Upper left corner color  (green)
     LOWER_LEFT: 0 0 0      # Lower left corner color  (black)
-    UPPER_RIGHT: 255 255 0 # Upper right corner color (yellow)
-    LOWER_RIGHT: 255 0 0   # Lower right corner color (red)
+    UPPER_RIGHT: 1 1 0 # Upper right corner color (yellow)
+    LOWER_RIGHT: 1 0 0   # Lower right corner color (red)
