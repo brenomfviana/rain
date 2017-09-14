@@ -30,11 +30,22 @@ class BlinnPhongShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
+                //
                 BlinnPhongMaterial* material =
                     dynamic_cast<BlinnPhongMaterial*>(hr.material);
+                //
                 RGB c = material->ka * ambientLight;
-                for (auto &light : scene.lights) {
-                    c += blinnPhong(r, light, hr);
+                // Check shadows
+                HitRecord shr;
+                float t = std::numeric_limits<float>::infinity();
+                for (auto& light : scene.lights) {
+                    if (!intersect(Ray(hr.origin, light->direction), scene, shr)) {
+                        t = shr.t;
+                        c += blinnPhong(r, light, hr);
+                    }
+                    if (shr.t > 0 && t >= shr.t) {
+                        c *= light->intensity;
+                    }
                 }
                 // Fix specular
                 c = RGB(std::min(1.f, float(c[RGB::R])),
@@ -65,7 +76,7 @@ class BlinnPhongShader : public Shader {
             specular = std::pow(specular, material->p);
             //
             return material->kd * lambertian * light->intensity +
-                material->ks * specular * light->intensity;
+                   material->ks * specular * light->intensity;
         }
 };
 
