@@ -2,6 +2,7 @@
 #define _BLINN_PHONG_SHADER_H_
 
 #include <cmath>
+#include <algorithm>
 #include "shader.h"
 #include "utils/vec3.h"
 #include "scene/components/light.h"
@@ -35,15 +36,10 @@ class BlinnPhongShader : public Shader {
                 for (auto &light : scene.lights) {
                     c += blinnPhong(r, light, hr);
                 }
-                if (c[0] > 1) {
-                    c[0] = 1;
-                }
-                if (c[1] > 1) {
-                    c[1] = 1;
-                }
-                if (c[2] > 1) {
-                    c[2] = 1;
-                }
+                // Fix specular
+                c = RGB(std::min(1.f, float(c[RGB::R])),
+                        std::min(1.f, float(c[RGB::G])),
+                        std::min(1.f, float(c[RGB::B])));
                 // Return resulting color
                 return c;
                 nrays = nrays; // Remove warning

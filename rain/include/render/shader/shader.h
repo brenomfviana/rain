@@ -29,10 +29,10 @@ class Shader {
             RGB lr = scene.background.lowerRight;
             // Bilinear interpolation
             auto rd = r.getDirection();
-            auto w = (rd.x() * 0.25) + 0.5;
-            auto x = (rd.y() * 0.5) + 0.5;
-            return ((ll * (1 - x) * (1 - w)) + (ul * x * (1 - w)) +
-                (lr * (1 - x) * w) + (ur * x *w));
+            auto x = (rd.x() * 0.25) + 0.5;
+            auto y = (rd.y() * 0.5) + 0.5;
+            return (1 - y) * ((1 - x) * ll + x * lr) + y * ((1 - x) * ul + x * ur);
+            // return ((ll * (1 - y) + ul * y * (1 - x)) + (lr * (1 - y) * x) + (ur * y * x));
         }
 
 
