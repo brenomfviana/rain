@@ -18,17 +18,6 @@ static Vec3 getVec3(std::string str) {
 }
 
 /*!
- * Interpret a RGB color.
- *
- * @param str String that corresponds to a RGB vector
- *
- * @return RGB color
- */
-static RGB getRGB(std::string str) {
-    return (getVec3(str) / 255.f);
-}
-
-/*!
  * Interpret a scene file.
  *
  * @param lines File lines
@@ -118,8 +107,8 @@ static Background* getBackground(std::list<std::string>& lines) {
                 throw "Invalid file!";
             }
         }
-        background = new Background(getRGB(f1[0]), getRGB(f1[1]),
-                                    getRGB(f1[2]), getRGB(f1[3]));
+        background = new Background(getVec3(f1[0]), getVec3(f1[1]),
+                                    getVec3(f1[2]), getVec3(f1[3]));
     } else
         // Top-Bottom
         if ((*itr).find(f2[0]) == 0) {
@@ -133,7 +122,7 @@ static Background* getBackground(std::list<std::string>& lines) {
                 throw "Invalid file!";
             }
         }
-        background = new Background(getRGB(f2[0]), getRGB(f2[1]), true);
+        background = new Background(getVec3(f2[0]), getVec3(f2[1]), true);
     } else
         // Left-Right
         if ((*itr).find(f3[0]) == 0) {
@@ -147,12 +136,12 @@ static Background* getBackground(std::list<std::string>& lines) {
                 throw "Invalid file!";
             }
         }
-        background = new Background(getRGB(f3[0]), getRGB(f3[1]), false);
+        background = new Background(getVec3(f3[0]), getVec3(f3[1]), false);
     } else
         // One color
         if ((*itr).find(f4[0]) == 0) {
         f4[0].replace(0, f4[0].length(), "");
-        background = new Background(getRGB(f4[0]));
+        background = new Background(getVec3(f4[0]));
     }
     // Remove interpreted lines
     lines.erase(begin, itr);
@@ -186,7 +175,7 @@ static Light* getLight(std::list<std::string>& lines) {
     }
     // Remove interpreted lines
     lines.erase(begin, itr);
-    Light* l = new Light(getVec3(format[0]), getRGB(format[1].c_str()));
+    Light* l = new Light(getVec3(format[0]), getVec3(format[1].c_str()));
     return l;
 }
 

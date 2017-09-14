@@ -9,14 +9,14 @@
 class BlinnPhongMaterial : public Material {
 
     public:
+        //
+        Vec3 ka;
         // Albedo
         Vec3 kd;
         //
         Vec3 ks;
         //
         float p;
-        //
-        Vec3 ka;
 
         /*!
          * BlinnPhongMaterial constructor.
@@ -26,8 +26,8 @@ class BlinnPhongMaterial : public Material {
          * @param p_
          * @param ka_
          */
-        BlinnPhongMaterial(Vec3 kd_, Vec3 ks_, float p_, Vec3 ka_) :
-            kd(kd_), ks(ks_), p(p_), ka(ka_)  { /* empty */ }
+        BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, float p_) :
+            ka(ka_), kd(kd_), ks(ks_), p(p_)  { /* empty */ }
 
         bool scatter(const Ray& incomingRay, const HitRecord& hitRecord,
             RGB& attenuation, Ray& scatteredRay) {

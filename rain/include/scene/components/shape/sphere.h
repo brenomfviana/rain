@@ -50,7 +50,9 @@ class Sphere : public Shape {
             float delta = (b * b - 4 * a * c);
             //
             if (delta >= 0) {
+                //
                 auto t = (-b - sqrt(delta)) / (2 * a);
+                //
                 if (t > tMin && t < tMax) {
                     hr.t = t;
                     hr.origin = r.pointAt(t);

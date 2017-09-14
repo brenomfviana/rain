@@ -5,17 +5,17 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "utils/vec3.h"
-#include "utils/split.h"
-#include "scene/scene.h"
-#include "scene/camera.h"
 #include "output_settings.h"
 #include "render/shader/shader.h"
+#include "scene/scene.h"
+#include "scene/camera.h"
 #include "scene/components/light.h"
 #include "scene/components/background.h"
 #include "scene/components/shape/shape.h"
 #include "scene/components/shape/sphere.h"
 #include "scene/components/shape/materials/material.h"
+#include "utils/vec3.h"
+#include "utils/split.h"
 
 /*!
  * This class is responsible for reading the scene description.
@@ -120,7 +120,7 @@ class SceneReader {
             int fsize = 5;
             // Scene format
             std::string format[] = {"NAME: ", "TYPE: ", "CODIFICATION: ",
-                               "WIDTH: ", "HEIGHT: "};
+                                    "WIDTH: ", "HEIGHT: "};
             // Interpret file
             std::list<std::string>::iterator itr = lines.begin();
             std::list<std::string>::iterator begin = lines.begin();
@@ -244,8 +244,8 @@ class SceneReader {
             // Remove interpreted lines
             lines.erase(begin, itr);
             return (new DepthMapShader(atof(format[0].c_str()),
-                                       getRGB(format[1]),
-                                       getRGB(format[2])));
+                                       getVec3(format[1]),
+                                       getVec3(format[2])));
         }
 
         /*!
@@ -274,7 +274,7 @@ class SceneReader {
             }
             // Remove interpreted lines
             lines.erase(begin, itr);
-            return (new BlinnPhongShader(getRGB(format[0])));
+            return (new BlinnPhongShader(getVec3(format[0])));
         }
 
         // Scene reader

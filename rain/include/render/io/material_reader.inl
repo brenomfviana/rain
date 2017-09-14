@@ -30,7 +30,7 @@ static BlinnPhongMaterial* getBlinnPhongMaterial(std::list<std::string>& lines) 
     // Format size
     int fsize = 4;
     // Sphere format
-    std::string format[] = {"KD: ", "KS: ", "P: ", "KA: "};
+    std::string format[] = {"KA: ", "KD: ", "KS: ", "P: "};
     // Interpret file
     std::list<std::string>::iterator itr = lines.begin();
     std::list<std::string>::iterator begin = lines.begin();
@@ -46,8 +46,8 @@ static BlinnPhongMaterial* getBlinnPhongMaterial(std::list<std::string>& lines) 
     }
     // Remove interpreted lines
     lines.erase(begin, itr);
-    BlinnPhongMaterial* bpm = new BlinnPhongMaterial(getRGB(format[0]),
-        getRGB(format[1]), atof(format[2].c_str()), getRGB(format[3]));
+    BlinnPhongMaterial* bpm = new BlinnPhongMaterial(getVec3(format[0]),
+        getVec3(format[1]), getVec3(format[2]), atof(format[3].c_str()));
     return bpm;
 }
 
@@ -74,6 +74,6 @@ static LambertianMaterial* getLambertianMaterial(std::list<std::string>& lines) 
     }
     // Remove interpreted lines
     lines.erase(begin, itr);
-    LambertianMaterial* l = new LambertianMaterial(getRGB(format[0]));
+    LambertianMaterial* l = new LambertianMaterial(getVec3(format[0]));
     return l;
 }
