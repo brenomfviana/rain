@@ -4,12 +4,15 @@ TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
 HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
 # Camera
 CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
     H: 4 0 0      # Horizontal dimension of the view plane
     V: 0 2 0      # Vertical dimension of the view plane
-    O: 0 0 10      # The camera's origin
+    O: 0 0 0      # The camera's origin
 # Scene description
 SHADER:
     NORMALS2RGB

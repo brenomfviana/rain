@@ -4,6 +4,9 @@ TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1920
 HEIGHT: 960
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
 # Camera
 CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
@@ -14,7 +17,7 @@ CAMERA:
 SHADER:
     LAMBERTIAN
 BACKGROUND:
-    TOP: 0.5 0.6 1     # Top color
+    TOP: 0.5 0.6 1 # Top color
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     LIGHT:
