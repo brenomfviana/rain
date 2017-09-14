@@ -21,12 +21,18 @@ class LambertianShader : public Shader {
                 HitRecord hr;
                 if (intersect(r, scene, hr)) {
                     //
-                    LambertianMaterial* m = dynamic_cast<LambertianMaterial*>(hr.material);
+                    LambertianMaterial* m =
+                        dynamic_cast<LambertianMaterial*>(hr.material);
                     Ray scatteredRay;
                     RGB attenuation;
+                    RGB c;
+                    //
+                    for (auto &light : scene.lights) {
+                        c += lights(r, light, hr);
+                    }
                     //
                     if (m->scatter(r, hr, attenuation, scatteredRay)) {
-                        RGB c = 0.5 * attenuation * color(scatteredRay, scene, nrays);
+                        c *= 0.5 * attenuation * color(scatteredRay, scene, nrays);
                         return c;
                     }
                     return RGB(1, 1, 1);
@@ -34,6 +40,19 @@ class LambertianShader : public Shader {
                     return background(r, scene);
                 }
             }
+        }
+
+    private:
+        /*!
+         * .
+         */
+        RGB lights(const Ray& r, Light* light, HitRecord& hr) const {
+            // L.N
+            LambertianMaterial* material = dynamic_cast<LambertianMaterial*>(hr.material);
+            Vec3 ln = unitVector(light->direction - r.getDirection());
+            float lambertian = std::max(0.f, dot(ln, hr.normal));
+            //
+            return material->albedo * lambertian * light->intensity;
         }
 };
 

@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
         	SceneReader::read(argv[1], scene, cam, shader, os);
 			// Render
 	        Image img = *(RayTracer::render(cam, scene, shader, os.width,
-				 							os.height, 10));
+				 							os.height, 100));
 	        // Print image
 	        Printer::print(img, os, "");
 		} catch (const char* e) {
