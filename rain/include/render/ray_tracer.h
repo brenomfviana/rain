@@ -28,10 +28,10 @@ class RayTracer {
          * @return Rendered image
          */
         static Image* render(Camera& cam, Scene& scene, Shader* shader,
-            unsigned int width, unsigned int height, unsigned int nsamples) {
+                             unsigned int width, unsigned int height,
+                             unsigned int nsamples, unsigned int nrays) {
             // Create image
             Image* img = new Image(width, height);
-            int nrays = 10;
             std::vector<std::thread*> ts;
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;

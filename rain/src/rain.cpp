@@ -16,20 +16,25 @@ int main(int argc, char *argv[]) {
 		std::cout << "\033[1;31mError: Invalid number of arguments!\033[0m\n";
 	} else {
 		try {
+			// Scene description
 	        Scene scene;
-			OutputSettings os;
-			Shader* shader;
 	        Camera cam;
+			Shader* shader;
+			// Ray tracer settings
+			int samples;
+			int nrays;
+			// Output settings
+			OutputSettings os;
 			// Read file
-        	SceneReader::read(argv[1], scene, cam, shader, os);
+        	SceneReader::read(argv[1], scene, cam, shader, os, samples, nrays);
 			// Render
 	        Image img = *(RayTracer::render(cam, scene, shader, os.width,
-				 							os.height, 100));
+				 							os.height, samples, nrays));
 	        // Print image
 	        Printer::print(img, os, "");
 		} catch (const char* e) {
 			std::cout << "\033[1;31m" << e << "\033[0m\n";
 		}
 	}
-    return 0;
+    return EXIT_SUCCESS;
 }

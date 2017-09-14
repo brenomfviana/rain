@@ -33,7 +33,8 @@ class SceneReader {
          * @param os Output settings
          */
         static void read(const std::string path, Scene& scene, Camera& cam,
-                         Shader*& shader, OutputSettings& os) {
+                         Shader*& shader, OutputSettings& os, int& samples,
+                         int& nrays) {
             // Open scene file
             std::ifstream file(path.c_str());
             // Check if the file exists
@@ -53,6 +54,7 @@ class SceneReader {
                     file.close();
                     // Interprets file
                     os     = *(interpretOutputSettings(lines));
+                    interpretRayTracingSettings(lines, samples, nrays);
                     cam    = *(interpretCamera(lines));
                     shader =   interpretShader(lines);
                     // Check shader
@@ -142,6 +144,38 @@ class SceneReader {
                 OutputSettings::getImageFileFormat(format[1]),
                 OutputSettings::getCodification(format[2]));
             return os;
+        }
+
+        /*!
+         * .
+         *
+         * @param lines File lines
+         *
+         * @return
+         */
+        static void interpretRayTracingSettings(std::list<std::string>& lines,
+                                                int& samples, int& nrays) {
+            // Format size
+            int fsize = 2;
+            // Camara format
+            std::string format[] = {"SAMPLES: ", "RAYS: "};
+            // Interpret file
+            std::list<std::string>::iterator itr = lines.begin();
+            std::list<std::string>::iterator begin = lines.begin();
+            // Check format
+            for (int i = 0; i < fsize; i++) {
+                if ((*itr).find(format[i]) == 0) {
+                    std::string aux = *(itr++);
+                    format[i] = aux.replace(0, format[i].length(), "");
+                } else {
+                    // ERROR
+                    throw "Invalid file format in camera description!";
+                }
+            }
+            // Remove interpreted lines
+            lines.erase(begin, itr);
+            samples = atoi(format[0].c_str());
+            nrays = atoi(format[1].c_str());
         }
 
         /*!
