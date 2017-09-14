@@ -16,8 +16,9 @@ static Material* getMaterial(std::list<std::string>& lines) {
     } else if ((*itr).find("LAMBERTIAN:") == 0) {
         lines.erase(itr);
         return getLambertianMaterial(lines);
-    /*} else if (aux.find("METAL:") == 0) {
-        return getMetalMaterial(lines);*/
+    } else if ((*itr).find("METAL:") == 0) {
+        lines.erase(itr);
+        return getMetalMaterial(lines);
     } else {
         throw "Invalid shader!";
     }
@@ -29,7 +30,7 @@ static Material* getMaterial(std::list<std::string>& lines) {
 static BlinnPhongMaterial* getBlinnPhongMaterial(std::list<std::string>& lines) {
     // Format size
     int fsize = 4;
-    // Sphere format
+    // Material format
     std::string format[] = {"KA: ", "KD: ", "KS: ", "P: "};
     // Interpret file
     std::list<std::string>::iterator itr = lines.begin();
@@ -57,7 +58,7 @@ static BlinnPhongMaterial* getBlinnPhongMaterial(std::list<std::string>& lines) 
 static LambertianMaterial* getLambertianMaterial(std::list<std::string>& lines) {
     // Format size
     int fsize = 1;
-    // Sphere format
+    // Material format
     std::string format[] = {"ALBEDO: "};
     // Interpret file
     std::list<std::string>::iterator itr = lines.begin();
@@ -75,5 +76,33 @@ static LambertianMaterial* getLambertianMaterial(std::list<std::string>& lines) 
     // Remove interpreted lines
     lines.erase(begin, itr);
     LambertianMaterial* l = new LambertianMaterial(getVec3(format[0]));
+    return l;
+}
+
+/*!
+ * .
+ */
+static MetalMaterial* getMetalMaterial(std::list<std::string>& lines) {
+    // Format size
+    int fsize = 2;
+    // Material format
+    std::string format[] = {"ALBEDO: ", "FUZZ: "};
+    // Interpret file
+    std::list<std::string>::iterator itr = lines.begin();
+    std::list<std::string>::iterator begin = lines.begin();
+    for (int i = 0; i < fsize; i++) {
+        // Check format
+        if ((*itr).find(format[i]) == 0) {
+            std::string aux = *(itr++);
+            format[i] = aux.replace(0, format[i].length(), "");
+        } else {
+            // ERROR
+            throw "Invalid file!";
+        }
+    }
+    // Remove interpreted lines
+    lines.erase(begin, itr);
+    MetalMaterial* l = new MetalMaterial(getVec3(format[0]),
+        atof(format[1].c_str()));
     return l;
 }

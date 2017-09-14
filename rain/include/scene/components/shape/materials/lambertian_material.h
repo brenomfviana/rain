@@ -22,7 +22,7 @@ class LambertianMaterial : public Material {
         }
 
         bool scatter(const Ray& incomingRay, const HitRecord& hr,
-                             RGB& attenuation, Ray& scatteredRay) {
+                     RGB& attenuation, Ray& scatteredRay) {
             (void) (incomingRay);
 		    Vec3 target = hr.origin + hr.normal + randomInUnitSphere();
 		    scatteredRay = Ray(hr.origin, target - hr.origin);
