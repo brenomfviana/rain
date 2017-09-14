@@ -1,5 +1,5 @@
 # Output settings
-NAME: spheres.ppm
+NAME: test.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -9,23 +9,24 @@ CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
     H: 4 0 0      # Horizontal dimension of the view plane
     V: 0 2 0      # Vertical dimension of the view plane
-    O: 0 0 10      # The camera's origin
+    O: 0 0 0      # The camera's origin
 # Scene description
 SHADER:
-    NORMALS2RGB
+    LAMBERTIAN
 BACKGROUND:
     TOP: 128 179 255     # Top color
     BOTTOM: 255 255 255  # Bottom color
 COMPONENTS:
+    LIGHT:
+        DIRECTION: 20 10 5
+        INTENSITY: 255 255 255
     SPHERE:
-        ORIGIN: 0 -100.5 -3
-        RADIUS: 99
+        ORIGIN: 0 -100.5 -1
+        RADIUS: 100
+        LAMBERTIAN:
+            ALBEDO: 90 90 90
     SPHERE:
-        ORIGIN: 0.3 0 -1
-        RADIUS: 0.4
-    SPHERE:
-        ORIGIN: 0 1 -2
-        RADIUS: 0.6
-    SPHERE:
-        ORIGIN: -0.4 0 -3
-        RADIUS: 0.7
+        ORIGIN: 0 0 -1
+        RADIUS: 0.5
+        LAMBERTIAN:
+            ALBEDO: 0 76.5 204

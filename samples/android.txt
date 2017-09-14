@@ -2,8 +2,8 @@
 NAME: android.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
-WIDTH: 1200
-HEIGHT: 600
+WIDTH: 1920
+HEIGHT: 960
 # Camera
 CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
