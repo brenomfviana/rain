@@ -2,8 +2,8 @@
 NAME: android.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
-WIDTH: 1920
-HEIGHT: 960
+WIDTH: 1200
+HEIGHT: 600
 # Ray Tracer Settings
 SAMPLES: 100 # Number of samples for anti-aliasing
 RAYS:    100 # Number of rays of the recursion
@@ -21,7 +21,7 @@ BACKGROUND:
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     LIGHT:
-        DIRECTION: 20 10 15
+        DIRECTION: 0 5 1
         INTENSITY: 1 1 1
     SPHERE:
         ORIGIN: 0 -100.5 -1

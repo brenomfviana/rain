@@ -1,9 +1,12 @@
 # Output settings
-NAME: test.ppm
+NAME: metal.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
 HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
 # Camera
 CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
@@ -18,15 +21,27 @@ BACKGROUND:
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     LIGHT:
-        DIRECTION: 20 10 5
-        INTENSITY: 255 255 255
+        DIRECTION: 20 10 15
+        INTENSITY: 1 1 1
     SPHERE:
-        ORIGIN: 0 -100.5 -1
+        ORIGIN: 0 -100.5 -3
         RADIUS: 100
         LAMBERTIAN:
-            ALBEDO: 90 90 90
+            ALBEDO: 0.8 0.8 0
     SPHERE:
         ORIGIN: 0 0 -1
         RADIUS: 0.5
         LAMBERTIAN:
-            ALBEDO: 0 76.5 204
+            ALBEDO: 0.8 0.3 0.3
+    SPHERE:
+        ORIGIN: 1 0 -1
+        RADIUS: 0.5
+        METAL:
+            ALBEDO: 0.8 0.6 0.2
+            FUZZ: 1
+    SPHERE:
+        ORIGIN: -1 0 -1
+        RADIUS: 0.5
+        METAL:
+            ALBEDO: 0.8 0.8 0.8
+            FUZZ: 0.3
