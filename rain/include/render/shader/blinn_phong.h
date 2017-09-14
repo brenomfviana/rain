@@ -37,14 +37,9 @@ class BlinnPhongShader : public Shader {
                 RGB c = material->ka * ambientLight;
                 // Check shadows
                 HitRecord shr;
-                float t = std::numeric_limits<float>::infinity();
                 for (auto& light : scene.lights) {
                     if (!intersect(Ray(hr.origin, light->direction), scene, shr)) {
-                        t = shr.t;
                         c += blinnPhong(r, light, hr);
-                    }
-                    if (shr.t > 0 && t >= shr.t) {
-                        c *= light->intensity;
                     }
                 }
                 // Fix specular
