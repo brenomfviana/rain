@@ -1,5 +1,5 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include "image/image.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         	SceneReader::read(argv[1], scene, cam, shader, os, samples, nrays);
 			// Render
 	        Image img = *(RayTracer::render(cam, scene, shader, os.width,
-				 							os.height, samples, nrays));
+				os.height, samples, nrays));
 	        // Print image
 	        Printer::print(img, os, "");
 		} catch (const char* e) {

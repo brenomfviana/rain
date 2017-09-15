@@ -1,7 +1,7 @@
 #include "scene_reader.h"
 
 /*!
- * Interpret a 3D vector.
+ * Interpret a 3D vector from a string.
  *
  * @param str String that corresponds to a vector
  *
@@ -10,15 +10,17 @@
 static Vec3 getVec3(std::string str) {
     // Auxiliary vector
     std::vector<std::string> v = split(str, ' ');
+    for (std::string& str : v) {
+        str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+        //std::cout << str << "\n";
+    }
     // Generate Vec3
-    Vec3 vec = Vec3(atof(v[0].c_str()),
-                  atof(v[1].c_str()),
-                  atof(v[2].c_str()));
+    Vec3 vec = Vec3(atof(v[0].c_str()), atof(v[1].c_str()), atof(v[2].c_str()));
     return vec;
 }
 
 /*!
- * Interpret a scene file.
+ * Interpret a scene from a scene description file.
  *
  * @param lines File lines
  * @param md If needs material description
@@ -83,68 +85,44 @@ static Scene* interpretScene(std::list<std::string>& lines, bool md) {
  */
 static Background* getBackground(std::list<std::string>& lines) {
     // Background formats
-    int f1size = 4;
-    std::string f1[] = {"UPPER_LEFT: ", "LOWER_LEFT: ",
-                        "UPPER_RIGHT: ", "LOWER_RIGHT: "};
-    int f23size = 2;
-    std::string f2[] = {"TOP: ", "BOTTOM: "};
-    std::string f3[] = {"LEFT: ", "RIGHT: "};
-    std::string f4[] = {"COLOR: "};
-    // Interpret scene file
-    std::list<std::string>::iterator itr = lines.begin();
-    std::list<std::string>::iterator begin = lines.begin();
+    std::string f1[] = {"UPPER_LEFT:", "LOWER_LEFT:", "UPPER_RIGHT:",
+                        "LOWER_RIGHT:"};
+    std::string f2[] = {"TOP:", "BOTTOM:"};
+    std::string f3[] = {"LEFT:", "RIGHT:"};
+    std::string f4[] = {"COLOR:"};
+    // Interpret background
     Background* background;
     // Check description type
+    std::string aux = *(lines.begin());
     // Corners
-    if ((*itr).find(f1[0]) == 0) {
-        for (int i = 0; i < f1size; i++) {
-            // Check format
-            if ((*itr).find(f1[i]) == 0) {
-                std::string aux = *(itr++);
-                f1[i] = aux.replace(0, f1[i].length(), "");
-            } else {
-                // ERROR
-                throw "Invalid file!";
-            }
-        }
-        background = new Background(getVec3(f1[0]), getVec3(f1[1]),
-                                    getVec3(f1[2]), getVec3(f1[3]));
+    if (aux.find(f1[0]) == 0) {
+        std::vector<std::string> format(f1, end(f1));
+        // Create the background and return it
+        std::vector<std::string>& v = *(getContent(format, lines));
+        background = new Background(getVec3(v[0]), getVec3(v[1]), getVec3(v[2]),
+            getVec3(v[3]));
     } else
         // Top-Bottom
-        if ((*itr).find(f2[0]) == 0) {
-        for (int i = 0; i < f23size; i++) {
-            // Check format
-            if ((*itr).find(f2[i]) == 0) {
-                std::string aux = *(itr++);
-                f2[i] = aux.replace(0, f2[i].length(), "");
-            } else {
-                // ERROR
-                throw "Invalid file!";
-            }
-        }
-        background = new Background(getVec3(f2[0]), getVec3(f2[1]), true);
+        if (aux.find(f2[0]) == 0) {
+            std::vector<std::string> format(f2, end(f2));
+            // Create the background and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            background = new Background(getVec3(v[0]), getVec3(v[1]), true);
     } else
         // Left-Right
-        if ((*itr).find(f3[0]) == 0) {
-        for (int i = 0; i < f23size; i++) {
-            // Check format
-            if ((*itr).find(f3[i]) == 0) {
-                std::string aux = *(itr++);
-                f3[i] = aux.replace(0, f3[i].length(), "");
-            } else {
-                // ERROR
-                throw "Invalid file!";
-            }
-        }
-        background = new Background(getVec3(f3[0]), getVec3(f3[1]), false);
+        if (aux.find(f3[0]) == 0) {
+            std::vector<std::string> format(f3, end(f3));
+            // Create the background and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            background = new Background(getVec3(v[0]), getVec3(v[1]), false);
     } else
         // One color
-        if ((*itr).find(f4[0]) == 0) {
-        f4[0].replace(0, f4[0].length(), "");
-        background = new Background(getVec3(f4[0]));
+        if (aux.find(f4[0]) == 0) {
+            std::vector<std::string> format(f4, end(f4));
+            // Create the background and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            background = new Background(getVec3(v[0]));
     }
-    // Remove interpreted lines
-    lines.erase(begin, itr);
     return background;
 }
 
@@ -156,27 +134,12 @@ static Background* getBackground(std::list<std::string>& lines) {
  * @return Light
  */
 static Light* getLight(std::list<std::string>& lines) {
-    // Format size
-    int fsize = 2;
     // Light format
-    std::string format[] = {"DIRECTION: ", "INTENSITY: "};
-    // Interpret file
-    std::list<std::string>::iterator itr = lines.begin();
-    std::list<std::string>::iterator begin = lines.begin();
-    for (int i = 0; i < fsize; i++) {
-        // Check format
-        if ((*itr).find(format[i]) == 0) {
-            std::string aux = *(itr++);
-            format[i] = aux.replace(0, format[i].length(), "");
-        } else {
-            // ERROR
-            throw "Invalid file!";
-        }
-    }
-    // Remove interpreted lines
-    lines.erase(begin, itr);
-    Light* l = new Light(getVec3(format[0]), getVec3(format[1].c_str()));
-    return l;
+    std::string vformat[] = {"DIRECTION:", "INTENSITY:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the light and return it
+    std::vector<std::string>& v = *(getContent(format, lines));
+    return (new Light(getVec3(v[0]), getVec3(v[1].c_str())));
 }
 
 
@@ -188,31 +151,16 @@ static Light* getLight(std::list<std::string>& lines) {
  * @return Sphere
  */
 static Sphere* getSphere(std::list<std::string>& lines, bool md) {
-    // Format size
-    int fsize = 2;
     // Sphere format
-    std::string format[] = {"ORIGIN: ", "RADIUS: "};
-    // Interpret file
-    std::list<std::string>::iterator itr = lines.begin();
-    std::list<std::string>::iterator begin = lines.begin();
-    for (int i = 0; i < fsize; i++) {
-        // Check format
-        if ((*itr).find(format[i]) == 0) {
-            std::string aux = *(itr++);
-            format[i] = aux.replace(0, format[i].length(), "");
-        } else {
-            // ERROR
-            throw "Invalid file!";
-        }
-    }
-    // Remove interpreted lines
-    lines.erase(begin, itr);
+    std::string vformat[] = {"ORIGIN:", "RADIUS:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the sphere and return it
+    std::vector<std::string>& v = *(getContent(format, lines));
     Sphere* s;
     if (md) {
-        s = new Sphere(getVec3(format[0]), atof(format[1].c_str()),
-            getMaterial(lines));
+        s = new Sphere(getVec3(v[0]), atof(v[1].c_str()), getMaterial(lines));
     } else {
-        s = new Sphere(getVec3(format[0]), atof(format[1].c_str()));
+        s = new Sphere(getVec3(v[0]), atof(v[1].c_str()));
     }
     return s;
 }

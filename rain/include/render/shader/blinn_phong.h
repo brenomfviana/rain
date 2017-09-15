@@ -27,6 +27,7 @@ class BlinnPhongShader : public Shader {
          * .
          */
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
+            (void) nrays;
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
@@ -48,7 +49,6 @@ class BlinnPhongShader : public Shader {
                         std::min(1.f, float(c[RGB::B])));
                 // Return resulting color
                 return c;
-                nrays = nrays; // Remove warning
             } else {
                 return background(r, scene);
             }

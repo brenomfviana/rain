@@ -1,10 +1,11 @@
 #ifndef _SCENE_READER_H_
 #define _SCENE_READER_H_
 
+#include <algorithm>
+#include <fstream>
 #include <list>
 #include <string>
 #include <vector>
-#include <fstream>
 #include "output_settings.h"
 #include "render/shader/shader.h"
 #include "scene/scene.h"
@@ -24,28 +25,30 @@ class SceneReader {
 
     public:
         /*!
-         * Read a scene description.
+         * Read a scene description and return the results through the
+         * referenced parameters.
          *
          * @param path Scene file path
          * @param scene Scene to be readed
          * @param cam Scene camera
          * @param shader Shader
          * @param os Output settings
+         * @param samples Number of samples
+         * @param nrays Number
          */
         static void read(const std::string path, Scene& scene, Camera& cam,
-                         Shader*& shader, OutputSettings& os, int& samples,
-                         int& nrays) {
+                Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
             // Open scene file
             std::ifstream file(path.c_str());
             // Check if the file exists
             if (!file) {
                 // ERROR
-                throw "Error: The file is not exists!";
+                throw "Error:The file is not exists!";
             } else
                 // Check if the file is open
                 if (!file.is_open()) {
                     // ERROR
-                    throw "Error: The file could not be opened!";
+                    throw "Error:The file could not be opened!";
                 } else {
                     // Get file lines
                     std::list<std::string> lines;
@@ -53,10 +56,10 @@ class SceneReader {
                     // Close file
                     file.close();
                     // Interprets file
-                    os     = *(interpretOutputSettings(lines));
-                    interpretRayTracingSettings(lines, samples, nrays);
-                    cam    = *(interpretCamera(lines));
-                    shader =   interpretShader(lines);
+                    os = *(interpretOS(lines));
+                    interpretRTSettings(lines, samples, nrays);
+                    cam = *(interpretCamera(lines));
+                    shader = interpretShader(lines);
                     // Check shader
                     if (typeid(*shader) == typeid(BackgroundShader) ||
                         typeid(*shader) == typeid(Normals2RGBShader) ||
@@ -79,7 +82,7 @@ class SceneReader {
          * @param file Readed file
          */
         static void getFormattedLines(std::list<std::string>& lines,
-                                      std::ifstream& file) {
+                std::ifstream& file) {
             // Read all lines of file and removes useless chars
             lines.clear();
             std::string line;
@@ -111,105 +114,91 @@ class SceneReader {
         }
 
         /*!
-         * Interpret output settings of the scene file.
+         * Interpret object (like shaders, shapes, etc.) from a custom format.
          *
+         * @param format Custom format object
          * @param lines File lines
          *
-         * @return Output settings
+         * @return Content of object
          */
-        static OutputSettings* interpretOutputSettings(std::list<std::string>& lines) {
-            // Format size
-            int fsize = 5;
-            // Scene format
-            std::string format[] = {"NAME: ", "TYPE: ", "CODIFICATION: ",
-                                    "WIDTH: ", "HEIGHT: "};
-            // Interpret file
+        static std::vector<std::string>* getContent(std::vector<std::string> format,
+                std::list<std::string>& lines) {
+            // Init
+            std::vector<std::string>* v = new std::vector<std::string>();
             std::list<std::string>::iterator itr = lines.begin();
             std::list<std::string>::iterator begin = lines.begin();
-            // Check format
-            for (int i = 0; i < fsize; i++) {
-                if ((*itr).find(format[i]) == 0) {
+            // Read contents
+            for (std::string str : format) {
+                // Check format
+                if ((*itr).find(str) == 0) {
+                    // Get content
                     std::string aux = *(itr++);
-                    format[i] = aux.replace(0, format[i].length(), "");
+                    v->push_back(aux.replace(0, str.length(), ""));
                 } else {
-                    // ERROR
-                    throw "Invalid file format!";
+                    throw "Invalid file format.";
                 }
             }
             // Remove interpreted lines
             lines.erase(begin, itr);
-            // Create image
-            OutputSettings* os = new OutputSettings(std::stoi(format[3]),
-                std::stoi(format[4]), format[0],
-                OutputSettings::getImageFileFormat(format[1]),
-                OutputSettings::getCodification(format[2]));
-            return os;
+            return v;
         }
 
         /*!
-         * .
+         * Interpret output settings from a scene description file.
          *
          * @param lines File lines
          *
-         * @return
+         * @return Output Settings
          */
-        static void interpretRayTracingSettings(std::list<std::string>& lines,
-                                                int& samples, int& nrays) {
-            // Format size
-            int fsize = 2;
+        static OutputSettings* interpretOS(std::list<std::string>& lines) {
+            // Output settings format
+            std::string vformat[] = {"NAME:", "TYPE:", "CODIFICATION:",
+                                     "WIDTH:", "HEIGHT:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the output settings and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            for (std::string& str : v) {
+                str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+            }
+            return (new OutputSettings(v[0], OutputSettings::getImageFileFormat(v[1]),
+                OutputSettings::getCodification(v[2]), std::stoi(v[3]), std::stoi(v[4])));
+        }
+
+        /*!
+         * Interpret ray tracing settings from a scene description file.
+         * Get samples and nrays by reference.
+         *
+         * @param lines File lines
+         */
+        static void interpretRTSettings(std::list<std::string>& lines,
+                int& samples, int& nrays) {
             // Camara format
-            std::string format[] = {"SAMPLES: ", "RAYS: "};
-            // Interpret file
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
-            // Check format
-            for (int i = 0; i < fsize; i++) {
-                if ((*itr).find(format[i]) == 0) {
-                    std::string aux = *(itr++);
-                    format[i] = aux.replace(0, format[i].length(), "");
-                } else {
-                    // ERROR
-                    throw "Invalid file format in camera description!";
-                }
-            }
-            // Remove interpreted lines
-            lines.erase(begin, itr);
-            samples = atoi(format[0].c_str());
-            nrays = atoi(format[1].c_str());
+            std::string vformat[] = {"SAMPLES:", "RAYS:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Get contents
+            std::vector<std::string>& v = *(getContent(format, lines));
+            samples = atoi(v[0].c_str());
+            nrays = atoi(v[1].c_str());
         }
 
         /*!
-         * Interpret scene camera.
+         * Interpret camera from a scene description file.
          *
          * @param lines File lines
          *
          * @return Readed camera
          */
         static Camera* interpretCamera(std::list<std::string>& lines) {
-            // Format size
-            int fsize = 4;
-            // Camara format
-            std::string format[] = {"LLC: ", "H: ", "V: ", "O: "};
-            // Interpret file
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
             // Look for other scene components
-            if (!lines.empty() && (*(itr++)).find("CAMERA:") == 0) {
-                // Check format
-                for (int i = 0; i < fsize; i++) {
-                    if ((*itr).find(format[i]) == 0) {
-                        std::string aux = *(itr++);
-                        format[i] = aux.replace(0, format[i].length(), "");
-                    } else {
-                        // ERROR
-                        throw "Invalid file format in camera description!";
-                    }
-                }
-                // Remove interpreted lines
-                lines.erase(begin, itr);
-                Camera* cam = new Camera(getVec3(format[0]), getVec3(format[1]),
-                    getVec3(format[2]), getVec3(format[3]));
-                return cam;
+            if (!lines.empty() && (*(lines.begin())).find("CAMERA:") == 0) {
+                lines.pop_front();
+                // Camera format
+                std::string vformat[] = {"LLC:", "H:", "V:", "O:"};
+                std::vector<std::string> format(vformat, end(vformat));
+                // Create the camera and return it
+                std::vector<std::string>& v = *(getContent(format, lines));
+                return (new Camera(getVec3(v[0]), getVec3(v[1]),
+                    getVec3(v[2]), getVec3(v[3])));
             } else {
                 // ERROR
                 throw "Invalid file format! Needs the camera description.";
@@ -217,31 +206,33 @@ class SceneReader {
         }
 
         /*!
-         * Interpret shader.
+         * Interpret shader from a scene description file.
          *
          * @param lines File lines
          *
          * @return Readed shader
          */
         static Shader* interpretShader(std::list<std::string>& lines) {
-            // Interpret file
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
             // Look for other scene components
-            if (!lines.empty() && (*(itr++)).find("SHADER:") == 0) {
-                std::string aux = *(itr++);
+            if (!lines.empty() && (*(lines.begin())).find("SHADER:") == 0) {
                 // Remove interpreted lines
-                lines.erase(begin, itr);
+                lines.pop_front();
+                std::string aux = *(lines.begin());
+                lines.pop_front();
                 if (aux.find("BACKGROUND") == 0) {
                     return (new BackgroundShader());
-                } else if (aux.find("NORMALS2RGB") == 0) {
-                    return (new Normals2RGBShader());
-                } else if (aux.find("DEPTHMAP") == 0) {
-                    return getDephtMapShader(lines);
-                } else if (aux.find("BLINNPHONG") == 0) {
-                    return getBlinnPhongShader(lines);
-                } else if (aux.find("LAMBERTIAN") == 0) {
-                    return (new LambertianShader());
+                } else
+                    if (aux.find("NORMALS2RGB") == 0) {
+                        return (new Normals2RGBShader());
+                } else
+                    if (aux.find("DEPTHMAP") == 0) {
+                        return getDMShader(lines);
+                } else
+                    if (aux.find("BLINNPHONG") == 0) {
+                        return getBPShader(lines);
+                } else
+                    if (aux.find("LAMBERTIAN") == 0) {
+                        return (new LambertianShader());
                 } else {
                     throw "Invalid shader!";
                 }
@@ -252,62 +243,35 @@ class SceneReader {
         }
 
         /*!
-         * .
+         * Interpret Depth Map Shader from a scene description file.
          *
          * @param lines File lines
          *
-         * @return .
+         * @return Depth Map Shader.
          */
-        static DepthMapShader* getDephtMapShader(std::list<std::string>& lines) {
-            // Depht map format
-            int fsize = 3;
-            std::string format[] = {"DEPTH:", "FOREGROUND:", "BACKGROUND:"};
-            // Interpret file
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
-            for (int i = 0; i < fsize; i++) {
-                // Check format
-                if ((*itr).find(format[i]) == 0) {
-                    std::string aux = *(itr++);
-                    format[i] = aux.replace(0, format[i].length(), "");
-                } else {
-                    // ERROR
-                    throw "Invalid file!";
-                }
-            }
-            // Remove interpreted lines
-            lines.erase(begin, itr);
-            return (new DepthMapShader(atof(format[0].c_str()),
-                                       getVec3(format[1]),
-                                       getVec3(format[2])));
+        static DepthMapShader* getDMShader(std::list<std::string>& lines) {
+            // Depth map shader format
+            std::string vformat[] = {"DEPTH:", "FOREGROUND:", "BACKGROUND:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the shader and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            return (new DepthMapShader(atof(v[0].c_str()), getVec3(v[1]),
+                getVec3(v[2])));
         }
 
         /*!
-         * .
+         * Interpret Blinn-Phong Shader from a scene description file.
          *
          * @param lines File lines
          *
-         * @return .
+         * @return Blinn-Phong Shader.
          */
-        static BlinnPhongShader* getBlinnPhongShader(std::list<std::string>& lines) {
-            // Depht map format
-            int fsize = 1;
-            std::string format[] = {"AMBIENT_LIGHT: "};
-            // Interpret file
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
-            for (int i = 0; i < fsize; i++) {
-                // Check format
-                if ((*itr).find(format[i]) == 0) {
-                    std::string aux = *(itr++);
-                    format[i] = aux.replace(0, format[i].length(), "");
-                } else {
-                    // ERROR
-                    throw "Invalid file!";
-                }
-            }
-            // Remove interpreted lines
-            lines.erase(begin, itr);
+        static BlinnPhongShader* getBPShader(std::list<std::string>& lines) {
+            // Blinn-Phong shader format
+            std::string vformat[] = {"AMBIENT_LIGHT:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the shader and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
             return (new BlinnPhongShader(getVec3(format[0])));
         }
 

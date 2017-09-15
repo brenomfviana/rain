@@ -13,13 +13,13 @@ class Normals2RGBShader : public Shader {
          * .
          */
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
+            (void) (nrays);
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
                 return ((hr.normal + Vec3(1, 1, 1)) * 0.5);
             } else {
                 return background(r, scene);
-                nrays = nrays; // Remove warning
             }
         }
 };

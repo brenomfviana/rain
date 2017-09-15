@@ -29,19 +29,18 @@ class OutputSettings {
         /*!
          * Output settings constructor.
          *
-         * @param width_ Image width
-         * @param height_ Image height
          * @param name_ Image name
          * @param fileFormat_ Image file format
          * @param codification_ Image file codification
+         * @param width_ Image width
+         * @param height_ Image height
          */
-        OutputSettings(int width_ = 0, int height_ = 0,
-                       std::string name_ = "unknown",
-                       ImageFileFormats fileFormat_ = PPM,
-                       Codifications codification_ = BINARY) :
-            width(width_), height(height_), name(name_),
-            fileFormat(fileFormat_),
-            codification(codification_) { /* empty */ }
+        OutputSettings(std::string name_ = "unknown",
+                ImageFileFormats fileFormat_ = PPM,
+                Codifications codification_ = BINARY,
+                int width_ = 0, int height_ = 0) :
+            name(name_), fileFormat(fileFormat_), codification(codification_),
+            width(width_), height(height_) { /* empty */ }
 
         /*!
          * Get image file format.
