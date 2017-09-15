@@ -6,6 +6,8 @@
 #include "materials/material.h"
 #include "scene/components/hit_record.h"
 
+using namespace utils;
+
 /*!
  * This class represents a shape.
  */
@@ -59,4 +61,4 @@ class Shape {
         virtual bool hit(Ray r, float tMin, float tMax, HitRecord& hr) = 0;
 };
 
-#endif
+#endif /* _SHAPE_H_ */

@@ -3,27 +3,42 @@
 
 #include "utils/vec3.h"
 
+using namespace utils;
+
 /*!
  * This class represents a light.
  */
 class Light {
 
-    public:
+    private:
         // Direction
         Vec3 direction;
         // Intensity
         Vec3 intensity;
 
-        Light() { /* empty */ }
-
+    public:
         /*!
          * Light constructor.
          *
          * @param direction Light direction
          * @param intensity Light intensity
          */
-        Light(Vec3 direction_, Vec3 intensity_) : direction(direction_),
-            intensity(intensity_) { /* empty */ }
+        Light(Vec3 direction_ = Vec3(1, 1, 1), Vec3 intensity_ = Vec3(1, 1, 1)) :
+            direction(direction_), intensity(intensity_) { /* empty */ }
+
+        /*!
+		 * Get light direction.
+		 *
+		 * @return Light direction
+		 */
+		inline Vec3 getDirection(void) const { return direction; }
+
+        /*!
+         * Get light intensity.
+         *
+         * @return Light intensity
+         */
+        inline Vec3 getIntensity(void) const { return intensity; }
 };
 
-#endif
+#endif /* _LIGHT_H_ */

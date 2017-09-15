@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "image/image.h"
+#include "utils/image.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
 #include "scene/components/shape/sphere.h"
@@ -8,6 +8,8 @@
 #include "render/io/printer.h"
 #include "render/io/scene_reader.h"
 #include "render/shader/shader.h"
+
+using namespace utils;
 
 int main(int argc, char *argv[]) {
 	// Check for a valid number of arguments

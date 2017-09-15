@@ -9,203 +9,207 @@
 #include <iterator>
 #include <iomanip>
 
-/*!
- * This class represents a 3D vector, that might be used to represent points,
- * directions, vectors, colors, offset.
- */
-class Vec3 {
+namespace utils {
 
-    public:
-        // Aliases
-        typedef float ValueType;
-        enum FieldType : int {X = 0, Y = 1, Z = 2,
-                              R = 0, G = 1, B = 2};
+    /*!
+     * This class represents a 3D vector, that might be used to represent points,
+     * directions, vectors, colors, offset.
+     */
+    class Vec3 {
 
-        // 3D vector
-        ValueType e[3];
+        public:
+            // Aliases
+            typedef float ValueType;
+            enum FieldType : int {X = 0, Y = 1, Z = 2,
+                                  R = 0, G = 1, B = 2};
 
-        /*!
-         * 3D vector constructor.
-         *
-         * @param e0_ Element 0
-         * @param e1_ Element 1
-         * @param e2_ Element 2
-         */
-        explicit Vec3(ValueType e0_ = 0.f, ValueType e1_ = 0.f, ValueType e2_ = 0.f)
-            : e{e0_, e1_, e2_} { /* empty */ }
+            // 3D vector
+            ValueType e[3];
 
-        /*!
-         * Copy constructor.
-         *
-         * @param vector_ Vector
-         */
-        Vec3(const Vec3& vector_) : e{vector_[X], vector_[Y], vector_[Z]}
-            { /* empty */ }
+            /*!
+             * 3D vector constructor.
+             *
+             * @param e0_ Element 0
+             * @param e1_ Element 1
+             * @param e2_ Element 2
+             */
+            explicit Vec3(ValueType e0_ = 0.f, ValueType e1_ = 0.f, ValueType e2_ = 0.f)
+                : e{e0_, e1_, e2_} { /* empty */ }
 
-        /*!
-         * Initializer list constructor.
-         *
-         * @param il_ Initializer list
-         */
-        Vec3(std::initializer_list<ValueType> il_) {
-            assert(il_.size() >= 3);
-            std::copy(il_.begin(), std::next(il_.begin(), 3), std::begin(e));
-        }
+            /*!
+             * Copy constructor.
+             *
+             * @param vector_ Vector
+             */
+            Vec3(const Vec3& vector_) : e{vector_[X], vector_[Y], vector_[Z]}
+                { /* empty */ }
 
-        /* ----------------------- Access Operators ------------------------- */
+            /*!
+             * Initializer list constructor.
+             *
+             * @param il_ Initializer list
+             */
+            Vec3(std::initializer_list<ValueType> il_) {
+                assert(il_.size() >= 3);
+                std::copy(il_.begin(), std::next(il_.begin(), 3), std::begin(e));
+            }
 
-        /*!
-         * Get x value.
-         *
-         * @return X value
-         */
-        inline ValueType x() const { return e[X]; }
+            /* ----------------------- Access Operators ------------------------- */
 
-        /*!
-         * Get y value.
-         *
-         * @return Y value
-         */
-        inline ValueType y() const { return e[Y]; }
+            /*!
+             * Get x value.
+             *
+             * @return X value
+             */
+            inline ValueType x() const { return e[X]; }
 
-        /*!
-         * Get z value.
-         *
-         * @return Z value
-         */
-        inline ValueType z() const { return e[Z]; }
+            /*!
+             * Get y value.
+             *
+             * @return Y value
+             */
+            inline ValueType y() const { return e[Y]; }
 
-        /*!
-         * Get red value.
-         *
-         * @return Red value
-         */
-        inline ValueType r() const { return e[R]; }
+            /*!
+             * Get z value.
+             *
+             * @return Z value
+             */
+            inline ValueType z() const { return e[Z]; }
 
-        /*!
-         * Get green value.
-         *
-         * @return Green value
-         */
-        inline ValueType g() const { return e[G]; }
+            /*!
+             * Get red value.
+             *
+             * @return Red value
+             */
+            inline ValueType r() const { return e[R]; }
 
-        /*!
-         * Get blue value.
-         *
-         * @return Blue value
-         */
-        inline ValueType b() const { return e[B]; }
+            /*!
+             * Get green value.
+             *
+             * @return Green value
+             */
+            inline ValueType g() const { return e[G]; }
 
-        /*!
-         * Indexed access operator (rhs).
-         *
-         * @param idx Index
-         */
-        inline ValueType operator[](size_t idx) const { return e[idx]; }
+            /*!
+             * Get blue value.
+             *
+             * @return Blue value
+             */
+            inline ValueType b() const { return e[B]; }
 
-        /*!
-         * Indexed access operator (lhs).
-         *
-         * @param Index
-         */
-        inline ValueType& operator[](size_t idx) { return e[idx]; }
+            /*!
+             * Indexed access operator (rhs).
+             *
+             * @param idx Index
+             */
+            inline ValueType operator[](size_t idx) const { return e[idx]; }
 
-        /* --------------------- Algebraic Operators ------------------------ */
+            /*!
+             * Indexed access operator (lhs).
+             *
+             * @param Index
+             */
+            inline ValueType& operator[](size_t idx) { return e[idx]; }
 
-        /*!
-         * Unary '+'.
-         */
-        inline const Vec3& operator+(void) const { return *this; }
+            /* --------------------- Algebraic Operators ------------------------ */
 
-        /*!
-         * Unary '-'.
-         */
-        inline Vec3 operator-(void) const { return Vec3(-e[X], -e[Y], -e[Z]); }
+            /*!
+             * Unary '+'.
+             */
+            inline const Vec3& operator+(void) const { return *this; }
 
-        /*!
-         * Sum operator.
-         *
-         * @param v Vector
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator+=(const Vec3&);
+            /*!
+             * Unary '-'.
+             */
+            inline Vec3 operator-(void) const { return Vec3(-e[X], -e[Y], -e[Z]); }
 
-        /*!
-         * Subtraction operator.
-         *
-         * @param v Vector
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator-=(const Vec3&);
+            /*!
+             * Sum operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator+=(const Vec3&);
 
-        /*!
-         * Product operator.
-         *
-         * @param v Vector
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator*=(const Vec3&);
+            /*!
+             * Subtraction operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator-=(const Vec3&);
 
-        /*!
-         * Division operator.
-         *
-         * @param v Vector
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator/=(const Vec3&);
+            /*!
+             * Product operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator*=(const Vec3&);
 
-        /*!
-         * Scalar product operator.
-         *
-         * @param t ValueType
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator*=(const ValueType);
+            /*!
+             * Division operator.
+             *
+             * @param v Vector
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator/=(const Vec3&);
 
-        /*!
-         * Scalar division operator.
-         *
-         * @param t ValueType
-         *
-         * @return Vector resulting from the operation
-         */
-        inline Vec3& operator/=(const ValueType);
+            /*!
+             * Scalar product operator.
+             *
+             * @param t ValueType
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator*=(const ValueType);
 
-        /* ------------------------------------------------------------------ */
+            /*!
+             * Scalar division operator.
+             *
+             * @param t ValueType
+             *
+             * @return Vector resulting from the operation
+             */
+            inline Vec3& operator/=(const ValueType);
 
-        /*!
-         * Get vector length.
-         *
-         * @return Vector length
-         */
-        inline ValueType length(void) const {
-            return sqrt(squaredLength());
-        }
+            /* ------------------------------------------------------------------ */
 
-        /*!
-         * Get vector length squared.
-         *
-         * @return Vector length squared
-         */
-        inline ValueType squaredLength(void) const {
-            return (e[X]*e[X] + e[Y]*e[Y] + e[Z]*e[Z]);
-        }
+            /*!
+             * Get vector length.
+             *
+             * @return Vector length
+             */
+            inline ValueType length(void) const {
+                return sqrt(squaredLength());
+            }
 
-        /*!
-         * Make this vector an unit vector.
-         */
-        inline void makeUnitVector(void);
-};
+            /*!
+             * Get vector length squared.
+             *
+             * @return Vector length squared
+             */
+            inline ValueType squaredLength(void) const {
+                return (e[X]*e[X] + e[Y]*e[Y] + e[Z]*e[Z]);
+            }
 
-typedef Vec3 RGB;
-typedef Vec3 Offset;
-typedef Vec3 Point3;
+            /*!
+             * Make this vector an unit vector.
+             */
+            inline void makeUnitVector(void);
+    };
 
-#include "vec3.inl"
+    typedef Vec3 RGB;
+    typedef Vec3 Offset;
+    typedef Vec3 Point3;
 
-#endif
+    #include "vec3.inl"
+
+} // namespace utils
+
+#endif /* _VEC3_H_ */

@@ -3,6 +3,8 @@
 
 #include "utils/vec3.h"
 
+using namespace utils;
+
 /*!
  * This class represents a ray.
  */
@@ -53,4 +55,4 @@ class Ray {
 		}
 };
 
-#endif
+#endif /* _RAY_H_ */

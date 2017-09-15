@@ -3,6 +3,8 @@
 
 #include "utils/vec3.h"
 
+using namespace utils;
+
 /*!
  * This class represents a background of a scene.
  */
@@ -72,11 +74,11 @@ class Background {
          * @param lowerRight_ Lower right corner color
          */
         Background(RGB upperLeft_, RGB lowerLeft_,
-            RGB upperRight_, RGB lowerRight_) :
+                RGB upperRight_, RGB lowerRight_) :
             upperLeft(upperLeft_),
             lowerLeft(lowerLeft_),
             upperRight(upperRight_),
             lowerRight(lowerRight_) { /* empty */ }
 };
 
-#endif
+#endif /* _BACKGROUND_H_ */

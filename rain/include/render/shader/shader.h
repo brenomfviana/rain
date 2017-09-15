@@ -6,6 +6,8 @@
 #include "render/ray.h"
 #include "scene/components/hit_record.h"
 
+using namespace utils;
+
 /*!
  * This class respresents a shader.
  */
@@ -14,12 +16,19 @@ class Shader {
     public:
         /*!
          * .
+         *
+         * @param r Incoming ray
+         * @param scene Scene
+         * @param nrays Number of rays of the recursion
          */
         virtual RGB color(const Ray& r, const Scene& scene, int nrays) const = 0;
 
     protected:
         /*!
-         * .
+         * Get background color. Calculates the background color gradient.
+         *
+         * @param r Incoming ray
+         * @param scene Scene
          */
         inline RGB background(const Ray& r, const Scene& scene) const {
             // Get background corners colors
@@ -32,26 +41,25 @@ class Shader {
             auto x = (rd.x() * 0.25) + 0.5;
             auto y = (rd.y() * 0.5) + 0.5;
             return (1 - y) * ((1 - x) * ll + x * lr) + y * ((1 - x) * ul + x * ur);
-            // return ((ll * (1 - y) + ul * y * (1 - x)) + (lr * (1 - y) * x) + (ur * y * x));
         }
 
-
         /*!
-         * .
+         * Check if the ray hit something.
+         *
+         * @param r Incoming ray
+         * @param scene Scene
+         * @param hr Hit record
          */
         bool intersect(const Ray& r, const Scene& scene, HitRecord& hr) const {
             // Check hit
             float tMin = 0;
             float tMax = 10;
-            //
             hr.t = std::numeric_limits<float>::infinity();
-            //
+            // Check if hit scene components
             for (auto &shape : scene.components) {
-                //
                 HitRecord haux;
-                //
                 if (shape->hit(r, tMin, tMax, haux)) {
-                    //
+                    // Check which object is in front
                     if (haux.t > -1 && hr.t > haux.t) {
                         hr.t = haux.t;
                         hr.origin = haux.origin;
@@ -70,4 +78,4 @@ class Shader {
 #include "blinn_phong.h"
 #include "lambertian.h"
 
-#endif
+#endif /* _SHADER_H_ */

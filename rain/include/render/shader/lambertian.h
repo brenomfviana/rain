@@ -4,15 +4,14 @@
 #include "shader.h"
 #include "scene/components/shape/materials/material.h"
 
+using namespace utils;
+
 /*!
- * This class respresents a normal shader.
+ * This class respresents the Lambertian shader.
  */
 class LambertianShader : public Shader {
 
     public:
-        /*!
-         * .
-         */
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
             if (nrays-- == 0) {
                 return RGB(1, 1, 1);
@@ -46,7 +45,6 @@ class LambertianShader : public Shader {
     private:
         /*!
          * .
-         */
         RGB lights(const Ray& r, Light* light, HitRecord& hr) const {
             // L.N
             Vec3 ln = unitVector(light->direction - r.getDirection());
@@ -64,6 +62,7 @@ class LambertianShader : public Shader {
                 throw "Unkown material.";
             }
         }
+        */
 };
 
-#endif
+#endif /* _LAMBERTIAN_SHADER_H_ */

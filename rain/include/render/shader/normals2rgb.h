@@ -4,14 +4,11 @@
 #include "shader.h"
 
 /*!
- * This class respresents a normal shader.
+ * This class respresents the normal shader.
  */
 class Normals2RGBShader : public Shader {
 
     public:
-        /*!
-         * .
-         */
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
             (void) (nrays);
             // Check hit
@@ -24,4 +21,4 @@ class Normals2RGBShader : public Shader {
         }
 };
 
-#endif
+#endif /* _NORMALS_2_RGB_SHADER_H_ */

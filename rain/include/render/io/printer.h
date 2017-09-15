@@ -2,7 +2,7 @@
 #define _PRINTER_H_
 
 #include <fstream>
-#include "image/image.h"
+#include "utils/image.h"
 #include "output_settings.h"
 
 /*!
@@ -82,4 +82,4 @@ class Printer {
         }
 };
 
-#endif
+#endif /* _PRINTER_H_ */

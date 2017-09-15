@@ -15,16 +15,16 @@ class OutputSettings {
         // File codifications
         enum Codifications : int {ASCII = 0, BINARY};
 
-        // Image width
-        unsigned int width;
-        // Image height
-        unsigned int height;
         // Image name
         std::string name;
         // File format
         ImageFileFormats fileFormat;
         // Image file codification
         Codifications codification;
+        // Image width
+        unsigned int width;
+        // Image height
+        unsigned int height;
 
         /*!
          * Output settings constructor.
@@ -89,4 +89,4 @@ class OutputSettings {
         }
 };
 
-#endif
+#endif /* _OUTPUT_SETTINGS_H_ */

@@ -5,6 +5,8 @@
 #include "utils/vec3.h"
 #include "scene/components/hit_record.h"
 
+using namespace utils;
+
 /*!
  * This class represents a shape material.
  */
@@ -31,4 +33,4 @@ class Material {
 #include "lambertian_material.h"
 #include "metal_material.h"
 
-#endif
+#endif /* _MATERIAL_H_ */

@@ -4,42 +4,42 @@
 #include <cmath>
 #include <algorithm>
 #include "shader.h"
-#include "utils/vec3.h"
 #include "scene/components/light.h"
 
+using namespace utils;
+
 /*!
- * .
+ * This class represents the Blinn-Phong shader.
  */
 class BlinnPhongShader : public Shader {
 
     private:
-        //
-        RGB ambientLight;
+        // Ambient light
+        RGB alight;
 
     public:
         /*!
-         * .
+         * Blinn-Phong shader constructor.
+         *
+         * @param alight_ Ambient light
          */
-        BlinnPhongShader(RGB ambientLight_) : ambientLight(ambientLight_)
+        BlinnPhongShader(RGB alight_) : alight(alight_)
             {/* empty */}
 
-        /*!
-         * .
-         */
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
             (void) nrays;
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
-                //
+                // Get Blinn-Phong material
                 BlinnPhongMaterial* material =
                     dynamic_cast<BlinnPhongMaterial*>(hr.material);
-                //
-                RGB c = material->ka * ambientLight;
+                // Ambient light on the shape
+                RGB c = material->ka * alight;
                 // Check shadows
                 HitRecord shr;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.origin, light->direction), scene, shr)) {
+                    if (!intersect(Ray(hr.origin, light->getDirection()), scene, shr)) {
                         c += blinnPhong(r, light, hr);
                     }
                 }
@@ -56,23 +56,29 @@ class BlinnPhongShader : public Shader {
 
     private:
         /*!
-         * .
+         * Applies the Blinn-Phong shadding model.
+         *
+         * @param r Incoming ray
+         * @param light Scene light
+         * @param hr Hit record
+         *
+         * @return Corresponding color
          */
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
             // L.N
             BlinnPhongMaterial* material = dynamic_cast<BlinnPhongMaterial*>(hr.material);
-            Vec3 ln = unitVector(light->direction - r.getDirection());
+            Vec3 ln = unitVector(light->getDirection() - r.getDirection());
             float lambertian = std::max(0.f, dot(ln, hr.normal));
             float specular = 0.0;
-            // Blinn Phong
+            // Blinn-Phong
             Vec3 H = unitVector(ln + unitVector(-r.getDirection()));
             // N.H
             specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);
             //
-            return material->kd * lambertian * light->intensity +
-                   material->ks * specular * light->intensity;
+            return material->kd * lambertian * light->getIntensity() +
+                   material->ks * specular * light->getIntensity();
         }
 };
 
-#endif
+#endif /* _BLINN_PHONG_SHADER_H_ */

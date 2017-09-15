@@ -18,6 +18,8 @@
 #include "utils/vec3.h"
 #include "utils/split.h"
 
+using namespace utils;
+
 /*!
  * This class is responsible for reading the scene description.
  */
@@ -33,8 +35,8 @@ class SceneReader {
          * @param cam Scene camera
          * @param shader Shader
          * @param os Output settings
-         * @param samples Number of samples
-         * @param nrays Number
+         * @param samples Number of samples for anti-aliasing
+         * @param nrays Number of rays of the recursion
          */
         static void read(const std::string path, Scene& scene, Camera& cam,
                 Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
@@ -272,11 +274,11 @@ class SceneReader {
             std::vector<std::string> format(vformat, end(vformat));
             // Create the shader and return it
             std::vector<std::string>& v = *(getContent(format, lines));
-            return (new BlinnPhongShader(getVec3(format[0])));
+            return (new BlinnPhongShader(getVec3(v[0])));
         }
 
         // Scene reader
         #include "scene_reader.inl"
 };
 
-#endif
+#endif /* _SCENE_READER_H_ */

@@ -35,9 +35,9 @@ class Sphere : public Shape {
          * Check if the ray has hit the sphere. Returns true if the ray has hit
          * the sphere and false otherwise.
          *
-         * @param r Ray
-         * @param tMin
-         * @param tMax
+         * @param r Incoming ray
+         * @param tMin Min depth
+         * @param tMax Max depth
          * @param hr Hit record
          *
          * @return True if the ray has hit the sphere and false otherwise
@@ -48,11 +48,11 @@ class Sphere : public Shape {
             auto b = 2 * dot(oc, r.getDirection());
             auto c = dot(oc, oc) - (radius * radius);
             float delta = (b * b - 4 * a * c);
-            //
+            // Check if the ray hit this sphere
             if (delta >= 0) {
-                //
+                // Get smaller root
                 auto t = (-b - sqrt(delta)) / (2 * a);
-                //
+                // Check if the root is in range
                 if (t > tMin && t < tMax) {
                     hr.t = t;
                     hr.origin = r.pointAt(t);
@@ -66,4 +66,4 @@ class Sphere : public Shape {
         }
 };
 
-#endif
+#endif /* _SPHERE_H_ */

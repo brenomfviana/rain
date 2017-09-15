@@ -2,16 +2,19 @@
 #define _RAY_TRACE_H_
 
 #include <cmath>
+#include <iostream>
+#include <memory>
 #include <random>
 #include <thread>
 #include <vector>
-#include <iostream>
 #include "ray.h"
 #include "shader/shader.h"
 #include "scene/components/hit_record.h"
 
+using namespace utils;
+
 /*!
- * .
+ * This is the ray tracer, is the class is responsible for all rendering.
  */
 class RayTracer {
 
@@ -23,24 +26,26 @@ class RayTracer {
          * @param scene Scene
          * @param width Image width
          * @param height Image height
-         * @param nsmaples
+         * @param nsamples Number of samples for anti-aliasing
+         * @param nrays Number of rays of the recursion
          *
          * @return Rendered image
          */
         static Image* render(Camera& cam, Scene& scene, Shader* shader,
-                             unsigned int width, unsigned int height,
-                             unsigned int nsamples, unsigned int nrays) {
+                unsigned int width, unsigned int height, unsigned int nsamples,
+                unsigned int nrays) {
             // Create image
             Image* img = new Image(width, height);
             std::vector<std::thread*> ts;
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;
-                row++, i--) {
+                    row++, i--) {
+                // Create a thread for each image line
                 std::thread* t = new std::thread(xAxis, img, row, i, std::ref(cam),
                     std::ref(scene), shader, nsamples, nrays);
                 ts.push_back(t);
     		}
-            //
+            // Wait all threads
             for (std::thread* t : ts) {
                 t->join();
             }
@@ -49,11 +54,19 @@ class RayTracer {
 
     private:
         /*!
-         * .
+         * Render an image line.
+         *
+         * @param img
+         * @param cam Camera
+         * @param scene Scene
+         * @param width Image width
+         * @param height Image height
+         * @param nsamples Number of samples for anti-aliasing
+         * @param nrays Number of rays of the recursion
          */
         static void xAxis(Image* img, unsigned int row, unsigned int i,
-                          Camera& cam, Scene& scene, Shader* shader,
-                          unsigned int nsamples, int nrays) {
+                Camera& cam, Scene& scene, Shader* shader, unsigned int nsamples,
+                int nrays) {
             // Seed to generate random numbers
             std::mt19937 gen(1);
             // X axis
@@ -91,4 +104,4 @@ class RayTracer {
         }
 };
 
-#endif
+#endif /* _RAY_TRACE_H_ */

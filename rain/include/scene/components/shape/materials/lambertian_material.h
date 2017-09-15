@@ -3,16 +3,27 @@
 
 #include "material.h"
 
+using namespace utils;
+
 /*!
- * This class represents a shape material.
+ * This class represents the lambertian material.
  */
 class LambertianMaterial : public Material {
 
     public:
+        // Albedo
         Vec3 albedo;
 
+        /*!
+         * Lambertian material constructor.
+         *
+         * @param albedo_ Albedo
+         */
         LambertianMaterial(Vec3 albedo_) : albedo(albedo_) { /* empty */ }
 
+        /*!
+         * .
+         */
         Vec3 randomInUnitSphere() const {
 			Vec3 p;
 			do {
@@ -21,14 +32,14 @@ class LambertianMaterial : public Material {
 			return p;
         }
 
-        bool scatter(const Ray& incomingRay, const HitRecord& hr,
-                     RGB& attenuation, Ray& scatteredRay) {
-            (void) (incomingRay);
+        bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
+                Ray& sray) {
+            (void) (r);
 		    Vec3 target = hr.origin + hr.normal + randomInUnitSphere();
-		    scatteredRay = Ray(hr.origin, target - hr.origin);
+		    sray = Ray(hr.origin, target - hr.origin);
 			attenuation = albedo;
 			return true;
         }
 };
 
-#endif
+#endif /* _LAMBERTIAN_MATERIAL_H_ */

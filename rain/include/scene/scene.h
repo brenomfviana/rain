@@ -46,4 +46,4 @@ class Scene {
         inline void addLight(Light* light) { lights.push_back(light); }
 };
 
-#endif
+#endif /* _SCENE_H_ */ 

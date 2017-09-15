@@ -3,28 +3,30 @@
 
 #include "material.h"
 
+using namespace utils;
+
 /*!
- * .
+ * This class respresents the Blinn-Phong material.
  */
 class BlinnPhongMaterial : public Material {
 
     public:
-        //
+        // Ambient coefficient
         Vec3 ka;
-        // Albedo
+        // Diffuse coefficient
         Vec3 kd;
-        //
+        // Specular coefficient
         Vec3 ks;
-        //
+        // Specular shininess control parameter
         float p;
 
         /*!
          * BlinnPhongMaterial constructor.
          *
-         * @param kd_
-         * @param ks_
-         * @param p_
-         * @param ka_
+         * @param ka_ Ambient coefficient
+         * @param kd_ Diffuse coefficient
+         * @param ks_ Specular coefficient
+         * @param p_ Specular shininess control parameter
          */
         BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, float p_) :
             ka(ka_), kd(kd_), ks(ks_), p(p_)  { /* empty */ }
@@ -32,12 +34,12 @@ class BlinnPhongMaterial : public Material {
         bool scatter(const Ray& incomingRay, const HitRecord& hitRecord,
             RGB& attenuation, Ray& scatteredRay) {
                 //
+                (void) (hitRecord);
                 scatteredRay = incomingRay;
                 // No attenuation
                 attenuation = Vec3(1, 1, 1);
                 return true;
-                std::cout << hitRecord.t; // Remove warning
             }
 };
 
-#endif
+#endif /* _BLINN_PHONG_MATERIAL_H_ */
