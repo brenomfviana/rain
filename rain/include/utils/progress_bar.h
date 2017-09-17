@@ -11,7 +11,7 @@ namespace utils {
 
         private:
             // Bar width
-            size_t bar_width;
+            size_t barWidth;
             // Max value
             unsigned int max;
             // Current value
@@ -22,20 +22,21 @@ namespace utils {
             std::mutex mtx;
 
             /*!
-             * .
+             * Print progress bar.
              */
             void print() {
                 std::string bar;
-
-                for (unsigned int i = 0; i < bar_width; i++) {
-                    if (i < (unsigned int) (percent / 2)) {
+                // Calculates progress
+                for (unsigned int i = 0; i < barWidth; i++) {
+                    if (i < (unsigned int) ((percent * barWidth) / 100.f)) {
                         bar.replace(i, 1, "=");
-                    } else if (i == (unsigned int) (percent / 2)) {
+                    } else if (i == (unsigned int) ((percent * barWidth) / 100.f)) {
                         bar.replace(i, 1, ">");
                     } else {
                         bar.replace(i, 1, " ");
                     }
                 }
+                // Print
                 std::cout << "\r" "|" << bar << "| ";
                 std::cout.width(3);
                 std::cout << ((int) percent) << "%" << std::flush;
@@ -45,11 +46,11 @@ namespace utils {
             /*!
              * Progress bar constructor.
              *
-             * @param sz_ Bar width
-             * @param max_ Max value
+             * @param sz Bar width
+             * @param max Max value
              */
-            ProgressBar(size_t sz_ = 50, unsigned int max_ = 100) : bar_width(sz_),
-                max(max_), value(0) { /* empty */ }
+            ProgressBar(size_t sz = 50, unsigned int max = 100) :
+                barWidth(sz), max(max), value(0) { /* empty */ }
 
             /*!
              * Progress bar destructor.
@@ -63,10 +64,10 @@ namespace utils {
                 mtx.lock();
                 value++;
                 // Calculates percentage
-                float _percent = ((value * 1.f) / (max * 1.f)) * 100;
+                float p = ((value * 100.f) / (max * 1.f));
                 // Check if needs to update progress bar
-                if (_percent > percent) {
-                    percent = _percent;
+                if (p > percent) {
+                    percent = p;
                     print();
                 }
                 mtx.unlock();
