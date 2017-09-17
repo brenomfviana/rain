@@ -10,6 +10,7 @@
 #include "ray.h"
 #include "shader/shader.h"
 #include "scene/components/hit_record.h"
+#include "utils/progress_bar.h"
 
 using namespace utils;
 
@@ -37,12 +38,14 @@ class RayTracer {
             // Create image
             Image* img = new Image(width, height);
             std::vector<std::thread*> ts;
+            //
+            ProgressBar* p = new ProgressBar(50, width * height);
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;
                     row++, i--) {
                 // Create a thread for each image line
                 std::thread* t = new std::thread(xAxis, img, row, i, std::ref(cam),
-                    std::ref(scene), shader, nsamples, nrays);
+                    std::ref(scene), shader, nsamples, nrays, p);
                 ts.push_back(t);
     		}
             // Wait all threads
@@ -66,7 +69,7 @@ class RayTracer {
          */
         static void xAxis(Image* img, unsigned int row, unsigned int i,
                 Camera& cam, Scene& scene, Shader* shader, unsigned int nsamples,
-                int nrays) {
+                int nrays, ProgressBar* p) {
             // Seed to generate random numbers
             std::mt19937 gen(1);
             // X axis
@@ -100,6 +103,7 @@ class RayTracer {
                 img->pixels[(i * img->width * 3) + (col * 3)] = ir;
                 img->pixels[(i * img->width * 3) + (col * 3) + 1] = ig;
                 img->pixels[(i * img->width * 3) + (col * 3) + 2] = ib;
+                p->increase();
             }
         }
 };
