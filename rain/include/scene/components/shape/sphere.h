@@ -16,20 +16,20 @@ class Sphere : public Shape {
         /*!
          * Sphere constructor.
          *
-         * @param radius_ Sphere radius
-         * @param origin_ Sphere origin point
+         * @param radius Sphere radius
+         * @param origin Sphere origin point
          */
-        Sphere(Point3 origin_, float radius_, Material* material_) :
-            Shape(origin_, material_), radius(radius_) { /* empty */ }
+        Sphere(Point3 origin, float radius, Material* material) :
+            Shape(origin, material), radius(radius) { /* empty */ }
 
         /*!
          * Sphere constructor.
          *
-         * @param radius_ Sphere radius
-         * @param origin_ Sphere origin point
+         * @param radius Sphere radius
+         * @param origin Sphere origin point
          */
-        Sphere(Point3 origin_, float radius_) :
-            Shape(origin_), radius(radius_) { /* empty */ }
+        Sphere(Point3 origin, float radius) :
+            Shape(origin), radius(radius) { /* empty */ }
 
         /*!
          * Check if the ray has hit the sphere. Returns true if the ray has hit

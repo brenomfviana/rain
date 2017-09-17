@@ -29,19 +29,19 @@ namespace utils {
             /*!
              * 3D vector constructor.
              *
-             * @param e0_ Element 0
-             * @param e1_ Element 1
-             * @param e2_ Element 2
+             * @param e0 Element 0
+             * @param e1 Element 1
+             * @param e2 Element 2
              */
-            explicit Vec3(ValueType e0_ = 0.f, ValueType e1_ = 0.f, ValueType e2_ = 0.f)
-                : e{e0_, e1_, e2_} { /* empty */ }
+            explicit Vec3(ValueType e0 = 0.f, ValueType e1 = 0.f, ValueType e2 = 0.f)
+                : e{e0, e1, e2} { /* empty */ }
 
             /*!
              * Copy constructor.
              *
              * @param vector_ Vector
              */
-            Vec3(const Vec3& vector_) : e{vector_[X], vector_[Y], vector_[Z]}
+            Vec3(const Vec3& vector) : e{vector[X], vector[Y], vector[Z]}
                 { /* empty */ }
 
             /*!
@@ -49,12 +49,12 @@ namespace utils {
              *
              * @param il_ Initializer list
              */
-            Vec3(std::initializer_list<ValueType> il_) {
-                assert(il_.size() >= 3);
-                std::copy(il_.begin(), std::next(il_.begin(), 3), std::begin(e));
+            Vec3(std::initializer_list<ValueType> il) {
+                assert(il.size() >= 3);
+                std::copy(il.begin(), std::next(il.begin(), 3), std::begin(e));
             }
 
-            /* ----------------------- Access Operators ------------------------- */
+            /* --------------------- Access Operators ----------------------- */
 
             /*!
              * Get x value.

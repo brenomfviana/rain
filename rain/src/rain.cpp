@@ -31,7 +31,8 @@ int main(int argc, char *argv[]) {
 			std::cout << "Opening scene description file...\n";
 			// Read file
         	SceneReader::read(argv[1], scene, cam, shader, os, samples, nrays);
-			std::cout << "\033[1;34mScene description file opened successfully!\033[0m\n";
+			std::cout << "\033[1;34mScene description file "
+					  << "opened successfully!\033[0m\n";
 			std::cout << "Starts to rendering...\n";
 			// Start time
 			time_t start = time(0);
@@ -41,8 +42,8 @@ int main(int argc, char *argv[]) {
 			// End time
 			time_t end = time(0);
 			// Print render time
-			std::cout << "\033[1;34m\nThe image was rendered in " << difftime(end, start)
-				<< " seconds.\033[0m\n";
+			std::cout << "\033[1;34m\nThe image was rendered in "
+					  << difftime(end, start) << " seconds.\033[0m\n";
 			std::cout << "Printing image...\n";
 	        // Print image
 	        Printer::print(img, os, "");

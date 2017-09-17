@@ -19,11 +19,11 @@ namespace utils {
             /*!
              * Image constructor.
              *
-             * @param width_ Image width
-             * @param height_ Image height
+             * @param width Image width
+             * @param height Image height
              */
-            Image(unsigned int width_ = 0, unsigned int height_ = 0) :
-                    width(width_), height(height_) {
+            Image(unsigned int width = 0, unsigned int height = 0) :
+                    width(width), height(height) {
                 // Allocate pixel vector of image
                 pixels = new char[width * height * 3];
                 // Initialize pixels

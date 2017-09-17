@@ -27,9 +27,9 @@ class Scene {
         /*!
          * Scene constructor.
          *
-         * @param background_ Scene background
+         * @param background Scene background
          */
-        Scene(Background background_) : background(background_) { /* empty */ }
+        Scene(Background background) : background(background) { /* empty */ }
 
         /*!
          * Add a shape to the scene.
@@ -46,4 +46,4 @@ class Scene {
         inline void addLight(Light* light) { lights.push_back(light); }
 };
 
-#endif /* _SCENE_H_ */ 
+#endif /* _SCENE_H_ */

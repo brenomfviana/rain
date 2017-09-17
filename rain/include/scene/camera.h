@@ -22,10 +22,15 @@ class Camera {
 
         /*!
          * Camera constructor.
+         *
+         * @param llc Lower left corner of the view plane
+         * @param horizontal Horizontal dimension of the view plane
+         * @param vertical Vertical dimension of the view plane
+         * @param origin The camera's origin
          */
-        Camera(Point3 llc_ = Point3(-8, -4.5, -4.5), Vec3 horizontal_ = Vec3(16, 0, 0),
-                Vec3 vertical_ = Vec3(0, 9, 0), Point3 origin_ = Point3(0, 0, 0)) :
-            llc(llc_), horizontal(horizontal_), vertical(vertical_), origin(origin_)
+        Camera(Point3 llc = Point3(-8, -4.5, -4.5), Vec3 horizontal = Vec3(16, 0, 0),
+                Vec3 vertical = Vec3(0, 9, 0), Point3 origin = Point3(0, 0, 0)) :
+            llc(llc), horizontal(horizontal), vertical(vertical), origin(origin)
             { /* empty */ }
 };
 

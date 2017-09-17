@@ -23,22 +23,22 @@ class Light {
          * @param direction Light direction
          * @param intensity Light intensity
          */
-        Light(Vec3 direction_ = Vec3(1, 1, 1), Vec3 intensity_ = Vec3(1, 1, 1)) :
-            direction(direction_), intensity(intensity_) { /* empty */ }
+        Light(Vec3 direction = Vec3(1, 1, 1), Vec3 intensity = Vec3(1, 1, 1)) :
+            direction(direction), intensity(intensity) { /* empty */ }
 
         /*!
 		 * Get light direction.
 		 *
 		 * @return Light direction
 		 */
-		inline Vec3 getDirection(void) const { return direction; }
+		inline Vec3 getDirection() const { return direction; }
 
         /*!
          * Get light intensity.
          *
          * @return Light intensity
          */
-        inline Vec3 getIntensity(void) const { return intensity; }
+        inline Vec3 getIntensity() const { return intensity; }
 };
 
 #endif /* _LIGHT_H_ */

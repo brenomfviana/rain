@@ -15,13 +15,21 @@ class MetalMaterial : public LambertianMaterial {
         float fuzz;
 
         /*!
-         * .
+         * Metal material constructor.
+         *
+         * @param albedo Albedo
+         * @param fuzz
          */
-        MetalMaterial(Vec3 albedo_, int fuzz_) :
-            LambertianMaterial(albedo_), fuzz(fuzz_) { /* empty */ }
+        MetalMaterial(Vec3 albedo, int fuzz) :
+            LambertianMaterial(albedo), fuzz(fuzz) { /* empty */ }
 
         /*!
-         * .
+         * Get reflected ray direction.
+         *
+         * @param v Incoming ray direction
+         * @param n Normal vector
+         *
+         * @return Reflected ray direction
          */
         Vec3 reflect(const Vec3& v, const Vec3& n) const {
 			return v - 2 * dot(v, n) * n;

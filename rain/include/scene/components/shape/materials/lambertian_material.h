@@ -17,12 +17,14 @@ class LambertianMaterial : public Material {
         /*!
          * Lambertian material constructor.
          *
-         * @param albedo_ Albedo
+         * @param albedo Albedo
          */
-        LambertianMaterial(Vec3 albedo_) : albedo(albedo_) { /* empty */ }
+        LambertianMaterial(Vec3 albedo) : albedo(albedo) { /* empty */ }
 
         /*!
-         * .
+         * Get random direction of a scattered ray.
+         *
+         * @return Random direction of a scattered ray
          */
         Vec3 randomInUnitSphere() const {
 			Vec3 p;

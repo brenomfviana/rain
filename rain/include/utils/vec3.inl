@@ -197,9 +197,9 @@ inline Vec3 cross(const Vec3& v1, const Vec3& v2) {
 }
 
 inline void Vec3::makeUnitVector(void) {
-    Vec3::ValueType v_dot_v = dot(*this, *this);
-    assert(fabs(v_dot_v - 0.f) > 0.000001);
-    Vec3::ValueType k = (1.f / sqrt(v_dot_v));
+    Vec3::ValueType vDOTv = dot(*this, *this);
+    assert(fabs(vDOTv - 0.f) > 0.000001);
+    Vec3::ValueType k = (1.f / sqrt(vDOTv));
     e[Vec3::X] *= k;
     e[Vec3::Y] *= k;
     e[Vec3::Z] *= k;

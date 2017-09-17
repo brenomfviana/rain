@@ -35,6 +35,7 @@ class DepthMapShader : public Shader {
             // Check hit
             HitRecord hr;
             if (intersect(r, scene, hr)) {
+                // Check depth
                 if (hr.t >= 0 && hr.t <= maxDepth) {
                     float t = hr.t / maxDepth;
                     return (foreground * (1 - t)) + (background * t);

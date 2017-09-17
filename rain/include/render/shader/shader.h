@@ -15,11 +15,13 @@ class Shader {
 
     public:
         /*!
-         * .
+         * Get pixel color.
          *
          * @param r Incoming ray
          * @param scene Scene
          * @param nrays Number of rays of the recursion
+         *
+         * @return Pixel color
          */
         virtual RGB color(const Ray& r, const Scene& scene, int nrays) const = 0;
 

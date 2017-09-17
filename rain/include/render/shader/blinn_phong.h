@@ -39,7 +39,8 @@ class BlinnPhongShader : public Shader {
                 // Check shadows
                 HitRecord shr;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.origin, light->getDirection()), scene, shr)) {
+                    if (!intersect(Ray(hr.origin, light->getDirection()), scene,
+                            shr)) {
                         c += blinnPhong(r, light, hr);
                     }
                 }
@@ -66,7 +67,8 @@ class BlinnPhongShader : public Shader {
          */
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
             // L.N
-            BlinnPhongMaterial* material = dynamic_cast<BlinnPhongMaterial*>(hr.material);
+            BlinnPhongMaterial* material =
+                dynamic_cast<BlinnPhongMaterial*>(hr.material);
             Vec3 ln = unitVector(light->getDirection() - r.getDirection());
             float lambertian = std::max(0.f, dot(ln, hr.normal));
             float specular = 0.0;
@@ -75,7 +77,7 @@ class BlinnPhongShader : public Shader {
             // N.H
             specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);
-            //
+            // 
             return material->kd * lambertian * light->getIntensity() +
                    material->ks * specular * light->getIntensity();
         }

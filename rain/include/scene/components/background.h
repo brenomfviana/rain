@@ -33,52 +33,50 @@ class Background {
         /*!
          * Single-color background constructor.
          *
-         * @param color_ Color
+         * @param color Color
          */
-        Background(RGB color_) :
-            upperLeft(color_),
-            lowerLeft(color_),
-            upperRight(color_),
-            lowerRight(color_) { /* empty */ }
+        Background(RGB color) :
+            upperLeft(color), lowerLeft(color),
+            upperRight(color), lowerRight(color)
+                { /* empty */ }
 
         /*!
          * Two-color background constructor. Need to choose orientation, true to
-         * vertical, and false to horizontal. Vertical top=c1_ and bottom=c2_.
-         * Horizontal left=c1_ and right=c2_.
+         * vertical, and false to horizontal. Vertical top=c1 and bottom=c2.
+         * Horizontal left=c1 and right=c2.
          *
          * @param c1 First color
          * @param c2 Second color
-         * @param orientation_ Orientation
+         * @param orientation Orientation
          */
-        Background(RGB c1_, RGB c2_, bool orientation_) {
+        Background(RGB c1, RGB c2, bool orientation) {
             // Check orientation
-            if (orientation_) {
-                upperLeft = c1_;
-                lowerLeft = c2_;
-                upperRight = c1_;
-                lowerRight = c2_;
+            if (orientation) {
+                upperLeft = c1;
+                lowerLeft = c2;
+                upperRight = c1;
+                lowerRight = c2;
             } else {
-                upperLeft = c1_;
-                lowerLeft = c1_;
-                upperRight = c2_;
-                lowerRight = c2_;
+                upperLeft = c1;
+                lowerLeft = c1;
+                upperRight = c2;
+                lowerRight = c2;
             }
         }
 
         /*!
          * Four-color background constructor. Choose a color for each corner.
          *
-         * @param upperLeft_ Upper left corner color
-         * @param lowerLeft_ Lower left corner color
-         * @param upperRight_ Upper right corner color
-         * @param lowerRight_ Lower right corner color
+         * @param upperLeft Upper left corner color
+         * @param lowerLeft Lower left corner color
+         * @param upperRight Upper right corner color
+         * @param lowerRight Lower right corner color
          */
-        Background(RGB upperLeft_, RGB lowerLeft_,
-                RGB upperRight_, RGB lowerRight_) :
-            upperLeft(upperLeft_),
-            lowerLeft(lowerLeft_),
-            upperRight(upperRight_),
-            lowerRight(lowerRight_) { /* empty */ }
+        Background(RGB upperLeft, RGB lowerLeft,
+                RGB upperRight, RGB lowerRight) :
+            upperLeft(upperLeft), lowerLeft(lowerLeft),
+            upperRight(upperRight), lowerRight(lowerRight)
+                { /* empty */ }
 };
 
 #endif /* _BACKGROUND_H_ */

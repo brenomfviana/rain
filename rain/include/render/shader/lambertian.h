@@ -13,6 +13,7 @@ class LambertianShader : public Shader {
 
     public:
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
+            // Check if recursion is over
             if (nrays-- == 0) {
                 return RGB(1, 1, 1);
             } else {
@@ -20,18 +21,18 @@ class LambertianShader : public Shader {
                 HitRecord hr;
                 if (intersect(r, scene, hr)) {
                     RGB c;
-                    //
-                    HitRecord shr;
-                    /*for (auto &light : scene.lights) {
+                    /*HitRecord shr;
+                    for (auto &light : scene.lights) {
                         c += lights(r, light, hr);
                     }*/
-                    //
+                    // 
                     Ray scatteredRay;
                     RGB attenuation;
                     // Shape material
                     Material* m = hr.material;
-                    //
+                    // Check if the ray will be scattered
                     if (m->scatter(r, hr, attenuation, scatteredRay)) {
+                        // Get the color from where the scattered ray reaches
                         c = 0.5 * attenuation * color(scatteredRay, scene, nrays);
                         return c;
                     }

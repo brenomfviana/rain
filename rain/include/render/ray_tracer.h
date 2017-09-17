@@ -25,6 +25,7 @@ class RayTracer {
          *
          * @param cam Camera
          * @param scene Scene
+         * @param shader Shader
          * @param width Image width
          * @param height Image height
          * @param nsamples Number of samples for anti-aliasing
@@ -38,8 +39,8 @@ class RayTracer {
             // Create image
             Image* img = new Image(width, height);
             std::vector<std::thread*> ts;
-            //
-            ProgressBar* p = new ProgressBar(50, width * height);
+            // Progress bar
+            ProgressBar* p = new ProgressBar(70, width * height);
             // Y axis
             for (unsigned int row = 0, i = (img->height - 1); row < img->height;
                     row++, i--) {
@@ -62,10 +63,12 @@ class RayTracer {
          * @param img
          * @param cam Camera
          * @param scene Scene
+         * @param shader Shader
          * @param width Image width
          * @param height Image height
          * @param nsamples Number of samples for anti-aliasing
          * @param nrays Number of rays of the recursion
+         * @param p Progress bar
          */
         static void xAxis(Image* img, unsigned int row, unsigned int i,
                 Camera& cam, Scene& scene, Shader* shader, unsigned int nsamples,

@@ -23,11 +23,11 @@ class Ray {
 		/*!
 		 * Ray constructor.
 		 *
-		 * @param origin_ Ray origin
-		 * @param direction_ Ray direction
+		 * @param origin Ray origin
+		 * @param direction Ray direction
 		 */
-		Ray(const Point3 origin_ = Point3(), const Vec3 direction_ = Vec3()) :
-			origin(origin_), direction(direction_) { /* Empty */ }
+		Ray(const Point3 origin = Point3(), const Vec3 direction = Vec3()) :
+			origin(origin), direction(direction) { /* Empty */ }
 
 		/* ------------------------ Access Methods -------------------------- */
 
@@ -36,22 +36,24 @@ class Ray {
 		 *
 		 * @return Ray direction
 		 */
-		inline Vec3 getDirection(void) const { return direction; }
+		inline Vec3 getDirection() const { return direction; }
 
 		/*!
 		 * Get ray origin.
 		 *
 		 * @return Ray origin
 		 */
-		inline Vec3 getOrigin(void) const { return origin; }
+		inline Vec3 getOrigin() const { return origin; }
 
 		/*!
 		 * Get the point to which the vector points.
 		 *
+		 * @param t Distance
+		 *
 		 * @return The point to which the vector points
 		 */
-		Point3 pointAt(RealType t_) const {
-			return origin + (t_ * direction);
+		Point3 pointAt(RealType t) const {
+			return origin + (t * direction);
 		}
 };
 

@@ -24,19 +24,19 @@ class Shape {
         /*!
          * Shape constructor.
          *
-         * @param origin_ Shape origin
-         * @param material_ Shape material
+         * @param origin Shape origin
+         * @param material Shape material
          */
-        Shape(Vec3 origin_, Material* material_) :
-            origin(origin_), material(material_)
+        Shape(Vec3 origin, Material* material) :
+            origin(origin), material(material)
                 { /* empty */ }
 
         /*!
          * Shape constructor.
          *
-         * @param origin_ Shape origin
+         * @param origin Shape origin
          */
-        Shape(Vec3 origin_) : origin(origin_) { /* empty */ }
+        Shape(Vec3 origin) : origin(origin) { /* empty */ }
 
         /*!
          * Get shape material.
