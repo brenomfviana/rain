@@ -82,7 +82,7 @@ Choose a scene and run the renderer passing the file path of the scene as an arg
 #### Image
 
 ![alt text](imgs/sky.png)
-> NOTE: The image was converted to png format to show here, the renderer does not generate images in that format.
+> NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
 
@@ -115,7 +115,7 @@ BACKGROUND:
 #### Image
 
 ![alt text](imgs/blinn-phong1.png)
-> NOTE: The image was converted to png format to show here, the renderer does not generate images in that format.
+> NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
 
