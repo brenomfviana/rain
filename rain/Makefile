@@ -1,7 +1,7 @@
 # Language
 CXX = g++
 # Flags
-CXXFLAGS = -std=c++11 -Wall -Wextra -g -pthread
+CXXFLAGS = -std=c++17 -Wall -Wextra -g -pthread
 # Executable
 TARGET = rain
 # Header's inclusion
