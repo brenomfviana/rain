@@ -7,6 +7,8 @@ HEIGHT: 100
 # Ray Tracer Settings
 SAMPLES: 100 # Number of samples for anti-aliasing
 RAYS:    100 # Number of rays of the recursion
+MIN-DEPTH: 0   # Minimum distance from the scene
+MAX-DEPTH: 100 # Maximum distance from the scene
 # Camera
 CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane

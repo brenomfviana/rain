@@ -19,6 +19,9 @@ static Material* getMaterial(std::list<std::string>& lines) {
     } else
         if (aux.find("METAL:") == 0) {
             return getMetalMaterial(lines);
+    } else
+        if (aux.find("DIELECTRIC:") == 0) {
+            return getDielectricMaterial(lines);
     } else {
         throw "Invalid shader!";
     }
@@ -71,4 +74,20 @@ static MetalMaterial* getMetalMaterial(std::list<std::string>& lines) {
     // Create the Metal material and return it
     std::vector<std::string>& v = *(getContent(format, lines));
     return (new MetalMaterial(getVec3(v[0]), atof(v[1].c_str())));
+}
+
+/*!
+ * Get Dielectric material.
+ *
+ * @param lines File lines
+ *
+ * @return Dielectric material
+ */
+static DielectricMaterial* getDielectricMaterial(std::list<std::string>& lines) {
+    // Material format
+    std::string vformat[] = {"RI:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the Metal material and return it
+    std::vector<std::string>& v = *(getContent(format, lines));
+    return (new DielectricMaterial(atof(v[0].c_str())));
 }

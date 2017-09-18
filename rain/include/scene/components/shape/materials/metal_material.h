@@ -20,7 +20,7 @@ class MetalMaterial : public LambertianMaterial {
          * @param albedo Albedo
          * @param fuzz
          */
-        MetalMaterial(Vec3 albedo, int fuzz) :
+        MetalMaterial(Vec3 albedo, float fuzz) :
             LambertianMaterial(albedo), fuzz(fuzz) { /* empty */ }
 
         /*!

@@ -32,5 +32,6 @@ class Material {
 #include "blinn_phong_material.h"
 #include "lambertian_material.h"
 #include "metal_material.h"
+#include "dielectric_material.h"
 
 #endif /* _MATERIAL_H_ */
