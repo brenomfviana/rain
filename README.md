@@ -54,6 +54,9 @@ The name rain is an acronym for **RA**y trac**IN**g.
     - [ ] PNG
     - [ ] TIFF
     - [ ] GIF
+- [ ] Miscellaneous
+  - [x] Progress Bar
+  - [x] Show render time
 
 ## Dependencies
 
@@ -74,15 +77,22 @@ Choose a scene and run the renderer passing the file path of the scene as an arg
 
 ## Scene file format
 
-#### Hello rain (Just background)
+### Sky
+
+#### Image
+
+![alt text](imgs/sky.png)
+> NOTE: The image was converted to png format to show here, the renderer does not generate images in that format.
+
+#### Scene Description File
 
 ```txt
 # Output settings
-NAME: hello-rain.ppm
+NAME: sky.ppm
 TYPE: PPM
-CODIFICATION: ascii # or binary
-WIDTH: 200
-HEIGHT: 100
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
 # Ray Tracer Settings
 SAMPLES: 100 # Number of samples for anti-aliasing
 RAYS:    100 # Number of rays of the recursion
@@ -96,14 +106,18 @@ CAMERA:
 SHADER:
     BACKGROUND
 BACKGROUND:
-    UPPER_LEFT: 0 1 0  # Upper left corner color  (green)
-    LOWER_LEFT: 0 0 0  # Lower left corner color  (black)
-    UPPER_RIGHT: 1 1 0 # Upper right corner color (yellow)
-    LOWER_RIGHT: 1 0 0 # Lower right corner color (red)
-
+    TOP: 0.5 0.7 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
 ```
 
-#### Blinn-Phong Shader
+### Blinn-Phong Shader
+
+#### Image
+
+![alt text](imgs/blinn-phong1.png)
+> NOTE: The image was converted to png format to show here, the renderer does not generate images in that format.
+
+#### Scene Description File
 
 ```txt
 # Output settings
@@ -151,7 +165,6 @@ COMPONENTS:
             KD: 0.7 0.2 0.1
             KS: 1 1 1
             P: 64
-
 ```
 
 ## Author
