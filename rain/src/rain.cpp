@@ -4,7 +4,7 @@
 #include "utils/image.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
-#include "scene/components/shape/sphere.h"
+#include "scene/components/light.h"
 #include "render/ray_tracer.h"
 #include "render/io/printer.h"
 #include "render/io/scene_reader.h"
@@ -34,6 +34,9 @@ int main(int argc, char *argv[]) {
 			std::cout << "\033[1;34mScene description file "
 					  << "opened successfully!\033[0m\n";
 			std::cout << "Starts to rendering...\n";
+			/*Spotlight* l = new Spotlight(Vec3(1, 1, -1), 90, 180,
+										Vec3(20, 10, 5), Vec3(1, 1, 1));
+			scene.addLight(l);*/
 			// Start time
 			time_t start = time(0);
 			// Render

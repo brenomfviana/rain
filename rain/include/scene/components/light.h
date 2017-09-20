@@ -10,7 +10,7 @@ using namespace utils;
  */
 class Light {
 
-    private:
+    protected:
         // Direction
         Vec3 direction;
         // Intensity
@@ -38,7 +38,14 @@ class Light {
          *
          * @return Light intensity
          */
-        inline Vec3 getIntensity() const { return intensity; }
+        inline Vec3 getIntensity(Point3 p) const {
+            (void) p;
+            return intensity;
+        }
 };
+
+typedef Light DirectionalLight;
+
+#include "spotlight.h"
 
 #endif /* _LIGHT_H_ */

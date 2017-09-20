@@ -71,15 +71,14 @@ class BlinnPhongShader : public Shader {
                 dynamic_cast<BlinnPhongMaterial*>(hr.material);
             Vec3 ln = unitVector(light->getDirection() - r.getDirection());
             float lambertian = std::max(0.f, dot(ln, hr.normal));
-            float specular = 0.0;
             // Blinn-Phong
             Vec3 H = unitVector(ln + unitVector(-r.getDirection()));
             // N.H
-            specular = std::max(0.f, dot(hr.normal, H));
+            float specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);
-            // 
-            return material->kd * lambertian * light->getIntensity() +
-                   material->ks * specular * light->getIntensity();
+            //
+            return material->kd * lambertian * light->getIntensity(hr.origin) +
+                   material->ks * specular * light->getIntensity(hr.origin);
         }
 };
 
