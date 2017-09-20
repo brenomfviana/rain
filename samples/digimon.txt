@@ -1,0 +1,55 @@
+# Output settings
+NAME: digimon.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
+# Camera
+CAMERA:
+    LLC: -2 -1 -1 # Lower left corner of the view plane
+    H: 4 0 0      # Horizontal dimension of the view plane
+    V: 0 2 0      # Vertical dimension of the view plane
+    O: 0 0 0      # The camera's origin
+# Scene description
+SHADER:
+    LAMBERTIAN
+BACKGROUND:
+    TOP: 0.5 0.6 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
+COMPONENTS:
+    LIGHT:
+        DIRECTION: 0 5 1
+        INTENSITY: 1 1 1
+    SPHERE:
+        ORIGIN: 0 -100.5 -1
+        RADIUS: 98
+        LAMBERTIAN:
+            ALBEDO: 0 0.4 0
+    SPHERE:
+        ORIGIN: 0 -2 -9
+        RADIUS: 6
+        LAMBERTIAN:
+            ALBEDO: 0.1 0.1 0.1
+    SPHERE:
+        ORIGIN: 2 1.1 -5
+        RADIUS: 1
+        LAMBERTIAN:
+            ALBEDO: 0.1 0.1 0.1
+    SPHERE:
+        ORIGIN: -2 1.1 -5
+        RADIUS: 1
+        LAMBERTIAN:
+            ALBEDO: 0.1 0.1 0.1
+    SPHERE:
+        ORIGIN: 0.3 -0.3 -1
+        RADIUS: 0.07
+        LAMBERTIAN:
+            ALBEDO: 1 1 1
+    SPHERE:
+        ORIGIN: -0.3 -0.3 -1
+        RADIUS: 0.07
+        LAMBERTIAN:
+            ALBEDO: 1 1 1
