@@ -42,7 +42,8 @@ class Shader {
             auto rd = r.getDirection();
             auto x = (rd.x() * 0.25) + 0.5;
             auto y = (rd.y() * 0.5) + 0.5;
-            return (1 - y) * ((1 - x) * ll + x * lr) + y * ((1 - x) * ul + x * ur);
+            return (1 - y) * ((1 - x) * ll + x * lr) +
+                        y  * ((1 - x) * ul + x * ur);
         }
 
         /*!
@@ -64,7 +65,7 @@ class Shader {
                     // Check which object is in front
                     if (haux.t > -1 && hr.t > haux.t) {
                         hr.t = haux.t;
-                        hr.origin = haux.origin;
+                        hr.point = haux.point;
                         hr.normal = haux.normal;
                         hr.material = haux.material;
                     }
@@ -74,10 +75,11 @@ class Shader {
         }
 };
 
-#include "background.h"
-#include "normals2rgb.h"
-#include "depth_map.h"
-#include "blinn_phong.h"
-#include "lambertian.h"
+#include "background_shader.h"
+#include "normals2rgb_shader.h"
+#include "depth_map_shader.h"
+#include "blinn_phong_shader.h"
+#include "cel_shader.h"
+#include "lambertian_shader.h"
 
 #endif /* _SHADER_H_ */

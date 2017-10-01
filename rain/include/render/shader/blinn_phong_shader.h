@@ -4,7 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include "shader.h"
-#include "scene/components/light.h"
+#include "scene/components/light/light.h"
 
 using namespace utils;
 
@@ -24,7 +24,7 @@ class BlinnPhongShader : public Shader {
          * @param alight_ Ambient light
          */
         BlinnPhongShader(RGB alight_) : alight(alight_)
-            {/* empty */}
+            { /* empty */ }
 
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
             (void) nrays;
@@ -39,7 +39,7 @@ class BlinnPhongShader : public Shader {
                 // Check shadows
                 HitRecord shr;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.origin, light->getDirection()), scene,
+                    if (!intersect(Ray(hr.point, light->getDirection()), scene,
                             shr)) {
                         c += blinnPhong(r, light, hr);
                     }
@@ -66,10 +66,11 @@ class BlinnPhongShader : public Shader {
          * @return Corresponding color
          */
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
-            // L.N
+            DirectionalLight* l = dynamic_cast<DirectionalLight*>(light);
             BlinnPhongMaterial* material =
                 dynamic_cast<BlinnPhongMaterial*>(hr.material);
-            Vec3 ln = unitVector(light->getDirection() - r.getDirection());
+            // L.N
+            Vec3 ln = unitVector(l->getDirection() - r.getDirection());
             float lambertian = std::max(0.f, dot(ln, hr.normal));
             // Blinn-Phong
             Vec3 H = unitVector(ln + unitVector(-r.getDirection()));
@@ -77,8 +78,8 @@ class BlinnPhongShader : public Shader {
             float specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);
             //
-            return material->kd * lambertian * light->getIntensity(hr.origin) +
-                   material->ks * specular * light->getIntensity(hr.origin);
+            return material->kd * lambertian * l->getIntensity() +
+                   material->ks * specular * l->getIntensity();
         }
 };
 
