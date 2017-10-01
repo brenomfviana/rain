@@ -32,9 +32,7 @@ namespace utils {
                 // Calculates progress
                 for (size_t i = 0; i < barWidth; i++) {
                     if (i < (size_t) ((percent * barWidth) / 100.f)) {
-                        bar.replace(i, 1, "=");
-                    } else if (i == (size_t) ((percent * barWidth) / 100.f)) {
-                        bar.replace(i, 1, ">");
+                        bar.replace(i, 1, "#");
                     } else {
                         bar.replace(i, 1, " ");
                     }
