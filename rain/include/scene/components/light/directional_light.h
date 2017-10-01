@@ -10,12 +10,6 @@ using namespace utils;
  */
 class DirectionalLight : public Light {
 
-    protected:
-        // Direction
-        Vec3 direction;
-        // Intensity
-        Vec3 intensity;
-
     public:
         /*!
          * Light constructor.

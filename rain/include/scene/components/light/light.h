@@ -31,7 +31,7 @@ class Light {
 		 *
 		 * @return Light direction
 		 */
-		virtual inline Vec3 getDirection() const { return direction; }
+		virtual Vec3 getDirection() const = 0;
 };
 
 #include "directional_light.h"

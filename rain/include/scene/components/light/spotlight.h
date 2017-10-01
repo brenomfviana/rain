@@ -35,6 +35,13 @@ class Spotlight : public Light {
             { /* empty */ }
 
         /*!
+		 * Get light direction.
+		 *
+		 * @return Light direction
+		 */
+		inline Vec3 getDirection() const { return direction; }
+
+        /*!
 		 * Get light intensity.
 		 *
 		 * @return Light intensity
