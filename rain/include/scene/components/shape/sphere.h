@@ -55,8 +55,8 @@ class Sphere : public Shape {
                 // Check if the root is in range
                 if (t > tMin && t < tMax) {
                     hr.t = t;
-                    hr.origin = r.pointAt(t);
-                    hr.normal = unitVector((hr.origin - origin) / radius);
+                    hr.point = r.pointAt(t);
+                    hr.normal = unitVector((hr.point - origin) / radius);
                     hr.material = material;
                 } else {
                     hr.t = -1;

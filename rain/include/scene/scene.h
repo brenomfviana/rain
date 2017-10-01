@@ -2,8 +2,8 @@
 #define _SCENE_H_
 
 #include <list>
-#include "components/light.h"
 #include "components/background.h"
+#include "components/light/light.h"
 #include "components/shape/shape.h"
 
 /*!

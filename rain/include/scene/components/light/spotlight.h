@@ -2,8 +2,7 @@
 #define _SPOT_LIGHT_H_
 
 #include <cmath>
-#include "utils/vec3.h"
-#include "scene/components/light.h"
+#include "scene/components/light/light.h"
 
 using namespace utils;
 
@@ -32,8 +31,8 @@ class Spotlight : public Light {
                 float fallOffAngle = 180,
                 Vec3 direction = Vec3(1, 1, 1), Vec3 intensity = Vec3(1, 1, 1)) :
             Light(direction, intensity), origin(origin), beamAngle(beamAngle),
-                    fallOffAngle(fallOffAngle)
-                { /* empty */ }
+                fallOffAngle(fallOffAngle)
+            { /* empty */ }
 
         /*!
 		 * Get light intensity.

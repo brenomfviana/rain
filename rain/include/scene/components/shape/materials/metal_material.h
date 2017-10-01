@@ -38,7 +38,7 @@ class MetalMaterial : public LambertianMaterial {
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
                 Ray& sray) {
             Vec3 reflected = reflect(unitVector(r.getDirection()), hr.normal);
-		    sray = Ray(hr.origin, reflected + fuzz * randomInUnitSphere());
+		    sray = Ray(hr.point, reflected + fuzz * randomInUnitSphere());
 			attenuation = albedo;
 			return (dot(sray.getDirection(), hr.normal) > 0);
         }

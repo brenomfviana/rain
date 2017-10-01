@@ -26,9 +26,9 @@ class DielectricMaterial : public Material {
          * .
          */
         float schlick(float cosine, float ri) {
-            float r = (1 - ri) / (1 + ri);
+            float r = (1.f - ri) / (1.f + ri);
             r = r * r;
-            return (r + (1 - r) * std::pow((1 - cosine), 5));
+            return (r + (1.f - r) * std::pow((1.f - cosine), 5.f));
         }
 
         /*!
@@ -44,7 +44,7 @@ class DielectricMaterial : public Material {
             //
             float dt = dot(unitVector(v), n);
             //
-            float discriminant = 1.f - niOVERnt * niOVERnt * (1 - dt * dt);
+            float discriminant = 1.f - (niOVERnt * niOVERnt * (1.f - dt * dt));
             //
             if (discriminant > 0) {
                 refracted = niOVERnt * (v - n * dt) - n * std::sqrt(discriminant);
@@ -75,19 +75,20 @@ class DielectricMaterial : public Material {
             //
             float niOVERnt;
             //
-            attenuation = Vec3(1, 1, 1);
+            attenuation = Vec3(1.f, 1.f, 1.f);
             //
             float reflectProb;
             float cosine;
             //
-            if (dot(r.getDirection(), hr.normal) > 0) {
+            float d = dot(r.getDirection(), hr.normal);
+            if (d > 0) {
                 outwardNormal = -hr.normal;
                 niOVERnt = ri;
-                cosine = ri * dot(r.getDirection(), hr.normal) / r.getDirection().length();
+                cosine = ri * d / r.getDirection().length();
             } else {
                 outwardNormal = hr.normal;
                 niOVERnt = 1.f / ri;
-                cosine = - dot(r.getDirection(), hr.normal) / r.getDirection().length();
+                cosine = - d / r.getDirection().length();
             }
             //
             Vec3 refracted;
@@ -95,14 +96,14 @@ class DielectricMaterial : public Material {
             if (refract(r.getDirection(), outwardNormal, niOVERnt, refracted)) {
                 reflectProb = schlick(cosine, ri);
             } else {
-                sray = Ray(hr.origin, reflected);
+                sray = Ray(hr.point, reflected);
                 reflectProb = 1.f;
             }
             //
             if (drand48() < reflectProb) {
-                sray = Ray(hr.origin, reflected);
+                sray = Ray(hr.point, reflected);
             } else {
-                sray = Ray(hr.origin, refracted);
+                sray = Ray(hr.point, refracted);
             }
 			return true;
         }

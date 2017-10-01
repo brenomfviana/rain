@@ -37,8 +37,8 @@ class LambertianMaterial : public Material {
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
                 Ray& sray) {
             (void) (r);
-		    Vec3 target = hr.origin + hr.normal + randomInUnitSphere();
-		    sray = Ray(hr.origin, target - hr.origin);
+		    Vec3 target = hr.point + hr.normal + randomInUnitSphere();
+		    sray = Ray(hr.point, target - hr.point);
 			attenuation = albedo;
 			return true;
         }

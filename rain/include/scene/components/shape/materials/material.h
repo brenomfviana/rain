@@ -14,7 +14,7 @@ class Material {
 
     public:
         /*!
-         * .
+         * Scatter the incoming ray.
          *
          * @param incomingRay The incoming ray.
          * @param hit_record The hit record information (normal, p, material, t

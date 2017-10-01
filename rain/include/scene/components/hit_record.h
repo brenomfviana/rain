@@ -17,8 +17,8 @@ class HitRecord {
         float t;
         // Normal vector of the point reached
         Vec3 normal;
-        // Shape origin
-        Vec3 origin;
+        // Point of the shape reached
+        Vec3 point;
         // Shape material
         Material* material;
 };
