@@ -25,7 +25,7 @@ class DielectricMaterial : public Material {
         /*!
          * .
          */
-        float schlick(float cosine, float ri) {
+        float schlick(float cosine, float ri) const {
             float r = (1.f - ri) / (1.f + ri);
             r = r * r;
             return (r + (1.f - r) * std::pow((1.f - cosine), 5.f));
@@ -67,7 +67,7 @@ class DielectricMaterial : public Material {
         }
 
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
-                Ray& sray) {
+                Ray& sray) const {
             //
             Vec3 outwardNormal;
             //

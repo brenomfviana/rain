@@ -31,14 +31,14 @@ class BlinnPhongMaterial : public Material {
         BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, float p_) :
             ka(ka_), kd(kd_), ks(ks_), p(p_)  { /* empty */ }
 
-        bool scatter(const Ray& incomingRay, const HitRecord& hitRecord,
-            RGB& attenuation, Ray& scatteredRay) {
-                (void) (hitRecord);
-                scatteredRay = incomingRay;
-                // No attenuation
-                attenuation = Vec3(1, 1, 1);
-                return true;
-            }
+        bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
+                Ray& sray) const {
+            (void) (hr);
+            sray = r;
+            // No attenuation
+            attenuation = Vec3(1, 1, 1);
+            return true;
+        }
 };
 
 #endif /* _BLINN_PHONG_MATERIAL_H_ */
