@@ -1,0 +1,58 @@
+# Output settings
+NAME: cel_shading.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
+# Camera
+CAMERA:
+    LLC: -2 -1 -1 # Lower left corner of the view plane
+    H: 4 0 0      # Horizontal dimension of the view plane
+    V: 0 2 0      # Vertical dimension of the view plane
+    O: 0 0 0      # The camera's origin
+# Scene description
+SHADER:
+    TOON
+    BORDER_COLOR: 0 0 0
+BACKGROUND:
+    TOP: 0.5 0.7 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
+COMPONENTS:
+    LIGHT:
+        DIRECTION: 20 10 5
+        INTENSITY: 1 1 1
+    SPHERE:
+        ORIGIN: 0 -100.5 -1
+        RADIUS: 100
+        TOON_MATERIAL:
+            COLORS: 5
+                0 1 0
+                0 0.8 0
+                0 0.6 0
+                0 0.4 0
+                0 0.2 0
+            ANGLES: 5
+                0.8660
+                0.6427
+                0.3420
+                0
+                -0.3420
+    SPHERE:
+        ORIGIN: 0 0 -1
+        RADIUS: 0.5
+        TOON_MATERIAL:
+            COLORS: 5
+                1 0 0
+                0.8 0 0
+                0.6 0 0
+                0.4 0 0
+                0.2 0 0
+            ANGLES: 5
+                0.8660
+                0.6427
+                0.3420
+                0
+                -0.3420
