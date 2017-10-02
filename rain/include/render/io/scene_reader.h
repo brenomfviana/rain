@@ -10,7 +10,7 @@
 #include "render/shader/shader.h"
 #include "scene/scene.h"
 #include "scene/camera.h"
-#include "scene/components/light.h"
+#include "scene/components/light/light.h"
 #include "scene/components/background.h"
 #include "scene/components/shape/shape.h"
 #include "scene/components/shape/sphere.h"
@@ -68,6 +68,7 @@ class SceneReader {
                         typeid(*shader) == typeid(DepthMapShader)) {
                         scene  = *(interpretScene(lines, false));
                     } else if (typeid(*shader) == typeid(BlinnPhongShader) ||
+                               typeid(*shader) == typeid(CelShader) ||
                                typeid(*shader) == typeid(LambertianShader)) {
                         scene  = *(interpretScene(lines, true));
                     } else {
@@ -233,6 +234,9 @@ class SceneReader {
                     if (aux.find("BLINNPHONG") == 0) {
                         return getBPShader(lines);
                 } else
+                    if (aux.find("TOON") == 0) {
+                        return getCelShader(lines);
+                } else
                     if (aux.find("LAMBERTIAN") == 0) {
                         return (new LambertianShader());
                 } else {
@@ -275,6 +279,22 @@ class SceneReader {
             // Create the shader and return it
             std::vector<std::string>& v = *(getContent(format, lines));
             return (new BlinnPhongShader(getVec3(v[0])));
+        }
+
+        /*!
+         * Interpret Cel Shader from a scene description file.
+         *
+         * @param lines File lines
+         *
+         * @return Cel Shader.
+         */
+        static CelShader* getCelShader(std::list<std::string>& lines) {
+            // Blinn-Phong shader format
+            std::string vformat[] = {"BORDER_COLOR:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the shader and return it
+            std::vector<std::string>& v = *(getContent(format, lines));
+            return (new CelShader(getVec3(v[0])));
         }
 
         // Scene reader

@@ -12,7 +12,6 @@ static Vec3 getVec3(std::string str) {
     std::vector<std::string> v = split(str, ' ');
     for (std::string& str : v) {
         str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
-        //std::cout << str << "\n";
     }
     // Generate Vec3
     Vec3 vec = Vec3(atof(v[0].c_str()), atof(v[1].c_str()), atof(v[2].c_str()));
@@ -58,7 +57,7 @@ static Scene* interpretScene(std::list<std::string>& lines, bool md) {
                 // Erase
                 lines.erase(itr);
                 // Add light
-                Light* l = getLight(lines);
+                Light* l = getDirectionalLight(lines);
                 scene->addLight(l);
                 // Next component
                 itr = lines.begin();
@@ -127,19 +126,35 @@ static Background* getBackground(std::list<std::string>& lines) {
 }
 
 /*!
- * Get light description.
+ * Get directional light description.
  *
  * @param lines File lines
  *
  * @return Light
  */
-static Light* getLight(std::list<std::string>& lines) {
-    // Light format
+static DirectionalLight* getDirectionalLight(std::list<std::string>& lines) {
+    // Directional light format
     std::string vformat[] = {"DIRECTION:", "INTENSITY:"};
     std::vector<std::string> format(vformat, end(vformat));
-    // Create the light and return it
+    // Create the directional light and return it
     std::vector<std::string>& v = *(getContent(format, lines));
-    return (new Light(getVec3(v[0]), getVec3(v[1].c_str())));
+    return (new DirectionalLight(getVec3(v[0]), getVec3(v[1].c_str())));
+}
+
+/*!
+ * Get spot light description.
+ *
+ * @param lines File lines
+ *
+ * @return Light
+ */
+static Spotlight* getSpotlight(std::list<std::string>& lines) {
+    // Spot light format
+    std::string vformat[] = {"DIRECTION:", "INTENSITY:", "", ""};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the spot light and return it
+    std::vector<std::string>& v = *(getContent(format, lines));
+    return (new Spotlight(Point3(0,0,0), 0, 0, getVec3(v[0]), getVec3(v[1].c_str())));
 }
 
 

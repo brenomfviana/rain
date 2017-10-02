@@ -14,6 +14,9 @@ static Material* getMaterial(std::list<std::string>& lines) {
     if (aux.find("BLINN_PHONG_MATERIAL:") == 0) {
         return getBPMaterial(lines);
     } else
+        if (aux.find("TOON_MATERIAL:") == 0) {
+            return getCelMaterial(lines);
+    } else
         if (aux.find("LAMBERTIAN:") == 0) {
             return getLambertianMaterial(lines);
     } else
@@ -23,7 +26,7 @@ static Material* getMaterial(std::list<std::string>& lines) {
         if (aux.find("DIELECTRIC:") == 0) {
             return getDielectricMaterial(lines);
     } else {
-        throw "Invalid shader!";
+        throw "Invalid material!";
     }
 }
 
@@ -42,6 +45,70 @@ static BlinnPhongMaterial* getBPMaterial(std::list<std::string>& lines) {
     std::vector<std::string>& v = *(getContent(format, lines));
     return (new BlinnPhongMaterial(getVec3(v[0]), getVec3(v[1]), getVec3(v[2]),
         atof(v[3].c_str())));
+}
+
+/*!
+ * Get cel material.
+ *
+ * @param lines File lines
+ *
+ * @return Cel material
+ */
+static CelMaterial* getCelMaterial(std::list<std::string>& lines) {
+    std::vector<RGB> colors = *getColors(lines);
+    std::vector<float> angles = *getAngles(lines);
+    return (new CelMaterial(colors, angles));
+}
+
+/*!
+ * Get cel material colors.
+ *
+ * @param lines File lines
+ *
+ * @return Cel material colors
+ */
+static std::vector<RGB>* getColors(std::list<std::string>& lines) {
+    // Get number of colors
+    std::string vformat[] = {"COLORS:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    std::vector<std::string>& v = *(getContent(format, lines));
+    int size = atoi(v[0].c_str());
+    // Get colors
+    std::vector<RGB>* colors = new std::vector<RGB>();
+    std::list<std::string>::iterator itr = lines.begin();
+    std::list<std::string>::iterator begin = lines.begin();
+    for (int i = 0; i < size; i++) {
+        colors->push_back(getVec3(*itr));
+        itr++;
+    }
+    // Remove interpreted lines
+    lines.erase(begin, itr);
+    return colors;
+}
+
+/*!
+ * Get angle ranges at which each color of the cel material appears.
+ *
+ * @param lines File lines
+ *
+ * @return Angle ranges at which each color of the cel material appears
+ */
+static std::vector<float>* getAngles(std::list<std::string>& lines) {
+    // Get number of angles
+    std::string vformat[] = {"ANGLES:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    std::vector<std::string>& v = *(getContent(format, lines));
+    int size = atoi(v[0].c_str());
+    // Get colors
+    std::vector<float>* angles = new std::vector<float>();
+    std::list<std::string>::iterator itr = lines.begin();
+    std::list<std::string>::iterator begin = lines.begin();
+    for (int i = 0; i < size; i++) {
+        angles->push_back(atof((*itr++).c_str()));
+    }
+    // Remove interpreted lines
+    lines.erase(begin, itr);
+    return angles;
 }
 
 /*!
@@ -87,7 +154,7 @@ static DielectricMaterial* getDielectricMaterial(std::list<std::string>& lines) 
     // Material format
     std::string vformat[] = {"RI:"};
     std::vector<std::string> format(vformat, end(vformat));
-    // Create the Metal material and return it
+    // Create the Dielectric material and return it
     std::vector<std::string>& v = *(getContent(format, lines));
     return (new DielectricMaterial(atof(v[0].c_str())));
 }
