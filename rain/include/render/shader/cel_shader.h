@@ -41,23 +41,21 @@ class CelShader : public Shader {
                 RGB c;
                 // Color shape
                 HitRecord shr;
+                float a = material->angles.size() - 1;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.point, light->getDirection()), scene,
-                            shr)) {
-                        // Check angle and get correspondent color
-                        Vec3 l = light->getDirection() - r.getDirection();
-                        float angle = dot(shr.normal, l) /
-                            (hr.normal.length() * l.length());
-                        // for (int i = material->angles.size() - 1; i > 0; i--) {
-                        for (int i = 0; i < material->angles.size(); i++) {
-                            if (angle >= material->angles[i]) {
-                                c += material->colors[i];
-                                break;
-                            }
+                    // Check angle and get correspondent color
+                    Vec3 l = light->getDirection() - r.getDirection();
+                    float angle = dot(hr.normal, l) /
+                        (hr.normal.length() * l.length());
+                    for (size_t i = 0; i < material->angles.size(); i++) {
+                        if (angle >= material->angles[i] && a >= i) {
+                            a = i;
+                            c = material->colors[i];
+                            break;
                         }
                     }
                 }
-                return c;
+                return (c / scene.lights.size());
             } else {
                 return background(r, scene);
             }
