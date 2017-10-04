@@ -22,8 +22,11 @@ BACKGROUND:
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     LIGHT:
-        DIRECTION: 20 10 5
-        INTENSITY: 1 1 1
+        DIRECTION: -8 7 0
+        INTENSITY: 0.8 0.8 0.8
+    LIGHT:
+        DIRECTION: 20 10 15
+        INTENSITY: 0.5 0.5 0.5
     SPHERE:
         ORIGIN: 0 -100.5 -1
         RADIUS: 100
