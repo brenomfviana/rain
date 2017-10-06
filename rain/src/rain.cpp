@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 					  << "opened successfully!\033[0m\n";
 
 			// TEST AREA
-			PointLight* pl = new PointLight(Point3(0, -1, 0), Vec3(1, 1, 1));
+			PointLight* pl = new PointLight(Point3(0, 0, 0), Vec3(1, 1, 1));
 			scene.addLight(pl);
 			/*DirectionalLight* l = new DirectionalLight(Point3(20, 10, 5), Vec3(1, 1, 1));
 			scene.addLight(l);*/

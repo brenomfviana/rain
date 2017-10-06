@@ -39,8 +39,8 @@ class BlinnPhongShader : public Shader {
                 // Check shadows
                 HitRecord shr;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.point, light->getDirection(hr.normal)),
-                            scene, shr)) {
+                    if (!intersect(Ray(hr.point, light->getDirection(hr.point)), scene, shr) ||
+                            (dot(light->getDirection(hr.point), hr.normal) != 0)) {
                         c += blinnPhong(r, light, hr);
                     }
                 }
