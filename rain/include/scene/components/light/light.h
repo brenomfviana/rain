@@ -31,10 +31,18 @@ class Light {
 		 *
 		 * @return Light direction
 		 */
-		virtual Vec3 getDirection() const = 0;
+		virtual Vec3 getDirection(Point3 p) const = 0;
+
+        /*!
+         * Get light intensity.
+         *
+         * @return Light intensity
+         */
+        virtual Vec3 getIntensity(Point3 p) const = 0;
 };
 
 #include "directional_light.h"
+#include "point_light.h"
 #include "spotlight.h"
 
 #endif /* _LIGHT_H_ */

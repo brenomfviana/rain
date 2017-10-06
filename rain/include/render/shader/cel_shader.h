@@ -44,7 +44,7 @@ class CelShader : public Shader {
                 float a = material->angles.size() - 1;
                 for (auto& light : scene.lights) {
                     // Check angle and get correspondent color
-                    Vec3 l = light->getDirection() - r.getDirection();
+                    Vec3 l = light->getDirection(hr.point) - r.getDirection();
                     float angle = dot(hr.normal, l) /
                         (hr.normal.length() * l.length());
                     for (size_t i = 0; i < material->angles.size(); i++) {

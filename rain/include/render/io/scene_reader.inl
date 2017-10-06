@@ -150,11 +150,11 @@ static DirectionalLight* getDirectionalLight(std::list<std::string>& lines) {
  */
 static Spotlight* getSpotlight(std::list<std::string>& lines) {
     // Spot light format
-    std::string vformat[] = {"DIRECTION:", "INTENSITY:", "", ""};
+    std::string vformat[] = {"INTENSITY:", "", ""};
     std::vector<std::string> format(vformat, end(vformat));
     // Create the spot light and return it
     std::vector<std::string>& v = *(getContent(format, lines));
-    return (new Spotlight(Point3(0,0,0), 0, 0, getVec3(v[0]), getVec3(v[1].c_str())));
+    return (new Spotlight(Point3(0,0,0), 0, 0, getVec3(v[1].c_str())));
 }
 
 

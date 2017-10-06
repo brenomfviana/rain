@@ -61,4 +61,7 @@ class Shape {
         virtual bool hit(Ray r, float tMin, float tMax, HitRecord& hr) = 0;
 };
 
+#include "sphere.h"
+#include "triangle.h"
+
 #endif /* _SHAPE_H_ */

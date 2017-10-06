@@ -1,25 +1,28 @@
-#ifndef _DIRECTIONAL_LIGHT_H_
-#define _DIRECTIONAL_LIGHT_H_
+#ifndef _POINT_LIGHT_H_
+#define _POINT_LIGHT_H_
 
-#include "scene/components/light/light.h"
+#include "utils/vec3.h"
 
 using namespace utils;
 
 /*!
- * This class represents a directional light.
+ * This class represents a light.
  */
-class DirectionalLight : public Light {
+class PointLight : public Light {
+
+    protected:
+        // Light origin
+        Point3 origin;
 
     public:
         /*!
-         * Directional light constructor.
+         * Point light constructor.
          *
          * @param direction Light direction
          * @param intensity Light intensity
          */
-        DirectionalLight(Vec3 direction = Vec3(1, 1, 1),
-                         Vec3 intensity = Vec3(1, 1, 1))
-        : Light(direction, intensity) { /* empty */ }
+        PointLight(Vec3 origin, Vec3 intensity = Vec3(1, 1, 1))
+        : Light(Point3(0, 0, 0), intensity), origin(origin) { /* empty */ }
 
         /*!
 		 * Get directional light direction.
@@ -27,8 +30,7 @@ class DirectionalLight : public Light {
 		 * @return Directional light direction
 		 */
 		inline Vec3 getDirection(Point3 p) const {
-            (void) p;
-            return direction;
+            return p - origin;
         }
 
         /*!
@@ -42,4 +44,4 @@ class DirectionalLight : public Light {
         }
 };
 
-#endif /* _DIRECTIONAL_LIGHT_H_ */
+#endif /* _POINT_LIGHT_H_ */

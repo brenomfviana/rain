@@ -13,14 +13,6 @@ class Sphere : public Shape {
         float radius;
 
     public:
-        /*!
-         * Sphere constructor.
-         *
-         * @param radius Sphere radius
-         * @param origin Sphere origin point
-         */
-        Sphere(Point3 origin, float radius, Material* material) :
-            Shape(origin, material), radius(radius) { /* empty */ }
 
         /*!
          * Sphere constructor.
@@ -32,16 +24,15 @@ class Sphere : public Shape {
             Shape(origin), radius(radius) { /* empty */ }
 
         /*!
-         * Check if the ray has hit the sphere. Returns true if the ray has hit
-         * the sphere and false otherwise.
+         * Sphere constructor.
          *
-         * @param r Incoming ray
-         * @param tMin Min depth
-         * @param tMax Max depth
-         * @param hr Hit record
-         *
-         * @return True if the ray has hit the sphere and false otherwise
+         * @param radius Sphere radius
+         * @param origin Sphere origin point
+         * @param material Sphere material
          */
+        Sphere(Point3 origin, float radius, Material* material) :
+            Shape(origin, material), radius(radius) { /* empty */ }
+
         bool hit(Ray r, float tMin, float tMax, HitRecord& hr) {
             auto oc = r.getOrigin() - origin;
             auto a = dot(r.getDirection(), r.getDirection());
@@ -53,7 +44,7 @@ class Sphere : public Shape {
                 // Get smaller root
                 auto t = (-b - sqrt(delta)) / (2 * a);
                 // Check if the root is in range
-                if (t > tMin && t < tMax) {
+                if (tMin < t && t < tMax) {
                     hr.t = t;
                     hr.point = r.pointAt(t);
                     hr.normal = unitVector((hr.point - origin) / radius);

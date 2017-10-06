@@ -2,8 +2,9 @@
 #define _PRINTER_H_
 
 #include <fstream>
-#include "utils/image.h"
+#include <string>
 #include "output_settings.h"
+#include "utils/image.h"
 
 /*!
  * This class is responsible for printing images.
