@@ -53,11 +53,27 @@ static Scene* interpretScene(std::list<std::string>& lines, bool md) {
         // Find components
         for (itr = lines.begin(); !lines.empty(); ) {
             // Check all components
-            if ((*(itr)).find("LIGHT:") == 0) {
+            if ((*(itr)).find("DIRECTIONAL_LIGHT:") == 0) {
                 // Erase
                 lines.erase(itr);
                 // Add light
                 Light* l = getDirectionalLight(lines);
+                scene->addLight(l);
+                // Next component
+                itr = lines.begin();
+            } else if ((*(itr)).find("POINT_LIGHT:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add light
+                Light* l = getPointLight(lines);
+                scene->addLight(l);
+                // Next component
+                itr = lines.begin();
+            } else if ((*(itr)).find("SPOTLIGHT:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add light
+                Light* l = getSpotlight(lines);
                 scene->addLight(l);
                 // Next component
                 itr = lines.begin();
@@ -142,19 +158,35 @@ static DirectionalLight* getDirectionalLight(std::list<std::string>& lines) {
 }
 
 /*!
+ * Get Point light description.
+ *
+ * @param lines File lines
+ *
+ * @return Point light
+ */
+static PointLight* getPointLight(std::list<std::string>& lines) {
+    // Spot light format
+    std::string vformat[] = {"ORIGIN:", "INTENSITY:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the spot light and return it
+    std::vector<std::string>& v = *(getContent(format, lines));
+    return (new PointLight(getVec3(v[0].c_str()), getVec3(v[1].c_str())));
+}
+
+/*!
  * Get spot light description.
  *
  * @param lines File lines
  *
- * @return Light
+ * @return Spotlight
  */
 static Spotlight* getSpotlight(std::list<std::string>& lines) {
     // Spot light format
-    std::string vformat[] = {"INTENSITY:", "", ""};
+    std::string vformat[] = {"ORIGIN:", "INTENSITY:", "ANGLE:"};
     std::vector<std::string> format(vformat, end(vformat));
     // Create the spot light and return it
     std::vector<std::string>& v = *(getContent(format, lines));
-    return (new Spotlight(Point3(0,0,0), 0, 0, getVec3(v[1].c_str())));
+    return (new Spotlight(getVec3(v[0].c_str()), 0, 0, getVec3(v[1].c_str())));
 }
 
 
