@@ -1,5 +1,5 @@
 # Output settings
-NAME: point_light.ppm
+NAME: point_light1.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
