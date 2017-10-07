@@ -20,7 +20,7 @@ SHADER:
 BACKGROUND:
     COLOR: 0 0 0 # Background color
 COMPONENTS:
-    LIGHT:
+    DIRECTIONAL_LIGHT:
         DIRECTION: 20 10 5
         INTENSITY: 1 1 1
     SPHERE:

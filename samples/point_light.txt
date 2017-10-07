@@ -1,5 +1,5 @@
 # Output settings
-NAME: blinn_phong1.ppm
+NAME: point_light.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -12,7 +12,7 @@ CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
     H: 4 0 0      # Horizontal dimension of the view plane
     V: 0 2 0      # Vertical dimension of the view plane
-    O: 0 0 0      # The camera's origin
+    O: 0 1 -2.5     # The camera's origin
 # Scene description
 SHADER:
     BLINNPHONG
@@ -21,22 +21,46 @@ BACKGROUND:
     TOP: 0.5 0.7 1 # Top color
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
-    DIRECTIONAL_LIGHT:
-        DIRECTION: 20 10 5
+    POINT_LIGHT:
+        ORIGIN: 0 0 0
         INTENSITY: 1 1 1
     SPHERE:
-        ORIGIN: 0 -100.5 -1
+        ORIGIN: 0 -100.5 0
         RADIUS: 100
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
             KD: 0.3 0.3 0.3
             KS: 1 1 1
-            P: 5
+            P: 64
     SPHERE:
-        ORIGIN: 0 0 -1
+        ORIGIN: 1 0 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.3 0 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: -1 0 0
         RADIUS: 0.5
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
             KD: 0 0.3 0.8
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: 0 0 1
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.5 0.5 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: 0 1 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0 0.2 0
             KS: 0.9 0.9 0.9
             P: 64

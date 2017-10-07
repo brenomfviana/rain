@@ -20,7 +20,7 @@ BACKGROUND:
     TOP: 0.5 0.7 1 # Top color
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
-    LIGHT:
+    DIRECTIONAL_LIGHT:
         DIRECTION: 20 10 15
         INTENSITY: 1 1 1
     SPHERE:
