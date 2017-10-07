@@ -38,7 +38,7 @@ class Spotlight : public PointLight {
 		 */
 		inline Vec3 getDirection(Point3 p) const {
             (void) p;
-            return direction;
+            return unitVector(p);
         }
 
         /*!

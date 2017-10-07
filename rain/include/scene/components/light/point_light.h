@@ -18,11 +18,17 @@ class PointLight : public Light {
         /*!
          * Point light constructor.
          *
-         * @param direction Light direction
          * @param intensity Light intensity
          */
         PointLight(Vec3 origin, Vec3 intensity = Vec3(1, 1, 1))
-        : Light(Point3(0, 0, 0), intensity), origin(origin) { /* empty */ }
+            : Light(intensity), origin(origin) { /* empty */ }
+
+        /*!
+		 * .
+		 */
+		inline Vec3 getOrigin() const {
+            return origin;
+        }
 
         /*!
 		 * Get directional light direction.
@@ -30,7 +36,7 @@ class PointLight : public Light {
 		 * @return Directional light direction
 		 */
 		inline Vec3 getDirection(Point3 p) const {
-            return origin - p;
+            return unitVector(origin - p);
         }
 
         /*!

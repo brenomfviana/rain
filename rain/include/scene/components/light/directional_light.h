@@ -10,6 +10,9 @@ using namespace utils;
  */
 class DirectionalLight : public Light {
 
+    protected:
+        Vec3 direction;
+
     public:
         /*!
          * Directional light constructor.
@@ -19,7 +22,7 @@ class DirectionalLight : public Light {
          */
         DirectionalLight(Vec3 direction = Vec3(1, 1, 1),
                          Vec3 intensity = Vec3(1, 1, 1))
-        : Light(direction, intensity) { /* empty */ }
+        : Light(intensity), direction(direction) { /* empty */ }
 
         /*!
 		 * Get directional light direction.

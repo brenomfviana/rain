@@ -11,8 +11,6 @@ using namespace utils;
 class Light {
 
     protected:
-        // Direction
-        Vec3 direction;
         // Intensity
         Vec3 intensity;
 
@@ -20,11 +18,10 @@ class Light {
         /*!
          * Light constructor.
          *
-         * @param direction Light direction
          * @param intensity Light intensity
          */
-        Light(Vec3 direction = Vec3(1, 1, 1), Vec3 intensity = Vec3(1, 1, 1)) :
-            direction(direction), intensity(intensity) { /* empty */ }
+        Light(Vec3 intensity = Vec3(1, 1, 1)) : intensity(intensity)
+            { /* empty */ }
 
         /*!
 		 * Get light direction.
