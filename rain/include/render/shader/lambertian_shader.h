@@ -19,13 +19,13 @@ class LambertianShader : public Shader {
             } else {
                 // Check hit
                 HitRecord hr;
-                if (intersect(r, scene, hr)) {
+                if (intersect(r, scene, 0, 10, hr)) {
                     RGB c;
                     /*HitRecord shr;
                     for (auto &light : scene.lights) {
                         c += lights(r, light, hr);
                     }*/
-                    // 
+                    //
                     Ray scatteredRay;
                     RGB attenuation;
                     // Shape material

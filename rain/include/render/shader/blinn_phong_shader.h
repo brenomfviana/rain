@@ -30,7 +30,7 @@ class BlinnPhongShader : public Shader {
             (void) nrays;
             // Check hit
             HitRecord hr;
-            if (intersect(r, scene, hr)) {
+            if (intersect(r, scene, 0, 10, hr)) {
                 // Get Blinn-Phong material
                 BlinnPhongMaterial* material =
                     dynamic_cast<BlinnPhongMaterial*>(hr.material);
@@ -38,9 +38,23 @@ class BlinnPhongShader : public Shader {
                 RGB c = material->ka * alight;
                 // Check shadows
                 HitRecord shr;
+                float t = 10;
                 for (auto& light : scene.lights) {
-                    if (!intersect(Ray(hr.point, light->getDirection(hr.point)), scene, shr) ||
-                            (dot(light->getDirection(hr.point), hr.normal) != 0)) {
+                    if (typeid(*light) == typeid(PointLight)) {
+                        PointLight* l = dynamic_cast<PointLight*>(light);
+                        Vec3 v = l->getOrigin(), u = hr.point;
+                        t = std::sqrt(std::pow(v[Vec3::X] - u[Vec3::X], 2) +
+                                      std::pow(v[Vec3::Y] - u[Vec3::Y], 2) +
+                                      std::pow(v[Vec3::Z] - u[Vec3::Z], 2));
+                    } else if (typeid(*light) == typeid(Spotlight)) {
+                        Spotlight* l = dynamic_cast<Spotlight*>(light);
+                        Vec3 v = l->getOrigin(), u = hr.point;
+                        t = std::sqrt(std::pow(v[Vec3::X] - u[Vec3::X], 2) +
+                                      std::pow(v[Vec3::Y] - u[Vec3::Y], 2) +
+                                      std::pow(v[Vec3::Z] - u[Vec3::Z], 2));
+                    }
+                    if (!intersect(Ray(hr.point, unitVector(light->getDirection(hr.point))),
+                            scene, 0, t, shr)) {
                         c += blinnPhong(r, light, hr);
                     }
                 }
@@ -69,10 +83,11 @@ class BlinnPhongShader : public Shader {
             BlinnPhongMaterial* material =
                 dynamic_cast<BlinnPhongMaterial*>(hr.material);
             // L.N
-            Vec3 ln = unitVector(light->getDirection(hr.point) - r.getDirection());
-            float lambertian = std::max(0.f, dot(ln, hr.normal));
+            float lambertian = std::max(0.f,
+                dot(light->getDirection(hr.point), hr.normal));
             // Blinn-Phong
-            Vec3 H = unitVector(ln - r.getDirection());
+            Vec3 H = unitVector(light->getDirection(hr.point)
+                - r.getDirection());
             // N.H
             float specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);

@@ -53,10 +53,8 @@ class Shader {
          * @param scene Scene
          * @param hr Hit record
          */
-        bool intersect(const Ray& r, const Scene& scene, HitRecord& hr) const {
-            // Check hit
-            float tMin = 0;
-            float tMax = 10;
+        bool intersect(const Ray& r, const Scene& scene, float tMin, float tMax,
+                HitRecord& hr) const {
             hr.t = std::numeric_limits<float>::infinity();
             // Check if hit scene components
             for (auto &shape : scene.components) {

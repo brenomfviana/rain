@@ -27,7 +27,7 @@ class Ray {
 		 * @param direction Ray direction
 		 */
 		Ray(const Point3 origin = Point3(), const Vec3 direction = Vec3()) :
-			origin(origin), direction(direction) { /* Empty */ }
+			origin(origin), direction(unitVector(direction)) { /* Empty */ }
 
 		/* ------------------------ Access Methods -------------------------- */
 

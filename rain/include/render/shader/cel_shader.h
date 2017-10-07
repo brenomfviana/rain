@@ -29,7 +29,7 @@ class CelShader : public Shader {
             (void) nrays;
             // Check hit
             HitRecord hr;
-            if (intersect(r, scene, hr)) {
+            if (intersect(r, scene, 0, 10, hr)) {
                 // Check if is a border
                 float borderAngle = dot(unitVector(-r.getDirection()), hr.normal) /
                     ((-r.getDirection()).length() * hr.normal.length());
