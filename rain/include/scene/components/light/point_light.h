@@ -36,7 +36,7 @@ class PointLight : public Light {
 		 * @return Directional light direction
 		 */
 		inline Vec3 getDirection(Point3 p) const {
-            return unitVector(origin - p);
+            return origin - p;
         }
 
         /*!

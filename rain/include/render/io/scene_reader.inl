@@ -182,11 +182,12 @@ static PointLight* getPointLight(std::list<std::string>& lines) {
  */
 static Spotlight* getSpotlight(std::list<std::string>& lines) {
     // Spot light format
-    std::string vformat[] = {"ORIGIN:", "INTENSITY:", "ANGLE:"};
+    std::string vformat[] = {"ORIGIN:", "DIRECTION:", "INTENSITY:", "ANGLE:"};
     std::vector<std::string> format(vformat, end(vformat));
     // Create the spot light and return it
     std::vector<std::string>& v = *(getContent(format, lines));
-    return (new Spotlight(getVec3(v[0].c_str()), 0, 0, getVec3(v[1].c_str())));
+    return (new Spotlight(getVec3(v[0].c_str()), getVec3(v[1].c_str()),
+            getVec3(v[2].c_str()), atof(v[3].c_str())));
 }
 
 

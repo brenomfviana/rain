@@ -42,16 +42,10 @@ class BlinnPhongShader : public Shader {
                 for (auto& light : scene.lights) {
                     if (typeid(*light) == typeid(PointLight)) {
                         PointLight* l = dynamic_cast<PointLight*>(light);
-                        Vec3 v = l->getOrigin(), u = hr.point;
-                        t = std::sqrt(std::pow(v[Vec3::X] - u[Vec3::X], 2) +
-                                      std::pow(v[Vec3::Y] - u[Vec3::Y], 2) +
-                                      std::pow(v[Vec3::Z] - u[Vec3::Z], 2));
+                        t = (l->getOrigin() - hr.point).length();
                     } else if (typeid(*light) == typeid(Spotlight)) {
                         Spotlight* l = dynamic_cast<Spotlight*>(light);
-                        Vec3 v = l->getOrigin(), u = hr.point;
-                        t = std::sqrt(std::pow(v[Vec3::X] - u[Vec3::X], 2) +
-                                      std::pow(v[Vec3::Y] - u[Vec3::Y], 2) +
-                                      std::pow(v[Vec3::Z] - u[Vec3::Z], 2));
+                        t = (l->getOrigin() - hr.point).length();
                     }
                     if (!intersect(Ray(hr.point, unitVector(light->getDirection(hr.point))),
                             scene, 0, t, shr)) {
@@ -82,12 +76,12 @@ class BlinnPhongShader : public Shader {
         RGB blinnPhong(const Ray& r, Light* light, HitRecord& hr) const {
             BlinnPhongMaterial* material =
                 dynamic_cast<BlinnPhongMaterial*>(hr.material);
-            // L.N
+            // Lambertian
             float lambertian = std::max(0.f,
-                dot(light->getDirection(hr.point), hr.normal));
+                dot(unitVector(light->getDirection(hr.point)), hr.normal));
             // Blinn-Phong
-            Vec3 H = unitVector(light->getDirection(hr.point)
-                - r.getDirection());
+            Vec3 H = unitVector(unitVector(light->getDirection(hr.point))
+                + unitVector(-r.getDirection()));
             // N.H
             float specular = std::max(0.f, dot(hr.normal, H));
             specular = std::pow(specular, material->p);
