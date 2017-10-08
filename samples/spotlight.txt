@@ -12,7 +12,7 @@ CAMERA:
     LLC: -2 -1 -1 # Lower left corner of the view plane
     H: 4 0 0      # Horizontal dimension of the view plane
     V: 0 2 0      # Vertical dimension of the view plane
-    O: 0 1 -2.5     # The camera's origin
+    O: 0 0 0     # The camera's origin
 # Scene description
 SHADER:
     BLINNPHONG
@@ -22,16 +22,15 @@ BACKGROUND:
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
     SPOTLIGHT:
-        ORIGIN: 0 2 0
+        ORIGIN: 0 2 -1
         DIRECTION: 0 -1 0
         INTENSITY: 1 1 1
-        #ANGLE: 0.7071
         ANGLE: 0.9659
-    POINT_LIGHT:
-        ORIGIN: 0 -2 0
-        INTENSITY: 1 1 1
+    DIRECTIONAL_LIGHT:
+        DIRECTION: 20 10 15
+        INTENSITY: 0.5 0.5 0.5
     SPHERE:
-        ORIGIN: 0 -100.5 0
+        ORIGIN: 0 -100.5 -1
         RADIUS: 100
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
@@ -39,7 +38,7 @@ COMPONENTS:
             KS: 1 1 1
             P: 64
     SPHERE:
-        ORIGIN: 0 0 0
+        ORIGIN: 0 0 -1
         RADIUS: 0.5
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
