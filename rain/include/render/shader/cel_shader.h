@@ -6,8 +6,6 @@
 
 using namespace utils;
 
-#define PI 3.14159265
-
 /*!
  * This class represents the Blinn-Phong shader.
  */
@@ -39,23 +37,37 @@ class CelShader : public Shader {
                 // Get Cel material
                 CelMaterial* material = dynamic_cast<CelMaterial*>(hr.material);
                 RGB c;
-                // Color shape
+                // Lighting
                 HitRecord shr;
-                float a = material->angles.size() - 1;
+                float pickedAngle = material->angles.size();
+                bool shadow = false;
+                int n_shadows = 1;
                 for (auto& light : scene.lights) {
-                    // Check angle and get correspondent color
-                    Vec3 l = light->getDirection(hr.point) - r.getDirection();
-                    float angle = dot(hr.normal, l) /
-                        (hr.normal.length() * l.length());
-                    for (size_t i = 0; i < material->angles.size(); i++) {
-                        if (angle >= material->angles[i] && a >= i) {
-                            a = i;
-                            c = material->colors[i];
-                            break;
+                    // Check shadow
+                    if (!intersect(Ray(hr.point, unitVector(light->getDirection(hr.point))),
+                            scene, 0, 10, shr)) {
+                        // Check angle and get correspondent color
+                        Vec3 l = light->getDirection(hr.point) - r.getDirection();
+                        float angle = dot(hr.normal, l) / (hr.normal.length() * l.length());
+                        // 
+                        for (int i = material->angles.size() - 1; i >= 0; i--) {
+                            if ((i == 0 && angle >= material->angles[i] && pickedAngle > i) ||
+                                    (angle <= material->angles[i - 1] &&
+                                     angle >= material->angles[i] && pickedAngle > i)) {
+                                pickedAngle = i;
+                                c = material->colors[i];
+                            }
                         }
+                    } else {
+                        shadow = true;
+                        n_shadows++;
                     }
                 }
-                return (c / scene.lights.size());
+                if (shadow) {
+                    return (c / (scene.lights.size() * n_shadows));
+                } else {
+                    return (c / scene.lights.size());
+                }
             } else {
                 return background(r, scene);
             }

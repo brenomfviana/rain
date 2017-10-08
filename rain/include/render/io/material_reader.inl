@@ -1,5 +1,7 @@
 #include "scene_reader.h"
 
+#define PI 3.14159265
+
 /*!
  * Get material description.
  *
@@ -104,7 +106,7 @@ static std::vector<float>* getAngles(std::list<std::string>& lines) {
     std::list<std::string>::iterator itr = lines.begin();
     std::list<std::string>::iterator begin = lines.begin();
     for (int i = 0; i < size; i++) {
-        angles->push_back(atof((*itr++).c_str()));
+        angles->push_back(std::cos((atof((*itr++).c_str()) * PI) / 180.f));
     }
     // Remove interpreted lines
     lines.erase(begin, itr);

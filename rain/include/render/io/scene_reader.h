@@ -2,6 +2,7 @@
 #define _SCENE_READER_H_
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <list>
 #include <string>

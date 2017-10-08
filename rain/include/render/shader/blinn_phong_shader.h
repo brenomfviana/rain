@@ -36,7 +36,7 @@ class BlinnPhongShader : public Shader {
                     dynamic_cast<BlinnPhongMaterial*>(hr.material);
                 // Ambient light on the shape
                 RGB c = material->ka * alight;
-                // Check shadows
+                // Lighting
                 HitRecord shr;
                 float t = 10;
                 for (auto& light : scene.lights) {
@@ -47,6 +47,7 @@ class BlinnPhongShader : public Shader {
                         Spotlight* l = dynamic_cast<Spotlight*>(light);
                         t = (l->getOrigin() - hr.point).length();
                     }
+                    // Check shadows
                     if (!intersect(Ray(hr.point, unitVector(light->getDirection(hr.point))),
                             scene, 0, t, shr)) {
                         c += blinnPhong(r, light, hr);
