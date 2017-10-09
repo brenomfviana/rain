@@ -10,16 +10,11 @@ using namespace utils;
  */
 class Camera {
 
-    public:
-		// Lower left corner of the view plane
-		Point3 llc;
-		// Horizontal dimension of the view plane
-	    Vec3 horizontal;
-		// Vertical dimension of the view plane
-	    Vec3 vertical;
+    protected:
 		// The camera's origin
 	    Point3 origin;
 
+    public:
         /*!
          * Camera constructor.
          *
