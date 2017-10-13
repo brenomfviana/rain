@@ -13,14 +13,14 @@ class DielectricMaterial : public Material {
 
     public:
         //
-        float ri;
+        Vec3::RealType ri;
 
         /*!
          * Dielectric material constructor.
          *
          * @param ri
          */
-        DielectricMaterial(float ri) : ri(ri) { /* empty */ }
+        DielectricMaterial(Vec3::RealType ri) : ri(ri) { /* empty */ }
 
         /*!
          * .

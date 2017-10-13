@@ -40,34 +40,21 @@ class CelShader : public Shader {
                 // Lighting
                 HitRecord shr;
                 float pickedAngle = material->angles.size();
-                bool shadow = false;
-                int n_shadows = 1;
                 for (auto& light : scene.lights) {
-                    // Check shadow
-                    if (!intersect(Ray(hr.point, unitVector(light->getDirection(hr.point))),
-                            scene, 0, 10, shr)) {
-                        // Check angle and get correspondent color
-                        Vec3 l = light->getDirection(hr.point) - r.getDirection();
-                        float angle = dot(hr.normal, l) / (hr.normal.length() * l.length());
-                        // 
-                        for (int i = material->angles.size() - 1; i >= 0; i--) {
-                            if ((i == 0 && angle >= material->angles[i] && pickedAngle > i) ||
-                                    (angle <= material->angles[i - 1] &&
-                                     angle >= material->angles[i] && pickedAngle > i)) {
-                                pickedAngle = i;
-                                c = material->colors[i];
-                            }
+                    // Check angle and get correspondent color
+                    Vec3 l = light->getDirection(hr.point) - r.getDirection();
+                    float angle = dot(hr.normal, l) / (hr.normal.length() * l.length());
+                    //
+                    for (int i = material->angles.size() - 1; i >= 0; i--) {
+                        if ((i == 0 && angle >= material->angles[i] && pickedAngle > i) ||
+                                (angle <= material->angles[i - 1] &&
+                                 angle >= material->angles[i] && pickedAngle > i)) {
+                            pickedAngle = i;
+                            c = material->colors[i];
                         }
-                    } else {
-                        shadow = true;
-                        n_shadows++;
                     }
                 }
-                if (shadow) {
-                    return (c / (scene.lights.size() * n_shadows));
-                } else {
-                    return (c / scene.lights.size());
-                }
+                return (c / scene.lights.size());
             } else {
                 return background(r, scene);
             }

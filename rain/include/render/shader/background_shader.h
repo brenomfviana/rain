@@ -2,7 +2,6 @@
 #define _BACKGROUND_SHADER_H_
 
 #include "shader.h"
-#include "utils/vec3.h"
 
 using namespace utils;
 

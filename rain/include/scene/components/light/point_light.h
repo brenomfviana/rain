@@ -1,8 +1,6 @@
 #ifndef _POINT_LIGHT_H_
 #define _POINT_LIGHT_H_
 
-#include "utils/vec3.h"
-
 using namespace utils;
 
 /*!

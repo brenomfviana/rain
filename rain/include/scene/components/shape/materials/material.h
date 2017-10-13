@@ -1,8 +1,8 @@
 #ifndef _MATERIAL_H_
 #define _MATERIAL_H_
 
+#include "vec3.h"
 #include "render/ray.h"
-#include "utils/vec3.h"
 #include "scene/components/hit_record.h"
 
 using namespace utils;

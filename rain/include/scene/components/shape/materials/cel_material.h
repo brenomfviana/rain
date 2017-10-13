@@ -13,7 +13,7 @@ class CelMaterial : public Material {
         // Material colors
         std::vector<RGB> colors;
         // Angle ranges at which each color appears
-        std::vector<float>angles;
+        std::vector<Vec3::RealType>angles;
 
         /*!
          * Cel material constructor.
@@ -21,7 +21,7 @@ class CelMaterial : public Material {
          * @param colors Material colors.
          * @param angles Angle ranges at which each color appears.
          */
-		CelMaterial(std::vector<RGB> colors, std::vector<float> angles) :
+		CelMaterial(std::vector<RGB> colors, std::vector<Vec3::RealType> angles) :
                 colors(colors), angles(angles)
             { /* empty */ }
 

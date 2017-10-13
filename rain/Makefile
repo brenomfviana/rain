@@ -5,7 +5,7 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -g -pthread
 # Executable
 TARGET = rain
 # Header's inclusion
-INCLUDES = -I ./include
+INCLUDES = -I ./include -I ./utils
 # Binary directory
 BIN_DIR = ./bin
 # Source

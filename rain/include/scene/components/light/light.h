@@ -1,7 +1,7 @@
 #ifndef _LIGHT_H_
 #define _LIGHT_H_
 
-#include "utils/vec3.h"
+#include "vec3.h"
 
 using namespace utils;
 

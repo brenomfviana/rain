@@ -12,7 +12,7 @@ class MetalMaterial : public LambertianMaterial {
 
     public:
         //
-        float fuzz;
+        Vec3::RealType fuzz;
 
         /*!
          * Metal material constructor.
@@ -20,7 +20,7 @@ class MetalMaterial : public LambertianMaterial {
          * @param albedo Albedo
          * @param fuzz
          */
-        MetalMaterial(Vec3 albedo, float fuzz) :
+        MetalMaterial(Vec3 albedo, Vec3::RealType fuzz) :
             LambertianMaterial(albedo), fuzz(fuzz) { /* empty */ }
 
         /*!

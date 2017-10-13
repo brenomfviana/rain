@@ -1,9 +1,9 @@
 #include <ctime>
 #include <fstream>
 #include <iostream>
-#include "utils/image.h"
+#include "image.h"
 #include "scene/scene.h"
-#include "scene/camera.h"
+#include "scene/camera/camera.h"
 #include "render/ray_tracer.h"
 #include "render/io/printer.h"
 #include "render/shader/shader.h"
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 		try {
 			// Scene
 	        Scene scene;
-	        Camera cam;
+	        Camera* cam;
 			Shader* shader;
 			// Ray tracer settings
 			int samples;
@@ -32,14 +32,6 @@ int main(int argc, char *argv[]) {
         	SceneReader::read(argv[1], scene, cam, shader, os, samples, nrays);
 			std::cout << "\033[1;34mScene description file "
 					  << "opened successfully!\033[0m\n";
-
-			// TEST AREA
-			/*PointLight* pl = new PointLight(Point3(0, 0, 0), Vec3(1, 1, 1));
-			scene.addLight(pl);
-			DirectionalLight* l = new DirectionalLight(Point3(20, 10, 5), Vec3(1, 1, 1));
-			scene.addLight(l);*/
-			// END TEST AREA
-
 			// Start rendering
 			std::cout << "Starts to rendering...\n";
 			// Get start time

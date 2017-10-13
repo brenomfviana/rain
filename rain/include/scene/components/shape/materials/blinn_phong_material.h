@@ -18,7 +18,7 @@ class BlinnPhongMaterial : public Material {
         // Specular coefficient
         Vec3 ks;
         // Specular shininess control parameter
-        float p;
+        Vec3::RealType p;
 
         /*!
          * BlinnPhongMaterial constructor.
@@ -28,7 +28,7 @@ class BlinnPhongMaterial : public Material {
          * @param ks_ Specular coefficient
          * @param p_ Specular shininess control parameter
          */
-        BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, float p_) :
+        BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, Vec3::RealType p_) :
             ka(ka_), kd(kd_), ks(ks_), p(p_)  { /* empty */ }
 
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,

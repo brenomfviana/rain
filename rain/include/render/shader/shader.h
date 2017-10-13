@@ -1,7 +1,7 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
 
-#include "utils/vec3.h"
+#include "vec3.h"
 #include "scene/scene.h"
 #include "render/ray.h"
 #include "scene/components/hit_record.h"
@@ -39,9 +39,9 @@ class Shader {
             RGB ur = scene.background.upperRight;
             RGB lr = scene.background.lowerRight;
             // Bilinear interpolation
-            auto rd = r.getDirection();
-            auto x = (rd.x() * 0.25) + 0.5;
-            auto y = (rd.y() * 0.5) + 0.5;
+            Vec3 rd = r.getDirection();
+            Vec3::RealType x = (rd.x() * 0.25) + 0.5;
+            Vec3::RealType y = (rd.y() * 0.5)  + 0.5;
             return (1 - y) * ((1 - x) * ll + x * lr) +
                         y  * ((1 - x) * ul + x * ur);
         }

@@ -1,7 +1,7 @@
 #ifndef _HIT_RECORD_H_
 #define _HIT_RECORD_H_
 
-#include "utils/vec3.h"
+#include "vec3.h"
 
 using namespace utils;
 
@@ -23,4 +23,4 @@ class HitRecord {
         Material* material;
 };
 
-#endif /* _CAMERA_H_ */
+#endif /* _HIT_RECORD_H_ */

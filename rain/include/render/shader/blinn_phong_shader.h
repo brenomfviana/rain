@@ -54,9 +54,9 @@ class BlinnPhongShader : public Shader {
                     }
                 }
                 // Fix specular
-                c = RGB(std::min(1.f, float(c[RGB::R])),
-                        std::min(1.f, float(c[RGB::G])),
-                        std::min(1.f, float(c[RGB::B])));
+                c = RGB(std::min(1.f, float(c.r())),
+                        std::min(1.f, float(c.g())),
+                        std::min(1.f, float(c.b())));
                 // Return resulting color
                 return c;
             } else {

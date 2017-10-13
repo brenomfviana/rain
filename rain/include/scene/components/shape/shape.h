@@ -1,7 +1,7 @@
 #ifndef _SHAPE_H_
 #define _SHAPE_H_
 
-#include "utils/vec3.h"
+#include "vec3.h"
 #include "render/ray.h"
 #include "materials/material.h"
 #include "scene/components/hit_record.h"
