@@ -19,12 +19,12 @@ namespace utils {
 
         public:
             // Aliases
-            typedef float ValueType;
+            typedef float RealType;
             enum FieldType : int {X = 0, Y = 1, Z = 2,
                                   R = 0, G = 1, B = 2};
 
             // 3D vector
-            ValueType e[3];
+            RealType e[3];
 
             /*!
              * 3D vector constructor.
@@ -33,8 +33,8 @@ namespace utils {
              * @param e1 Element 1
              * @param e2 Element 2
              */
-            explicit Vec3(ValueType e0 = 0.f, ValueType e1 = 0.f, ValueType e2 = 0.f)
-                : e{e0, e1, e2} { /* empty */ }
+            explicit Vec3(RealType e0 = 0.f, RealType e1 = 0.f, RealType e2 = 0.f) :
+                e{e0, e1, e2} { /* empty */ }
 
             /*!
              * Copy constructor.
@@ -49,7 +49,7 @@ namespace utils {
              *
              * @param il_ Initializer list
              */
-            Vec3(std::initializer_list<ValueType> il) {
+            Vec3(std::initializer_list<RealType> il) {
                 assert(il.size() >= 3);
                 std::copy(il.begin(), std::next(il.begin(), 3), std::begin(e));
             }
@@ -61,68 +61,76 @@ namespace utils {
              *
              * @return X value
              */
-            inline ValueType x() const { return e[X]; }
+            inline RealType x() const { return e[X]; }
 
             /*!
              * Get y value.
              *
              * @return Y value
              */
-            inline ValueType y() const { return e[Y]; }
+            inline RealType y() const { return e[Y]; }
 
             /*!
              * Get z value.
              *
              * @return Z value
              */
-            inline ValueType z() const { return e[Z]; }
+            inline RealType z() const { return e[Z]; }
 
             /*!
              * Get red value.
              *
              * @return Red value
              */
-            inline ValueType r() const { return e[R]; }
+            inline RealType r() const { return e[R]; }
 
             /*!
              * Get green value.
              *
              * @return Green value
              */
-            inline ValueType g() const { return e[G]; }
+            inline RealType g() const { return e[G]; }
 
             /*!
              * Get blue value.
              *
              * @return Blue value
              */
-            inline ValueType b() const { return e[B]; }
+            inline RealType b() const { return e[B]; }
 
             /*!
              * Indexed access operator (rhs).
              *
              * @param idx Index
              */
-            inline ValueType operator[](size_t idx) const { return e[idx]; }
+            inline RealType operator[](size_t idx) const {
+                return e[idx];
+            }
 
             /*!
              * Indexed access operator (lhs).
              *
              * @param Index
              */
-            inline ValueType& operator[](size_t idx) { return e[idx]; }
+            inline RealType& operator[](size_t idx) {
+                return e[idx];
+            }
 
-            /* --------------------- Algebraic Operators ------------------------ */
+            /* ------------------- Algebraic Operators ---------------------- */
 
             /*!
              * Unary '+'.
              */
-            inline const Vec3& operator+(void) const { return *this; }
+            inline const Vec3& operator+(void) const {
+                return *this;
+            }
 
             /*!
              * Unary '-'.
              */
-            inline Vec3 operator-(void) const { return Vec3(-e[X], -e[Y], -e[Z]); }
+            inline Vec3 operator-(void) const {
+                return Vec3(-e[X], -e[Y], -e[Z]);
+            }
 
             /*!
              * Sum operator.
@@ -163,29 +171,29 @@ namespace utils {
             /*!
              * Scalar product operator.
              *
-             * @param t ValueType
+             * @param t RealType
              *
              * @return Vector resulting from the operation
              */
-            inline Vec3& operator*=(const ValueType);
+            inline Vec3& operator*=(const RealType);
 
             /*!
              * Scalar division operator.
              *
-             * @param t ValueType
+             * @param t RealType
              *
              * @return Vector resulting from the operation
              */
-            inline Vec3& operator/=(const ValueType);
+            inline Vec3& operator/=(const RealType);
 
-            /* ------------------------------------------------------------------ */
+            /* -------------------------------------------------------------- */
 
             /*!
              * Get vector length.
              *
              * @return Vector length
              */
-            inline ValueType length(void) const {
+            inline RealType length(void) const {
                 return sqrt(squaredLength());
             }
 
@@ -194,7 +202,7 @@ namespace utils {
              *
              * @return Vector length squared
              */
-            inline ValueType squaredLength(void) const {
+            inline RealType squaredLength(void) const {
                 return (e[X]*e[X] + e[Y]*e[Y] + e[Z]*e[Z]);
             }
 

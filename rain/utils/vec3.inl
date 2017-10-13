@@ -28,14 +28,14 @@ inline Vec3& Vec3::operator/=(const Vec3& v) {
     return *this;
 }
 
-inline Vec3& Vec3::operator*=(const ValueType t) {
+inline Vec3& Vec3::operator*=(const Vec3::RealType t) {
     e[Vec3::X] *= t;
     e[Vec3::Y] *= t;
     e[Vec3::Z] *= t;
     return *this;
 }
 
-inline Vec3& Vec3::operator/=(const ValueType t) {
+inline Vec3& Vec3::operator/=(const Vec3::RealType t) {
     e[Vec3::X] /= t;
     e[Vec3::Y] /= t;
     e[Vec3::Z] /= t;
@@ -134,7 +134,7 @@ inline Vec3 operator/(const Vec3& v1, const Vec3& v2) {
  *
  * @return Vector resulting from the operation
  */
-inline Vec3 operator*(const Vec3& v, Vec3::ValueType t) {
+inline Vec3 operator*(const Vec3& v, Vec3::RealType t) {
     return Vec3(v.e[Vec3::X] * t,
                 v.e[Vec3::Y] * t,
                 v.e[Vec3::Z] * t);
@@ -148,7 +148,7 @@ inline Vec3 operator*(const Vec3& v, Vec3::ValueType t) {
  *
  * @return Vector resulting from the operation
  */
-inline Vec3 operator*(Vec3::ValueType t, const Vec3& v) {
+inline Vec3 operator*(Vec3::RealType t, const Vec3& v) {
     return Vec3(t * v.e[Vec3::X],
                 t * v.e[Vec3::Y],
                 t * v.e[Vec3::Z]);
@@ -162,7 +162,7 @@ inline Vec3 operator*(Vec3::ValueType t, const Vec3& v) {
  *
  * @return Vector resulting from the operation
  */
-inline Vec3 operator/(const Vec3& v, Vec3::ValueType t) {
+inline Vec3 operator/(const Vec3& v, Vec3::RealType t) {
     return Vec3(v.e[Vec3::X] / t,
                 v.e[Vec3::Y] / t,
                 v.e[Vec3::Z] / t);
@@ -176,7 +176,7 @@ inline Vec3 operator/(const Vec3& v, Vec3::ValueType t) {
  *
  * @return Scalar resulting from the operation
  */
-inline Vec3::ValueType dot(const Vec3& v1, const Vec3& v2) {
+inline Vec3::RealType dot(const Vec3& v1, const Vec3& v2) {
     return (v1[Vec3::X] * v2[Vec3::X] +
             v1[Vec3::Y] * v2[Vec3::Y] +
             v1[Vec3::Z] * v2[Vec3::Z]);
@@ -192,14 +192,14 @@ inline Vec3::ValueType dot(const Vec3& v1, const Vec3& v2) {
  */
 inline Vec3 cross(const Vec3& v1, const Vec3& v2) {
     return Vec3((v1[Vec3::Y] * v2[Vec3::Z] - v1[Vec3::Z] * v2[Vec3::Y]),
-                (v1[Vec3::X] * v2[Vec3::Z] - v1[Vec3::Z] * v2[Vec3::X]),
+               -(v1[Vec3::X] * v2[Vec3::Z] - v1[Vec3::Z] * v2[Vec3::X]),
                 (v1[Vec3::X] * v2[Vec3::Y] - v1[Vec3::Y] * v2[Vec3::X]));
 }
 
 inline void Vec3::makeUnitVector(void) {
-    Vec3::ValueType vDOTv = dot(*this, *this);
+    Vec3::RealType vDOTv = dot(*this, *this);
     assert(fabs(vDOTv - 0.f) > 0.000001);
-    Vec3::ValueType k = (1.f / sqrt(vDOTv));
+    Vec3::RealType k = (1.f / sqrt(vDOTv));
     e[Vec3::X] *= k;
     e[Vec3::Y] *= k;
     e[Vec3::Z] *= k;
