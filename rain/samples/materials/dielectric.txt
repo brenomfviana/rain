@@ -1,5 +1,5 @@
 # Output settings
-NAME: metal.ppm
+NAME: dielectric.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -9,10 +9,14 @@ SAMPLES: 100 # Number of samples for anti-aliasing
 RAYS:    100 # Number of rays of the recursion
 # Camera
 CAMERA:
-    LLC: -2 -1 -1 # Lower left corner of the view plane
-    H: 4 0 0      # Horizontal dimension of the view plane
-    V: 0 2 0      # Vertical dimension of the view plane
-    O: 0 0 0      # The camera's origin
+    PERSPECTIVE
+    LOOK_FROM: 0 0 0
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
 # Scene description
 SHADER:
     LAMBERTIAN
@@ -24,7 +28,7 @@ COMPONENTS:
         DIRECTION: 20 10 15
         INTENSITY: 1 1 1
     SPHERE:
-        ORIGIN: 0 -100.5 -3
+        ORIGIN: 0 -100.5 -1
         RADIUS: 100
         LAMBERTIAN:
             ALBEDO: 0.8 0.8 0
@@ -32,7 +36,7 @@ COMPONENTS:
         ORIGIN: 0 0 -1
         RADIUS: 0.5
         LAMBERTIAN:
-            ALBEDO: 0.8 0.3 0.3
+            ALBEDO: 0.1 0.2 0.5
     SPHERE:
         ORIGIN: 1 0 -1
         RADIUS: 0.5
@@ -42,6 +46,10 @@ COMPONENTS:
     SPHERE:
         ORIGIN: -1 0 -1
         RADIUS: 0.5
-        METAL:
-            ALBEDO: 0.8 0.8 0.8
-            FUZZ: 0.3
+        DIELECTRIC:
+            RI: 1.5
+    SPHERE:
+        ORIGIN: -1 0 -1
+        RADIUS: -0.45
+        DIELECTRIC:
+            RI: 1.5

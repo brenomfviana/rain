@@ -1,0 +1,21 @@
+# Output settings
+NAME: empty-scene.ppm
+TYPE: PPM
+CODIFICATION: ascii # or binary
+WIDTH: 200
+HEIGHT: 100
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 0
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+SHADER:
+    BACKGROUND

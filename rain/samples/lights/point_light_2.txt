@@ -1,0 +1,70 @@
+# Output settings
+NAME: point_light_2.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    0 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 1 -2
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    BLINNPHONG
+    AMBIENT_LIGHT: 0.3 0.3 0.3
+BACKGROUND:
+    TOP: 0.5 0.7 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
+COMPONENTS:
+    POINT_LIGHT:
+        ORIGIN: 1 1 0
+        INTENSITY: 1 1 1
+    SPHERE:
+        ORIGIN: 0 -100.5 0
+        RADIUS: 100
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.3 0.3 0.3
+            KS: 1 1 1
+            P: 64
+    SPHERE:
+        ORIGIN: 1 0 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.3 0 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: -1 0 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0 0.3 0.8
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: 0 0 1
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.5 0.5 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: 0 1 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0 0.2 0
+            KS: 0.9 0.9 0.9
+            P: 64
