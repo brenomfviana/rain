@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include "output_settings.h"
-#include "utils/image.h"
+#include "image.h"
 
 /*!
  * This class is responsible for printing images.

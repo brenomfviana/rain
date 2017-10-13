@@ -10,14 +10,14 @@
 #include "output_settings.h"
 #include "render/shader/shader.h"
 #include "scene/scene.h"
-#include "scene/camera.h"
+#include "scene/camera/camera.h"
 #include "scene/components/light/light.h"
 #include "scene/components/background.h"
 #include "scene/components/shape/shape.h"
 #include "scene/components/shape/sphere.h"
 #include "scene/components/shape/materials/material.h"
-#include "utils/vec3.h"
-#include "utils/split.h"
+#include "vec3.h"
+#include "split.h"
 
 using namespace utils;
 
@@ -39,7 +39,7 @@ class SceneReader {
          * @param samples Number of samples for anti-aliasing
          * @param nrays Number of rays of the recursion
          */
-        static void read(const std::string path, Scene& scene, Camera& cam,
+        inline static void read(const std::string path, Scene& scene, Camera*& cam,
                 Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
             // Open scene file
             std::ifstream file(path.c_str());
@@ -61,7 +61,7 @@ class SceneReader {
                     // Interprets file
                     os = *(interpretOS(lines));
                     interpretRTSettings(lines, samples, nrays);
-                    cam = *(interpretCamera(lines));
+                    cam = interpretCamera(lines);
                     shader = interpretShader(lines);
                     // Check shader
                     if (typeid(*shader) == typeid(BackgroundShader) ||
@@ -196,13 +196,33 @@ class SceneReader {
             // Look for other scene components
             if (!lines.empty() && (*(lines.begin())).find("CAMERA:") == 0) {
                 lines.pop_front();
-                // Camera format
-                std::string vformat[] = {"LLC:", "H:", "V:", "O:"};
-                std::vector<std::string> format(vformat, end(vformat));
-                // Create the camera and return it
-                std::vector<std::string>& v = *(getContent(format, lines));
-                return (new Camera(getVec3(v[0]), getVec3(v[1]),
-                    getVec3(v[2]), getVec3(v[3])));
+                if (!lines.empty() && (*(lines.begin())).find("PERSPECTIVE") == 0) {
+                    lines.pop_front();
+                    // Camera format
+                    std::string vformat[] = {"LOOK_FROM:", "LOOK_AT:", "VUP:",
+                                             "VFOV:", "ASPECT_RATIO:", "APERTURE:",
+                                             "FOCAL_DISTANCE:"};
+                    std::vector<std::string> format(vformat, end(vformat));
+                    // Create the camera and return it
+                    std::vector<std::string>& v = *(getContent(format, lines));
+                    return (new PerspectiveCamera(getVec3(v[0]), getVec3(v[1]),
+                        getVec3(v[2]), atof(v[3].c_str()), atof(v[4].c_str()),
+                        atof(v[5].c_str()), atof(v[6].c_str())));
+                } else if (!lines.empty() && (*(lines.begin())).find("PARALLEL") == 0) {
+                    lines.pop_front();
+                    // Camera format
+                    std::string vformat[] = {"LOOK_FROM:", "LOOK_AT:", "VUP:",
+                                             "TOP:", "LEFT:", "RIGHT:", "BOTTOM:"};
+                    std::vector<std::string> format(vformat, end(vformat));
+                    // Create the camera and return it
+                    std::vector<std::string>& v = *(getContent(format, lines));
+                    return (new ParallelCamera(getVec3(v[0]), getVec3(v[1]),
+                        getVec3(v[2]), atof(v[3].c_str()), atof(v[4].c_str()),
+                        atof(v[5].c_str()), atof(v[6].c_str())));
+                } else {
+                    // ERROR
+                    throw "Invalid file format! Needs the camera description.";
+                }
             } else {
                 // ERROR
                 throw "Invalid file format! Needs the camera description.";
