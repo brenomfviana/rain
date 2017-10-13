@@ -1,7 +1,8 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
-#include "utils/vec3.h"
+#include "vec3.h"
+#include "render/ray.h"
 
 using namespace utils;
 
@@ -10,23 +11,28 @@ using namespace utils;
  */
 class Camera {
 
-    protected:
+    public:
 		// The camera's origin
 	    Point3 origin;
 
-    public:
         /*!
          * Camera constructor.
          *
-         * @param llc Lower left corner of the view plane
-         * @param horizontal Horizontal dimension of the view plane
-         * @param vertical Vertical dimension of the view plane
          * @param origin The camera's origin
          */
-        Camera(Point3 llc = Point3(-8, -4.5, -4.5), Vec3 horizontal = Vec3(16, 0, 0),
-                Vec3 vertical = Vec3(0, 9, 0), Point3 origin = Point3(0, 0, 0)) :
-            llc(llc), horizontal(horizontal), vertical(vertical), origin(origin)
-            { /* empty */ }
+        Camera(Point3 origin = Point3(0, 0, 0)) :
+            origin(origin) { /* empty */ }
+
+        /*!
+         * Get ray that reaches the point (u, v) in the view plane.
+         *
+         * @param u View plane x-axis point
+         * @param v View plane y-axis point
+         */
+        virtual Ray getRay(Vec3::RealType u, Vec3::RealType v) const = 0;
 };
+
+#include "parallel_camera.h"
+#include "perspective_camera.h"
 
 #endif /* _CAMERA_H_ */
