@@ -2,7 +2,7 @@
 #define _SHAPE_H_
 
 #include "vec3.h"
-#include "render/ray.h"
+#include "ray.h"
 #include "materials/material.h"
 #include "scene/components/hit_record.h"
 
@@ -25,26 +25,36 @@ class Shape {
          * Shape constructor.
          *
          * @param origin Shape origin
-         * @param material Shape material
          */
-        Shape(Vec3 origin, Material* material) :
-            origin(origin), material(material)
-                { /* empty */ }
+        Shape(Vec3 origin) {
+            this->origin = origin;
+        }
 
         /*!
          * Shape constructor.
          *
          * @param origin Shape origin
+         * @param material Shape material
          */
-        Shape(Vec3 origin) : origin(origin) { /* empty */ }
+        Shape(Vec3 origin, Material* material) {
+            this->origin   = origin;
+            this->material = material;
+        }
+
+        /*!
+         * Shape destructor.
+         */
+        ~Shape() {
+            /* empty */
+        }
 
         /*!
          * Get shape material.
          *
          * @return Shape material
          */
-        inline Material* getMaterial() {
-            return material;
+        inline Material* get_material() {
+            return this->material;
         }
 
         /*!
@@ -58,10 +68,9 @@ class Shape {
          *
          * @return True if the ray has hit the shape and false otherwise
          */
-        virtual bool hit(Ray r, float tMin, float tMax, HitRecord& hr) = 0;
+        virtual bool hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr) = 0;
 };
 
 #include "sphere.h"
-#include "triangle.h"
 
 #endif /* _SHAPE_H_ */

@@ -177,9 +177,9 @@ inline Vec3 operator/(const Vec3& v, Vec3::RealType t) {
  * @return Scalar resulting from the operation
  */
 inline Vec3::RealType dot(const Vec3& v1, const Vec3& v2) {
-    return (v1[Vec3::X] * v2[Vec3::X] +
-            v1[Vec3::Y] * v2[Vec3::Y] +
-            v1[Vec3::Z] * v2[Vec3::Z]);
+    return (v1.e[Vec3::X] * v2.e[Vec3::X] +
+            v1.e[Vec3::Y] * v2.e[Vec3::Y] +
+            v1.e[Vec3::Z] * v2.e[Vec3::Z]);
 }
 
 /*!
@@ -191,15 +191,15 @@ inline Vec3::RealType dot(const Vec3& v1, const Vec3& v2) {
  * @return Vector resulting from the operation
  */
 inline Vec3 cross(const Vec3& v1, const Vec3& v2) {
-    return Vec3((v1[Vec3::Y] * v2[Vec3::Z] - v1[Vec3::Z] * v2[Vec3::Y]),
-               -(v1[Vec3::X] * v2[Vec3::Z] - v1[Vec3::Z] * v2[Vec3::X]),
-                (v1[Vec3::X] * v2[Vec3::Y] - v1[Vec3::Y] * v2[Vec3::X]));
+    return Vec3((v1.e[Vec3::Y] * v2.e[Vec3::Z] - v1.e[Vec3::Z] * v2.e[Vec3::Y]),
+               -(v1.e[Vec3::X] * v2.e[Vec3::Z] - v1.e[Vec3::Z] * v2.e[Vec3::X]),
+                (v1.e[Vec3::X] * v2.e[Vec3::Y] - v1.e[Vec3::Y] * v2.e[Vec3::X]));
 }
 
-inline void Vec3::makeUnitVector(void) {
-    Vec3::RealType vDOTv = dot(*this, *this);
-    assert(fabs(vDOTv - 0.f) > 0.000001);
-    Vec3::RealType k = (1.f / sqrt(vDOTv));
+inline void Vec3::make_unit_vector(void) {
+    Vec3::RealType v_dot_v = dot(*this, *this);
+    assert(fabs(v_dot_v - 0.f) > 0.000001);
+    Vec3::RealType k = (1.f / sqrt(v_dot_v));
     e[Vec3::X] *= k;
     e[Vec3::Y] *= k;
     e[Vec3::Z] *= k;
@@ -212,7 +212,7 @@ inline void Vec3::makeUnitVector(void) {
  *
  * @return Unit vector
  */
-inline static Vec3 unitVector(const Vec3& v) {
+inline static Vec3 unit_vector(const Vec3& v) {
     return v / v.length();
 }
 

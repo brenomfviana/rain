@@ -14,7 +14,7 @@ namespace utils {
 
         private:
             // Bar width
-            size_t barWidth;
+            size_t bar_width;
             // Max value
             size_t max;
             // Current value
@@ -30,8 +30,8 @@ namespace utils {
             void print() {
                 std::string bar;
                 // Calculates progress
-                for (size_t i = 0; i < barWidth; i++) {
-                    if (i < (size_t) ((percent * barWidth) / 100.f)) {
+                for (size_t i = 0; i < bar_width; i++) {
+                    if (i < (size_t) ((percent * bar_width) / 100.f)) {
                         bar.replace(i, 1, "#");
                     } else {
                         bar.replace(i, 1, " ");
@@ -51,7 +51,7 @@ namespace utils {
              * @param max Max value
              */
             ProgressBar(size_t size = 50, size_t max = 100) :
-                barWidth(size), max(max), value(0) { /* empty */ }
+                bar_width(size), max(max), value(0) { /* empty */ }
 
             /*!
              * Progress bar destructor.

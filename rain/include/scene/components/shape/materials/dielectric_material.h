@@ -11,25 +11,28 @@ using namespace utils;
  */
 class DielectricMaterial : public Material {
 
-    public:
+    private:
         //
         Vec3::RealType ri;
 
+    public:
         /*!
          * Dielectric material constructor.
          *
          * @param ri
          */
-        DielectricMaterial(Vec3::RealType ri) : ri(ri) { /* empty */ }
+        DielectricMaterial(Vec3::RealType ri);
+
+
+        /*!
+         * Dielectric material destructor.
+         */
+        ~DielectricMaterial();
 
         /*!
          * .
          */
-        float schlick(float cosine, float ri) const {
-            float r = (1.f - ri) / (1.f + ri);
-            r = r * r;
-            return (r + (1.f - r) * std::pow((1.f - cosine), 5.f));
-        }
+        Vec3::RealType schlick(Vec3::RealType cosine, Vec3::RealType ri) const;
 
         /*!
          * Get refracted ray direction.
@@ -39,20 +42,8 @@ class DielectricMaterial : public Material {
          *
          * @return If the ray was refracted
          */
-        bool refract(const Vec3& v, const Vec3& n, float niOVERnt,
-                Vec3& refracted) const {
-            //
-            float dt = dot(unitVector(v), n);
-            //
-            float discriminant = 1.f - (niOVERnt * niOVERnt * (1.f - dt * dt));
-            //
-            if (discriminant > 0) {
-                refracted = niOVERnt * (v - n * dt) - n * std::sqrt(discriminant);
-                return true;
-            } else {
-                return false;
-            }
-        }
+        bool refract(const Vec3& v, const Vec3& n, Vec3::RealType ni_over_nt,
+                Vec3& refracted) const;
 
         /*!
          * Get reflected ray direction.
@@ -62,51 +53,10 @@ class DielectricMaterial : public Material {
          *
          * @return Reflected ray direction
          */
-        Vec3 reflect(const Vec3& v, const Vec3& n) const {
-            return v - 2 * dot(v, n) * n;
-        }
+        Vec3 reflect(const Vec3& v, const Vec3& n) const;
 
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
-                Ray& sray) const {
-            //
-            Vec3 outwardNormal;
-            //
-            Vec3 reflected = reflect(r.getDirection(), hr.normal);
-            //
-            float niOVERnt;
-            //
-            attenuation = Vec3(1.f, 1.f, 1.f);
-            //
-            float reflectProb;
-            float cosine;
-            //
-            float d = dot(r.getDirection(), hr.normal);
-            if (d > 0) {
-                outwardNormal = -hr.normal;
-                niOVERnt = ri;
-                cosine = ri * d / r.getDirection().length();
-            } else {
-                outwardNormal = hr.normal;
-                niOVERnt = 1.f / ri;
-                cosine = - d / r.getDirection().length();
-            }
-            //
-            Vec3 refracted;
-            //
-            if (refract(r.getDirection(), outwardNormal, niOVERnt, refracted)) {
-                reflectProb = schlick(cosine, ri);
-            } else {
-                sray = Ray(hr.point, reflected);
-                reflectProb = 1.f;
-            }
-            //
-            if (drand48() < reflectProb) {
-                sray = Ray(hr.point, reflected);
-            } else {
-                sray = Ray(hr.point, refracted);
-            }
-			return true;
-        }
+                Ray& sray) const;
 };
 
 #endif /* _METAL_MATERIAL_H_ */

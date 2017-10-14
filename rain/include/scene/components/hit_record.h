@@ -14,7 +14,7 @@ class HitRecord {
 
     public:
         // Distance of the point reached
-        float t;
+        Vec3::RealType t;
         // Normal vector of the point reached
         Vec3 normal;
         // Point of the shape reached

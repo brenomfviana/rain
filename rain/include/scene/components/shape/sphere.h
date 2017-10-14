@@ -10,7 +10,7 @@ class Sphere : public Shape {
 
     private:
         // Sphere radius
-        float radius;
+        Vec3::RealType radius;
 
     public:
 
@@ -20,8 +20,7 @@ class Sphere : public Shape {
          * @param radius Sphere radius
          * @param origin Sphere origin point
          */
-        Sphere(Point3 origin, float radius) :
-            Shape(origin), radius(radius) { /* empty */ }
+        Sphere(Point3 origin, Vec3::RealType radius);
 
         /*!
          * Sphere constructor.
@@ -30,31 +29,14 @@ class Sphere : public Shape {
          * @param origin Sphere origin point
          * @param material Sphere material
          */
-        Sphere(Point3 origin, float radius, Material* material) :
-            Shape(origin, material), radius(radius) { /* empty */ }
+        Sphere(Point3 origin, Vec3::RealType radius, Material* material);
 
-        bool hit(Ray r, float tMin, float tMax, HitRecord& hr) {
-            auto oc = r.getOrigin() - origin;
-            auto a = dot(r.getDirection(), r.getDirection());
-            auto b = 2 * dot(oc, r.getDirection());
-            auto c = dot(oc, oc) - (radius * radius);
-            float delta = (b * b - 4 * a * c);
-            // Check if the ray hit this sphere
-            if (delta >= 0) {
-                // Get smaller root
-                auto t = (-b - sqrt(delta)) / (2 * a);
-                // Check if the root is in range
-                if (tMin < t && t < tMax) {
-                    hr.t = t;
-                    hr.point = r.pointAt(t);
-                    hr.normal = unitVector((hr.point - origin) / radius);
-                    hr.material = material;
-                } else {
-                    hr.t = -1;
-                }
-            }
-            return delta >= 0;
-        }
+        /*!
+         * Sphere destructor.
+         */
+        ~Sphere();
+
+        bool hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr);
 };
 
 #endif /* _SPHERE_H_ */

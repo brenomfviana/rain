@@ -1,29 +1,24 @@
-# Language
-CXX = g++
+# Directories
+SRC_DIR   := ./src
+BUILD_DIR := ./build
+INC_DIRS  := ./include ./utils
 # Flags
-CXXFLAGS = -std=c++17 -Wall -Wextra -g -pthread
-# Executable
-TARGET = rain
-# Header's inclusion
-INCLUDES = -I ./include -I ./utils
-# Binary directory
-BIN_DIR = ./bin
-# Source
-SRC = ./src
-# Get all cpp files
-CPP_SRC = $(wildcard $(SRC)/*.cpp)
-# All objects
-OBJS = $(addprefix $(BIN_DIR)/,$(notdir $(CPP_SRC:.cpp=.o)))
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+CPP_FLAGS := -std=c++11 -Wall -Wextra -g -pthread $(INC_FLAGS) -O2 -MMD -MP
+# Objects
+SRCS := $(shell cd $(SRC_DIR); find . -name "*.cpp")
+OBJS := $(addprefix $(BUILD_DIR)/,$(addsuffix .o,$(SRCS)))
+DEPS := $(OBJS:.o=.d)
 # Make
-all: clean create-bin-folder $(TARGET)
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
-$(BIN_DIR)/%.o: $(SRC)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $(INCLUDES) ./$< -o ./$@
+rain: $(OBJS)
+	g++ $(CPP_FLAGS) $(OBJS) -o $@
+$(BUILD_DIR)/%.cpp.o: $(SRC_DIR)/%.cpp
+	mkdir -p $(dir $@)
+	g++ $(CPP_FLAGS) -c $(INCLUDES) $< -o $@
 # Clean
 clean:
-	rm -rf $(BIN_DIR)
-# Create bin folder
-create-bin-folder:
-	mkdir bin
+	rm -r $(BUILD_DIR)
+
 .PHONY: all clean
+
+-include $(DEPS)

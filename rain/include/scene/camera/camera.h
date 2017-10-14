@@ -1,8 +1,8 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
+#include "ray.h"
 #include "vec3.h"
-#include "render/ray.h"
 
 using namespace utils;
 
@@ -20,8 +20,16 @@ class Camera {
          *
          * @param origin The camera's origin
          */
-        Camera(Point3 origin = Point3(0, 0, 0)) :
-            origin(origin) { /* empty */ }
+        Camera(Point3 origin = Point3()) {
+            this->origin = origin;
+        }
+
+        /*!
+         * Camera destructor.
+         */
+        ~Camera() {
+            /* empty */
+        }
 
         /*!
          * Get ray that reaches the point (u, v) in the view plane.
@@ -29,7 +37,7 @@ class Camera {
          * @param u View plane x-axis point
          * @param v View plane y-axis point
          */
-        virtual Ray getRay(Vec3::RealType u, Vec3::RealType v) const = 0;
+        virtual Ray get_ray(Vec3::RealType u, Vec3::RealType v) const = 0;
 };
 
 #include "parallel_camera.h"

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <list>
 #include <string>
+#include <typeinfo>
 #include <vector>
 #include "output_settings.h"
 #include "render/shader/shader.h"
@@ -17,7 +18,6 @@
 #include "scene/components/shape/sphere.h"
 #include "scene/components/shape/materials/material.h"
 #include "vec3.h"
-#include "split.h"
 
 using namespace utils;
 
@@ -39,44 +39,8 @@ class SceneReader {
          * @param samples Number of samples for anti-aliasing
          * @param nrays Number of rays of the recursion
          */
-        inline static void read(const std::string path, Scene& scene, Camera*& cam,
-                Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
-            // Open scene file
-            std::ifstream file(path.c_str());
-            // Check if the file exists
-            if (!file) {
-                // ERROR
-                throw "Error:The file is not exists!";
-            } else
-                // Check if the file is open
-                if (!file.is_open()) {
-                    // ERROR
-                    throw "Error:The file could not be opened!";
-                } else {
-                    // Get file lines
-                    std::list<std::string> lines;
-                    getFormattedLines(lines, file);
-                    // Close file
-                    file.close();
-                    // Interprets file
-                    os = *(interpretOS(lines));
-                    interpretRTSettings(lines, samples, nrays);
-                    cam = interpretCamera(lines);
-                    shader = interpretShader(lines);
-                    // Check shader
-                    if (typeid(*shader) == typeid(BackgroundShader) ||
-                        typeid(*shader) == typeid(Normals2RGBShader) ||
-                        typeid(*shader) == typeid(DepthMapShader)) {
-                        scene  = *(interpretScene(lines, false));
-                    } else if (typeid(*shader) == typeid(BlinnPhongShader) ||
-                               typeid(*shader) == typeid(CelShader) ||
-                               typeid(*shader) == typeid(LambertianShader)) {
-                        scene  = *(interpretScene(lines, true));
-                    } else {
-                        throw "ERROR";
-                    }
-                }
-        }
+        static void read(const std::string path, Scene& scene, Camera*& cam,
+            Shader*& shader, OutputSettings& os, int& samples, int& nrays);
 
     private:
         /*!
@@ -85,37 +49,8 @@ class SceneReader {
          * @param lines Get file lines already formatted
          * @param file Readed file
          */
-        static void getFormattedLines(std::list<std::string>& lines,
-                std::ifstream& file) {
-            // Read all lines of file and removes useless chars
-            lines.clear();
-            std::string line;
-            while (getline(file, line)) {
-                // Remove indentation
-                while (line.find(" ") == 0) {
-                    line = line.replace(line.find(" "), 1, "");
-                }
-                // Remove comments
-                unsigned int i = line.find("#");
-                if (i < line.length()) {
-                    std::string aux;
-                    // Check if the entire line is a comment
-                    if (i == 0) {
-                        aux = line.replace(i, line.length(), "");
-                    } else {
-                        aux = line.replace(i, line.length() - 1, "");
-                    }
-                    // Check if the line is not empty
-                    if (aux.length() > 0) {
-                        line = aux;
-                    } else {
-                        continue;
-                    }
-                }
-                // Adds in list
-                lines.push_back(line);
-            }
-        }
+        static void get_formatted_lines(std::list<std::string>& lines,
+            std::ifstream& file);
 
         /*!
          * Interpret object (like shaders, shapes, etc.) from a custom format.
@@ -125,27 +60,17 @@ class SceneReader {
          *
          * @return Content of object
          */
-        static std::vector<std::string>* getContent(std::vector<std::string> format,
-                std::list<std::string>& lines) {
-            // Init
-            std::vector<std::string>* v = new std::vector<std::string>();
-            std::list<std::string>::iterator itr = lines.begin();
-            std::list<std::string>::iterator begin = lines.begin();
-            // Read contents
-            for (std::string str : format) {
-                // Check format
-                if ((*itr).find(str) == 0) {
-                    // Get content
-                    std::string aux = *(itr++);
-                    v->push_back(aux.replace(0, str.length(), ""));
-                } else {
-                    throw "Invalid file format.";
-                }
-            }
-            // Remove interpreted lines
-            lines.erase(begin, itr);
-            return v;
-        }
+        static std::vector<std::string>* get_content(std::vector<std::string> format,
+                std::list<std::string>& lines);
+
+        /*!
+         * Interpret a 3D vector from a string.
+         *
+         * @param str String that corresponds to a vector
+         *
+         * @return 3D vector
+         */
+        static Vec3 get_vec3(std::string str);
 
         /*!
          * Interpret output settings from a scene description file.
@@ -154,19 +79,7 @@ class SceneReader {
          *
          * @return Output Settings
          */
-        static OutputSettings* interpretOS(std::list<std::string>& lines) {
-            // Output settings format
-            std::string vformat[] = {"NAME:", "TYPE:", "CODIFICATION:",
-                                     "WIDTH:", "HEIGHT:"};
-            std::vector<std::string> format(vformat, end(vformat));
-            // Create the output settings and return it
-            std::vector<std::string>& v = *(getContent(format, lines));
-            for (std::string& str : v) {
-                str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
-            }
-            return (new OutputSettings(v[0], OutputSettings::getImageFileFormat(v[1]),
-                OutputSettings::getCodification(v[2]), std::stoi(v[3]), std::stoi(v[4])));
-        }
+        static OutputSettings* interpret_output_settings(std::list<std::string>& lines);
 
         /*!
          * Interpret ray tracing settings from a scene description file.
@@ -174,16 +87,8 @@ class SceneReader {
          *
          * @param lines File lines
          */
-        static void interpretRTSettings(std::list<std::string>& lines,
-                int& samples, int& nrays) {
-            // Camara format
-            std::string vformat[] = {"SAMPLES:", "RAYS:"};
-            std::vector<std::string> format(vformat, end(vformat));
-            // Get contents
-            std::vector<std::string>& v = *(getContent(format, lines));
-            samples = atoi(v[0].c_str());
-            nrays = atoi(v[1].c_str());
-        }
+        static void interpret_rt_settings(std::list<std::string>& lines,
+                int& samples, int& nrays);
 
         /*!
          * Interpret camera from a scene description file.
@@ -192,42 +97,7 @@ class SceneReader {
          *
          * @return Readed camera
          */
-        static Camera* interpretCamera(std::list<std::string>& lines) {
-            // Look for other scene components
-            if (!lines.empty() && (*(lines.begin())).find("CAMERA:") == 0) {
-                lines.pop_front();
-                if (!lines.empty() && (*(lines.begin())).find("PERSPECTIVE") == 0) {
-                    lines.pop_front();
-                    // Camera format
-                    std::string vformat[] = {"LOOK_FROM:", "LOOK_AT:", "VUP:",
-                                             "VFOV:", "ASPECT_RATIO:", "APERTURE:",
-                                             "FOCAL_DISTANCE:"};
-                    std::vector<std::string> format(vformat, end(vformat));
-                    // Create the camera and return it
-                    std::vector<std::string>& v = *(getContent(format, lines));
-                    return (new PerspectiveCamera(getVec3(v[0]), getVec3(v[1]),
-                        getVec3(v[2]), atof(v[3].c_str()), atof(v[4].c_str()),
-                        atof(v[5].c_str()), atof(v[6].c_str())));
-                } else if (!lines.empty() && (*(lines.begin())).find("PARALLEL") == 0) {
-                    lines.pop_front();
-                    // Camera format
-                    std::string vformat[] = {"LOOK_FROM:", "LOOK_AT:", "VUP:",
-                                             "TOP:", "LEFT:", "RIGHT:", "BOTTOM:"};
-                    std::vector<std::string> format(vformat, end(vformat));
-                    // Create the camera and return it
-                    std::vector<std::string>& v = *(getContent(format, lines));
-                    return (new ParallelCamera(getVec3(v[0]), getVec3(v[1]),
-                        getVec3(v[2]), atof(v[3].c_str()), atof(v[4].c_str()),
-                        atof(v[5].c_str()), atof(v[6].c_str())));
-                } else {
-                    // ERROR
-                    throw "Invalid file format! Needs the camera description.";
-                }
-            } else {
-                // ERROR
-                throw "Invalid file format! Needs the camera description.";
-            }
-        }
+        static Camera* interpret_camera(std::list<std::string>& lines);
 
         /*!
          * Interpret shader from a scene description file.
@@ -236,38 +106,7 @@ class SceneReader {
          *
          * @return Readed shader
          */
-        static Shader* interpretShader(std::list<std::string>& lines) {
-            // Look for other scene components
-            if (!lines.empty() && (*(lines.begin())).find("SHADER:") == 0) {
-                // Remove interpreted lines
-                lines.pop_front();
-                std::string aux = *(lines.begin());
-                lines.pop_front();
-                if (aux.find("BACKGROUND") == 0) {
-                    return (new BackgroundShader());
-                } else
-                    if (aux.find("NORMALS2RGB") == 0) {
-                        return (new Normals2RGBShader());
-                } else
-                    if (aux.find("DEPTHMAP") == 0) {
-                        return getDMShader(lines);
-                } else
-                    if (aux.find("BLINNPHONG") == 0) {
-                        return getBPShader(lines);
-                } else
-                    if (aux.find("TOON") == 0) {
-                        return getCelShader(lines);
-                } else
-                    if (aux.find("LAMBERTIAN") == 0) {
-                        return (new LambertianShader());
-                } else {
-                    throw "Invalid shader!";
-                }
-            } else {
-                // ERROR
-                throw "Invalid file format! Needs the shader description.";
-            }
-        }
+        static Shader* interpret_shader(std::list<std::string>& lines);
 
         /*!
          * Interpret Depth Map Shader from a scene description file.
@@ -276,15 +115,7 @@ class SceneReader {
          *
          * @return Depth Map Shader.
          */
-        static DepthMapShader* getDMShader(std::list<std::string>& lines) {
-            // Depth map shader format
-            std::string vformat[] = {"DEPTH:", "FOREGROUND:", "BACKGROUND:"};
-            std::vector<std::string> format(vformat, end(vformat));
-            // Create the shader and return it
-            std::vector<std::string>& v = *(getContent(format, lines));
-            return (new DepthMapShader(atof(v[0].c_str()), getVec3(v[1]),
-                getVec3(v[2])));
-        }
+        static DepthMapShader* get_depth_map_shader(std::list<std::string>& lines);
 
         /*!
          * Interpret Blinn-Phong Shader from a scene description file.
@@ -293,33 +124,144 @@ class SceneReader {
          *
          * @return Blinn-Phong Shader.
          */
-        static BlinnPhongShader* getBPShader(std::list<std::string>& lines) {
-            // Blinn-Phong shader format
-            std::string vformat[] = {"AMBIENT_LIGHT:"};
-            std::vector<std::string> format(vformat, end(vformat));
-            // Create the shader and return it
-            std::vector<std::string>& v = *(getContent(format, lines));
-            return (new BlinnPhongShader(getVec3(v[0])));
-        }
+        static BlinnPhongShader* get_blinn_phong_shader(std::list<std::string>& lines);
 
         /*!
-         * Interpret Cel Shader from a scene description file.
+         * Interpret Toon Shader from a scene description file.
          *
          * @param lines File lines
          *
-         * @return Cel Shader.
+         * @return Toon Shader.
          */
-        static CelShader* getCelShader(std::list<std::string>& lines) {
-            // Blinn-Phong shader format
-            std::string vformat[] = {"BORDER_COLOR:"};
-            std::vector<std::string> format(vformat, end(vformat));
-            // Create the shader and return it
-            std::vector<std::string>& v = *(getContent(format, lines));
-            return (new CelShader(getVec3(v[0])));
-        }
+        static ToonShader* get_toon_shader(std::list<std::string>& lines);
 
-        // Scene reader
-        #include "scene_reader.inl"
+        /*!
+         * Interpret a scene from a scene description file.
+         *
+         * @param lines File lines
+         * @param md If needs material description
+         *
+         * @return Interpreted scene
+         */
+        static Scene* interpret_scene(std::list<std::string>& lines, bool md);
+
+        /*!
+         * Get background description.
+         *
+         * @param lines File lines
+         *
+         * @return Background
+         */
+        static Background* get_background(std::list<std::string>& lines);
+
+        /*!
+         * Get directional light description.
+         *
+         * @param lines File lines
+         *
+         * @return Light
+         */
+        static DirectionalLight* get_directional_light(std::list<std::string>& lines);
+
+        /*!
+         * Get Point light description.
+         *
+         * @param lines File lines
+         *
+         * @return Point light
+         */
+        static PointLight* get_point_light(std::list<std::string>& lines);
+
+        /*!
+         * Get spot light description.
+         *
+         * @param lines File lines
+         *
+         * @return Spotlight
+         */
+        static Spotlight* get_spotlight(std::list<std::string>& lines);
+
+
+        /*!
+         * Get sphere description.
+         *
+         * @param lines File lines
+         *
+         * @return Sphere
+         */
+        static Sphere* get_sphere(std::list<std::string>& lines, bool md);
+
+        /*!
+         * Get material description.
+         *
+         * @param lines File lines
+         *
+         * @return Material
+         */
+        static Material* get_material(std::list<std::string>& lines);
+
+        /*!
+         * Get Blinn-Phong material.
+         *
+         * @param lines File lines
+         *
+         * @return Blinn-Phong material
+         */
+        static BlinnPhongMaterial* get_bp_material(std::list<std::string>& lines);
+
+        /*!
+         * Get cel material.
+         *
+         * @param lines File lines
+         *
+         * @return Toon material
+         */
+        static ToonMaterial* get_toon_material(std::list<std::string>& lines);
+
+        /*!
+         * Get cel material colors.
+         *
+         * @param lines File lines
+         *
+         * @return Toon material colors
+         */
+        static std::vector<RGB>* get_colors_toon_material(std::list<std::string>& lines);
+
+        /*!
+         * Get angle ranges at which each color of the cel material appears.
+         *
+         * @param lines File lines
+         *
+         * @return Angle ranges at which each color of the cel material appears
+         */
+        static std::vector<Vec3::RealType>* get_angles_toon_material(std::list<std::string>& lines);
+
+        /*!
+         * Get Lambertian material.
+         *
+         * @param lines File lines
+         *
+         * @return Lambertian material
+         */
+        static LambertianMaterial* get_lambertian_material(std::list<std::string>& lines);
+
+        /*!
+         * Get Metal material.
+         *
+         * @param lines File lines
+         *
+         * @return Metal material
+         */
+        static MetalMaterial* get_metal_material(std::list<std::string>& lines);
+
+        /*!
+         * Get Dielectric material.
+         *
+         * @param lines File lines
+         *
+         * @return Dielectric material
+         */
+        static DielectricMaterial* get_dielectric_material(std::list<std::string>& lines);
 };
 
 #endif /* _SCENE_READER_H_ */

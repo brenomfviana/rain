@@ -14,7 +14,16 @@ class BackgroundShader : public Shader {
         /*!
          * Background shader constructor.
          */
-        BackgroundShader() { /* empty */ }
+        BackgroundShader() {
+            /* empty */
+        }
+
+        /*!
+         * Background shader destructor.
+         */
+        ~BackgroundShader() {
+            /* empty */
+        }
 
         RGB color(const Ray& r, const Scene& scene, int nrays) const {
             (void) (nrays);

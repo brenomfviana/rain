@@ -22,28 +22,43 @@ class Scene {
         /*!
          * Empty scene.
          */
-        Scene() { /* empty */ }
+        Scene() {
+            /* empty */
+        }
 
         /*!
          * Scene constructor.
          *
          * @param background Scene background
          */
-        Scene(Background background) : background(background) { /* empty */ }
+        Scene(Background background) {
+            this->background = background;
+        }
+
+        /*!
+         * Scene destructor.
+         */
+        ~Scene() {
+            /* empty */
+        }
 
         /*!
          * Add a shape to the scene.
          *
          * @param shape Shape to be added to the scene
          */
-        inline void addShape(Shape* shape) { components.push_back(shape); }
+        inline void add_shape(Shape* shape) {
+            components.push_back(shape);
+        }
 
         /*!
          * Add a light to the scene.
          *
          * @param light Light to be added to the scene
          */
-        inline void addLight(Light* light) { lights.push_back(light); }
+        inline void add_light(Light* light) {
+            lights.push_back(light);
+        }
 };
 
 #endif /* _SCENE_H_ */

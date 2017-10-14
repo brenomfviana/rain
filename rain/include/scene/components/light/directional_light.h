@@ -20,29 +20,26 @@ class DirectionalLight : public Light {
          * @param direction Light direction
          * @param intensity Light intensity
          */
-        DirectionalLight(Vec3 direction = Vec3(1, 1, 1),
-                         Vec3 intensity = Vec3(1, 1, 1))
-        : Light(intensity), direction(direction) { /* empty */ }
+        DirectionalLight(Vec3 direction = Vec3(1, 1, 1), Vec3 intensity = Vec3(1, 1, 1));
+
+        /*!
+         * Directional light destructor.
+         */
+        ~DirectionalLight();
 
         /*!
 		 * Get directional light direction.
 		 *
 		 * @return Directional light direction
 		 */
-		inline Vec3 getDirection(Point3 p) const {
-            (void) p;
-            return direction;
-        }
+		Vec3 get_direction(Point3 p) const;
 
         /*!
          * Get directional light intensity.
          *
          * @return Directional light intensity
          */
-        inline Vec3 getIntensity(Point3 p) const {
-            (void) p;
-            return intensity;
-        }
+        Vec3 get_intensity(Point3 p) const;
 };
 
 #endif /* _DIRECTIONAL_LIGHT_H_ */

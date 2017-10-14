@@ -12,7 +12,7 @@ class DepthMapShader : public Shader {
 
     private:
         // Max depth
-        float maxDepth;
+        Vec3::RealType max_depth;
         // Scene foreground
         RGB foreground;
         // Scene background
@@ -22,27 +22,18 @@ class DepthMapShader : public Shader {
         /*!
          * Depth Map shader constructor.
          *
-         * @param maxDepth_ Max depth
-         * @param foreground_ Scene foreground
-         * @param background_ Scene background
+         * @param max_depth Max depth
+         * @param foreground Scene foreground
+         * @param background Scene background
          */
-        DepthMapShader(float maxDepth_, RGB foreground_, RGB background_) :
-            maxDepth(maxDepth_), foreground(foreground_), background(background_)
-            { /* empty */ }
+        DepthMapShader(Vec3::RealType max_depth, RGB foreground, RGB background);
 
-        RGB color(const Ray& r, const Scene& scene, int nrays) const {
-            (void) (nrays);
-            // Check hit
-            HitRecord hr;
-            if (intersect(r, scene, 0, 10, hr)) {
-                // Check depth
-                if (hr.t >= 0 && hr.t <= maxDepth) {
-                    float t = hr.t / maxDepth;
-                    return (foreground * (1 - t)) + (background * t);
-                }
-            }
-            return background;
-        }
+        /*!
+         * Depth Map shader destructor.
+         */
+        ~DepthMapShader();
+
+        RGB color(const Ray& r, const Scene& scene, int nrays) const;
 };
 
 #endif /* _DEPTH_MAP_SHADER_H_ */

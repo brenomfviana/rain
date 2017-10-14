@@ -17,8 +17,7 @@ class Ray {
 		Vec3 direction;
 
 	public:
-		// Alias
-		typedef float RealType;
+		typedef double RealType;
 
 		/*!
 		 * Ray constructor.
@@ -26,24 +25,28 @@ class Ray {
 		 * @param origin Ray origin
 		 * @param direction Ray direction
 		 */
-		Ray(const Point3 origin = Point3(), const Vec3 direction = Vec3()) :
-			origin(origin), direction(direction) { /* Empty */ }
-
-		/* ------------------------ Access Methods -------------------------- */
-
-		/*!
-		 * Get ray direction.
-		 *
-		 * @return Ray direction
-		 */
-		inline Vec3 getDirection() const { return direction; }
+		Ray(const Point3 origin = Point3(), const Vec3 direction = Vec3()) {
+			this->origin    = origin;
+			this->direction = direction;
+		}
 
 		/*!
 		 * Get ray origin.
 		 *
 		 * @return Ray origin
 		 */
-		inline Vec3 getOrigin() const { return origin; }
+		inline Vec3 get_origin() const {
+			return origin;
+		}
+
+		/*!
+		 * Get ray direction.
+		 *
+		 * @return Ray direction
+		 */
+		inline Vec3 get_direction() const {
+			return direction;
+		}
 
 		/*!
 		 * Get the point to which the vector points.
@@ -52,7 +55,7 @@ class Ray {
 		 *
 		 * @return The point to which the vector points
 		 */
-		Point3 pointAt(RealType t) const {
+		Point3 point_at(RealType t) const {
 			return origin + (t * direction);
 		}
 };

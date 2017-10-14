@@ -1,10 +1,12 @@
 #ifndef _POINT_LIGHT_H_
 #define _POINT_LIGHT_H_
 
+#include "light.h"
+
 using namespace utils;
 
 /*!
- * This class represents a light.
+ * This class represents a point light.
  */
 class PointLight : public Light {
 
@@ -18,34 +20,35 @@ class PointLight : public Light {
          *
          * @param intensity Light intensity
          */
-        PointLight(Vec3 origin, Vec3 intensity = Vec3(1, 1, 1))
-            : Light(intensity), origin(origin) { /* empty */ }
+        PointLight(Point3 origin = Point3(), Vec3 intensity = Vec3(1, 1, 1));
 
         /*!
-		 * .
-		 */
-		inline Vec3 getOrigin() const {
-            return origin;
-        }
-
-        /*!
-		 * Get directional light direction.
-		 *
-		 * @return Directional light direction
-		 */
-		inline Vec3 getDirection(Point3 p) const {
-            return origin - p;
-        }
-
-        /*!
-         * Get directional light intensity.
-         *
-         * @return Directional light intensity
+         * Point light destructor.
          */
-        inline Vec3 getIntensity(Point3 p) const {
-            (void) p;
-            return intensity;
-        }
+        ~PointLight();
+
+        /*!
+		 * Get point light origin.
+         *
+         * @return Point light origin
+		 */
+		Vec3 get_origin() const;
+
+        /*!
+		 * Get point light direction.
+		 *
+		 * @return Point light direction
+		 */
+		Vec3 get_direction(Point3 p) const;
+
+        /*!
+         * Get point light intensity.
+         *
+         * @return Point light intensity
+         */
+        Vec3 get_intensity(Point3 p) const;
 };
+
+#include "spotlight.h"
 
 #endif /* _POINT_LIGHT_H_ */

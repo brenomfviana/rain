@@ -1,6 +1,7 @@
 #ifndef _BLINN_PHONG_MATERIAL_H_
 #define _BLINN_PHONG_MATERIAL_H_
 
+#include <typeinfo>
 #include "material.h"
 
 using namespace utils;
@@ -21,24 +22,22 @@ class BlinnPhongMaterial : public Material {
         Vec3::RealType p;
 
         /*!
-         * BlinnPhongMaterial constructor.
+         * Blinn-Phong Material constructor.
          *
          * @param ka_ Ambient coefficient
          * @param kd_ Diffuse coefficient
          * @param ks_ Specular coefficient
          * @param p_ Specular shininess control parameter
          */
-        BlinnPhongMaterial(Vec3 ka_, Vec3 kd_, Vec3 ks_, Vec3::RealType p_) :
-            ka(ka_), kd(kd_), ks(ks_), p(p_)  { /* empty */ }
+        BlinnPhongMaterial(Vec3 ka, Vec3 kd, Vec3 ks, Vec3::RealType p);
+
+        /*!
+         * Blinn-Phong Material destructor.
+         */
+        ~BlinnPhongMaterial();
 
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
-                Ray& sray) const {
-            (void) (hr);
-            sray = r;
-            // No attenuation
-            attenuation = Vec3(1, 1, 1);
-            return true;
-        }
+            Ray& sray) const;
 };
 
 #endif /* _BLINN_PHONG_MATERIAL_H_ */

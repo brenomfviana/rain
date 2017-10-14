@@ -6,7 +6,6 @@
 #include <vector>
 
 namespace utils {
-
     /*!
      * Split a string.
      *
@@ -15,7 +14,7 @@ namespace utils {
      *
      * @return Splitted string
      */
-    const std::vector<std::string> split(const std::string& str, const char& c) {
+    static const std::vector<std::string> split(const std::string& str, const char& c) {
         // Buffer
         std::string buff = "";
         // Splitted string

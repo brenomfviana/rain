@@ -8,11 +8,21 @@ using namespace utils;
 /*!
  * This class represents a metal material.
  */
-class MetalMaterial : public LambertianMaterial {
+class MetalMaterial : public Material {
+
+    private:
+        //
+        Vec3 albedo;
+        Vec3::RealType fuzz;
+
+        /*!
+         * Get random direction of a scattered ray.
+         *
+         * @return Random direction of a scattered ray
+         */
+        Vec3 random_in_unit_sphere() const;
 
     public:
-        //
-        Vec3::RealType fuzz;
 
         /*!
          * Metal material constructor.
@@ -20,8 +30,12 @@ class MetalMaterial : public LambertianMaterial {
          * @param albedo Albedo
          * @param fuzz
          */
-        MetalMaterial(Vec3 albedo, Vec3::RealType fuzz) :
-            LambertianMaterial(albedo), fuzz(fuzz) { /* empty */ }
+        MetalMaterial(Vec3 albedo, Vec3::RealType fuzz);
+
+        /*!
+         * Metal material destructor.
+         */
+        ~MetalMaterial();
 
         /*!
          * Get reflected ray direction.
@@ -31,17 +45,10 @@ class MetalMaterial : public LambertianMaterial {
          *
          * @return Reflected ray direction
          */
-        Vec3 reflect(const Vec3& v, const Vec3& n) const {
-			return v - 2 * dot(v, n) * n;
-        }
+        Vec3 reflect(const Vec3& v, const Vec3& n) const;
 
         bool scatter(const Ray& r, const HitRecord& hr, RGB& attenuation,
-                Ray& sray) const {
-            Vec3 reflected = reflect(unitVector(r.getDirection()), hr.normal);
-		    sray = Ray(hr.point, reflected + fuzz * randomInUnitSphere());
-			attenuation = albedo;
-			return (dot(sray.getDirection(), hr.normal) > 0);
-        }
+                Ray& sray) const;
 };
 
 #endif /* _METAL_MATERIAL_H_ */

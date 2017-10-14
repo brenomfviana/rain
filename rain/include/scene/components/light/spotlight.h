@@ -2,7 +2,7 @@
 #define _SPOTLIGHT_H_
 
 #include <cmath>
-#include "scene/components/light/light.h"
+#include "point_light.h"
 
 using namespace utils;
 
@@ -11,48 +11,41 @@ using namespace utils;
  */
 class Spotlight : public PointLight {
 
-    private:
-        //
+    protected:
+        // Spotlight direction
         Vec3 direction;
-        // Angle
-        float beamAngle;
+        // Spotlight angle
+        float beam_angle;
 
     public:
         /*!
-         * Light constructor.
+         * Spotlight constructor.
          *
          * @param origin Light origin
          * @param direction Light direction
          * @param intensity Light intensity
          */
         Spotlight(Point3 origin = Point3(0, 0, 0), Vec3 direction = Vec3(1, 1, 1),
-                Vec3 intensity = Vec3(1, 1, 1), float beamAngle = 90) :
-            PointLight(origin, intensity), direction(direction), beamAngle(beamAngle)
-            { /* empty */ }
+                Vec3 intensity = Vec3(1, 1, 1), float beam_angle = 90);
 
         /*!
-		 * Get light direction.
-		 *
-		 * @return Light direction
-		 */
-		inline Vec3 getDirection(Point3 p) const {
-            Vec3 dir = origin - p;
-            float angle = dot(-direction, dir) / ((-direction).length() * dir.length());
-            if (angle >= beamAngle) {
-                return dir;
-            }
-            return Vec3(0, 0, 0);
-        }
+         * Spotlight destructor.
+         */
+        ~Spotlight();
 
         /*!
-		 * Get light intensity.
+		 * Get spotlight direction.
 		 *
-		 * @return Light intensity
+		 * @return Spotlight direction
 		 */
-		inline Vec3 getIntensity(Point3 p) const {
-            (void) p;
-            return intensity;
-        }
+		Vec3 get_direction(Point3 p) const;
+
+        /*!
+		 * Get spotlight intensity.
+		 *
+		 * @return Spotlight intensity
+		 */
+		Vec3 get_intensity(Point3 p) const;
 };
 
 #endif /* _SPOTLIGHT_H_ */

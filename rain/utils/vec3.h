@@ -19,7 +19,7 @@ namespace utils {
 
         public:
             // Aliases
-            typedef float RealType;
+            typedef double RealType;
             enum FieldType : int {X = 0, Y = 1, Z = 2,
                                   R = 0, G = 1, B = 2};
 
@@ -194,7 +194,7 @@ namespace utils {
              * @return Vector length
              */
             inline RealType length(void) const {
-                return sqrt(squaredLength());
+                return sqrt(squared_length());
             }
 
             /*!
@@ -202,14 +202,14 @@ namespace utils {
              *
              * @return Vector length squared
              */
-            inline RealType squaredLength(void) const {
+            inline RealType squared_length(void) const {
                 return (e[X]*e[X] + e[Y]*e[Y] + e[Z]*e[Z]);
             }
 
             /*!
              * Make this vector an unit vector.
              */
-            inline void makeUnitVector(void);
+            inline void make_unit_vector(void);
     };
 
     typedef Vec3 RGB;
