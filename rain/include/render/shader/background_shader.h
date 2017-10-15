@@ -6,7 +6,7 @@
 using namespace utils;
 
 /*!
- * This class respresents the backgroud shader.
+ * This class respresents the background shader.
  */
 class BackgroundShader : public Shader {
 

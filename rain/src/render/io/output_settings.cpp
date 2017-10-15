@@ -2,11 +2,11 @@
 
 OutputSettings::OutputSettings(std::string name, ImageFileFormats file_format,
     Codifications codification, int width, int height) {
-    this->name = name;
-    this->file_format = file_format;
+    this->name         = name;
+    this->file_format  = file_format;
     this->codification = codification;
-    this->width = width;
-    this->height = height;
+    this->width        = width;
+    this->height       = height;
 }
 
 OutputSettings::~OutputSettings() {

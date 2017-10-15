@@ -4,7 +4,7 @@
 #include "shader.h"
 
 /*!
- * This class respresents the normal shader.
+ * This class respresents the normal to RGB shader.
  */
 class Normals2RGBShader : public Shader {
 

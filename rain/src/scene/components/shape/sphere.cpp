@@ -25,9 +25,9 @@ bool Sphere::hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr)
         Vec3::RealType t = (-b - sqrt(delta)) / (2 * a);
         // Check if the root is in range
         if (tMin < t && t < tMax) {
-            hr.t = t;
-            hr.point = r.point_at(t);
-            hr.normal = unit_vector((hr.point - this->origin) / this->radius);
+            hr.t        = t;
+            hr.point    = r.point_at(t);
+            hr.normal   = unit_vector((hr.point - this->origin) / this->radius);
             hr.material = this->material;
         } else {
             hr.t = -1;

@@ -36,7 +36,7 @@ Vec3 DielectricMaterial::reflect(const Vec3& v, const Vec3& n) const {
 bool DielectricMaterial::scatter(const Ray& r, const HitRecord& hr,
         RGB& attenuation, Ray& sray) const {
     //
-    Vec3 outwardNormal;
+    Vec3 outward_normal;
     //
     Vec3 reflected = reflect(r.get_direction(), hr.normal);
     //
@@ -44,30 +44,30 @@ bool DielectricMaterial::scatter(const Ray& r, const HitRecord& hr,
     //
     attenuation = Vec3(1.f, 1.f, 1.f);
     //
-    Vec3::RealType reflectProb;
+    Vec3::RealType reflect_prob;
     Vec3::RealType cosine;
     //
     Vec3::RealType d = dot(r.get_direction(), hr.normal);
     if (d > 0) {
-        outwardNormal = -hr.normal;
+        outward_normal = -hr.normal;
         ni_over_nt = this->ri;
         cosine = this->ri * d / r.get_direction().length();
     } else {
-        outwardNormal = hr.normal;
+        outward_normal = hr.normal;
         ni_over_nt = 1.f / this->ri;
         cosine = - d / r.get_direction().length();
     }
     //
     Vec3 refracted;
     //
-    if (refract(r.get_direction(), outwardNormal, ni_over_nt, refracted)) {
-        reflectProb = schlick(cosine, this->ri);
+    if (refract(r.get_direction(), outward_normal, ni_over_nt, refracted)) {
+        reflect_prob = schlick(cosine, this->ri);
     } else {
         sray = Ray(hr.point, reflected);
-        reflectProb = 1.f;
+        reflect_prob = 1.f;
     }
     //
-    if (drand48() < reflectProb) {
+    if (drand48() < reflect_prob) {
         sray = Ray(hr.point, reflected);
     } else {
         sray = Ray(hr.point, refracted);

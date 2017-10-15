@@ -24,9 +24,9 @@ bool Shader::intersect(const Ray& r, const Scene& scene, const Vec3::RealType tM
         if (shape->hit(r, tMin, tMax, haux)) {
             // Check which object is in front
             if (haux.t > -1 && hr.t > haux.t) {
-                hr.t = haux.t;
-                hr.point = haux.point;
-                hr.normal = haux.normal;
+                hr.t        = haux.t;
+                hr.point    = haux.point;
+                hr.normal   = haux.normal;
                 hr.material = haux.material;
             }
         }

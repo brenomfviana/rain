@@ -3,16 +3,20 @@
 PerspectiveCamera::PerspectiveCamera(Point3 look_from, Point3 look_at, Vec3 vup,
     Vec3::RealType vfov, Vec3::RealType aspect_ratio, Vec3::RealType aperture,
     Vec3::RealType fd) : Camera(look_from) {
+        //
         this->lens_radius = aperture / 2;
+        //
         Vec3::RealType theta = ((vfov * M_PI) / 180.f);
         Vec3::RealType half_heigth = std::tan(theta / 2);
-        Vec3::RealType half_width = aspect_ratio * half_heigth;
+        Vec3::RealType half_width  = aspect_ratio * half_heigth;
+        //
         this->w = unit_vector(look_from - look_at);
         this->u = unit_vector(cross(vup, w));
         this->v = cross(w, u);
         // fd = (look_from - look_at).length();
         this->llc = look_from - (half_width * fd * this->u) -
                     (half_heigth * fd  * this->v) - this->w * fd;
+        // Set view plane dimension
         this->horizontal = 2 * half_width  * fd * this->u;
         this->vertical   = 2 * half_heigth * fd * this->v;
 }

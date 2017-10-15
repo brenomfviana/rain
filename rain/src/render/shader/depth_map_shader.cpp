@@ -14,7 +14,7 @@ RGB DepthMapShader::color(const Ray& r, const Scene& scene, int nrays) const {
     (void) (nrays);
     // Check hit
     HitRecord hr;
-    if (intersect(r, scene, 0, 10, hr)) {
+    if (intersect(r, scene, 0, this->max_depth, hr)) {
         // Check depth
         if (hr.t >= 0 && hr.t <= this->max_depth) {
             Vec3::RealType t = hr.t / this->max_depth;
