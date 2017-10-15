@@ -1,5 +1,5 @@
 # Output settings
-NAME: empty-scene.ppm
+NAME: empty_scene.ppm
 TYPE: PPM
 CODIFICATION: ascii # or binary
 WIDTH: 200

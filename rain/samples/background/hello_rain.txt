@@ -1,5 +1,5 @@
 # Output settings
-NAME: hello-rain.ppm
+NAME: hello_rain.ppm
 TYPE: PPM
 CODIFICATION: ascii # or binary
 WIDTH: 200

@@ -1,12 +1,12 @@
 # Output settings
-NAME: cel_shading.ppm
+NAME: toon_shading.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
 HEIGHT: 600
 # Ray Tracer Settings
 SAMPLES: 100 # Number of samples for anti-aliasing
-RAYS:    100 # Number of rays of the recursion
+RAYS:    0 # Number of rays of the recursion
 # Camera
 CAMERA:
     PERSPECTIVE

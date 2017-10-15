@@ -20,7 +20,7 @@ CAMERA:
 # Scene description
 SHADER:
     DEPTHMAP
-    DEPTH: 4
+    DEPTH: 3
     FOREGROUND: 0 0 0
     BACKGROUND: 1 1 1
 COMPONENTS:
