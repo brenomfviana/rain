@@ -10,7 +10,7 @@ RAYS:    0 # Number of rays of the recursion
 # Camera
 CAMERA:
     PERSPECTIVE
-    LOOK_FROM: 0 1 -2
+    LOOK_FROM: 0 1 2
     LOOK_AT: 0 0 -1
     VUP: 0 1 0
     VFOV: 90
@@ -53,7 +53,7 @@ COMPONENTS:
             KS: 0.9 0.9 0.9
             P: 64
     SPHERE:
-        ORIGIN: 0 0 1
+        ORIGIN: 0 0 -1
         RADIUS: 0.5
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1

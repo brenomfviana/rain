@@ -1,0 +1,34 @@
+# Output settings
+NAME: triangle.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    0 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 5
+    LOOK_AT: 0 0 1
+    VUP: 0 1 0
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    NORMALS2RGB
+BACKGROUND:
+    TOP: 0.5 0.7 1 # Top color
+    BOTTOM: 1 1 1  # Bottom color
+COMPONENTS:
+    SPHERE:
+        ORIGIN: 0 -100.5 -3
+        RADIUS: 99
+    TRIANGLE:
+        V0: 2 -1 0
+        V1: -2 -1.5 0
+        V2: 1.5 2 -1
+        BACK_FACING_CULL: FALSE
