@@ -62,8 +62,8 @@ class Shape {
          * the shape and false otherwise.
          *
          * @param r Ray
-         * @param tMin
-         * @param tMax
+         * @param t_min
+         * @param t_max
          * @param hr Hit record
          *
          * @return True if the ray has hit the shape and false otherwise
