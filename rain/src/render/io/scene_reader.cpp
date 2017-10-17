@@ -1,5 +1,5 @@
 #include "render/io/scene_reader.h"
-#include "split_str.h"
+#include "utils.h"
 
 void SceneReader::read(const std::string path, Scene& scene, Camera*& cam,
         Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
@@ -287,6 +287,14 @@ Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
                 scene->add_shape(s);
                 // Next component
                 itr = lines.begin();
+            } else if ((*(itr)).find("TRIANGLE:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add sphere
+                Triangle* t = get_triangle(lines, md);
+                scene->add_shape(t);
+                // Next component
+                itr = lines.begin();
             }
         }
     }
@@ -375,6 +383,21 @@ Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
         s = new Sphere(get_vec3(v[0]), atof(v[1].c_str()));
     }
     return s;
+}
+
+Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
+    // Sphere format
+    std::string vformat[] = {"V0:", "V1:", "V2:", "BACK_FACING_CULL:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the sphere and return it
+    std::vector<std::string>& v = *(get_content(format, lines));
+    Triangle* t;
+    if (md) {
+        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]), to_bool(v[3]), get_material(lines));
+    } else {
+        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]), to_bool(v[3]));
+    }
+    return t;
 }
 
 Material* SceneReader::get_material(std::list<std::string>& lines) {

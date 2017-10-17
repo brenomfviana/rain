@@ -191,6 +191,16 @@ class SceneReader {
          */
         static Sphere* get_sphere(std::list<std::string>& lines, bool md);
 
+
+        /*!
+         * Get triangle description.
+         *
+         * @param lines File lines
+         *
+         * @return Triangle
+         */
+        static Triangle* get_triangle(std::list<std::string>& lines, bool md);
+
         /*!
          * Get material description.
          *

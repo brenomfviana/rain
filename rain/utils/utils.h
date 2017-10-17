@@ -1,6 +1,9 @@
-#ifndef _SPLIT_STR_
-#define _SPLIT_STR_
+#ifndef _UTILS_
+#define _UTILS_
 
+#include <algorithm>
+#include <cctype>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -14,7 +17,7 @@ namespace utils {
      *
      * @return Splitted string
      */
-    static const std::vector<std::string> split(const std::string& str, const char& c) {
+    static std::vector<std::string> split(const std::string& str, const char& c) {
         // Buffer
         std::string buff = "";
         // Splitted string
@@ -39,6 +42,23 @@ namespace utils {
         }
         return v;
     }
+
+    /*!
+     * Convert a string to boolean.
+     *
+     * @param str String
+     *
+     * @param Return correspondent value
+     */
+    static bool to_bool(std::string str) {
+        // Make lowercase
+        std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+        // To bool
+        std::istringstream is(str);
+        bool b;
+        is >> std::boolalpha >> b;
+        return b;
+    }
 } // namespace utils
 
-#endif /* _SPLIT_STR_ */
+#endif /* _UTILS_ */
