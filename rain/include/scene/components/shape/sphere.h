@@ -36,7 +36,7 @@ class Sphere : public Shape {
          */
         ~Sphere();
 
-        bool hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr);
+        bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
 };
 
 #endif /* _SPHERE_H_ */

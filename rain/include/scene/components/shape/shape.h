@@ -68,9 +68,10 @@ class Shape {
          *
          * @return True if the ray has hit the shape and false otherwise
          */
-        virtual bool hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr) = 0;
+        virtual bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) = 0;
 };
 
 #include "sphere.h"
+#include "triangle.h"
 
 #endif /* _SHAPE_H_ */

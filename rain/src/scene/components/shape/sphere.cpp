@@ -13,7 +13,7 @@ Sphere::~Sphere() {
     /* empty */
 }
 
-bool Sphere::hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr) {
+bool Sphere::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) {
     Vec3 oc = r.get_origin() - this->origin;
     Vec3::RealType a = dot(r.get_direction(), r.get_direction());
     Vec3::RealType b = 2 * dot(oc, r.get_direction());
@@ -24,7 +24,7 @@ bool Sphere::hit(Ray r, Vec3::RealType tMin, Vec3::RealType tMax, HitRecord& hr)
         // Get smaller root
         Vec3::RealType t = (-b - sqrt(delta)) / (2 * a);
         // Check if the root is in range
-        if (tMin < t && t < tMax) {
+        if (t_min < t && t < t_max) {
             hr.t        = t;
             hr.point    = r.point_at(t);
             hr.normal   = unit_vector((hr.point - this->origin) / this->radius);
