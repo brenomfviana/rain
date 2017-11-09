@@ -1,5 +1,10 @@
 #include "render/io/scene_reader.h"
 #include "utils.h"
+#include <tuple>
+
+/* -------------------------------------------------------------------------- */
+/* --------------------------- Main functions ------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 void SceneReader::read(const std::string path, Scene& scene, Camera*& cam,
         Shader*& shader, OutputSettings& os, int& samples, int& nrays) {
@@ -105,6 +110,10 @@ std::vector<std::string>* SceneReader::get_content(std::vector<std::string> form
     return v;
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------- Settings -------------------------------- */
+/* -------------------------------------------------------------------------- */
+
 OutputSettings* SceneReader::interpret_output_settings(std::list<std::string>& lines) {
     // Output settings format
     std::string vformat[] = {"NAME:", "TYPE:", "CODIFICATION:",
@@ -129,6 +138,10 @@ void SceneReader::interpret_rt_settings(std::list<std::string>& lines,
     samples = atoi(v[0].c_str());
     nrays = atoi(v[1].c_str());
 }
+
+/* -------------------------------------------------------------------------- */
+/* --------------------------------- Camera --------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 Camera* SceneReader::interpret_camera(std::list<std::string>& lines) {
     // Look for other scene components
@@ -166,6 +179,10 @@ Camera* SceneReader::interpret_camera(std::list<std::string>& lines) {
         throw "Invalid file format! Needs the camera description.";
     }
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------- Shader ---------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 Shader* SceneReader::interpret_shader(std::list<std::string>& lines) {
     // Look for other scene components
@@ -227,6 +244,10 @@ ToonShader* SceneReader::get_toon_shader(std::list<std::string>& lines) {
     std::vector<std::string>& v = *(get_content(format, lines));
     return (new ToonShader(get_vec3(v[0])));
 }
+
+/* -------------------------------------------------------------------------- */
+/* -------------------------------- Scene ----------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
     // Check if scene description is empty
@@ -303,8 +324,7 @@ Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
 
 Background* SceneReader::get_background(std::list<std::string>& lines) {
     // Background formats
-    std::string f1[] = {"UPPER_LEFT:", "LOWER_LEFT:", "UPPER_RIGHT:",
-                        "LOWER_RIGHT:"};
+    std::string f1[] = {"UPPER_LEFT:", "LOWER_LEFT:", "UPPER_RIGHT:", "LOWER_RIGHT:"};
     std::string f2[] = {"TOP:", "BOTTOM:"};
     std::string f3[] = {"LEFT:", "RIGHT:"};
     std::string f4[] = {"COLOR:"};
@@ -342,6 +362,8 @@ Background* SceneReader::get_background(std::list<std::string>& lines) {
     throw "Invalid background description.";
 }
 
+/* ------------------------------- Lights ----------------------------------- */
+
 DirectionalLight* SceneReader::get_directional_light(std::list<std::string>& lines) {
     // Directional light format
     std::string vformat[] = {"DIRECTION:", "INTENSITY:"};
@@ -370,6 +392,8 @@ Spotlight* SceneReader::get_spotlight(std::list<std::string>& lines) {
             get_vec3(v[2].c_str()), atof(v[3].c_str())));
 }
 
+/* ------------------------------- Shapes ----------------------------------- */
+
 Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
     // Sphere format
     std::string vformat[] = {"ORIGIN:", "RADIUS:"};
@@ -382,6 +406,8 @@ Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
     } else {
         s = new Sphere(get_vec3(v[0]), atof(v[1].c_str()));
     }
+    // Transformation
+    s->translate(Vec3(2, 0, 0));
     return s;
 }
 
@@ -393,12 +419,23 @@ Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
     std::vector<std::string>& v = *(get_content(format, lines));
     Triangle* t;
     if (md) {
-        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]), to_bool(v[3]), get_material(lines));
+        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
+            to_bool(v[3]), get_material(lines));
     } else {
-        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]), to_bool(v[3]));
+        t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
+            to_bool(v[3]));
     }
+    // Transformation
+    t->translate(Vec3(1, 0, 0));
     return t;
 }
+
+std::list<std::tuple<Transformation, Vec3>>* SceneReader::get_transformations(std::list<std::string>& lines) {
+    std::list<std::tuple<Transformation, Vec3>>* transformations = new std::list<std::tuple<Transformation, Vec3>>();
+    return transformations;
+}
+
+/* ----------------------------- Materials ---------------------------------- */
 
 Material* SceneReader::get_material(std::list<std::string>& lines) {
     // Interpret file

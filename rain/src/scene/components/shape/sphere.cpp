@@ -1,4 +1,6 @@
 #include "scene/components/shape/sphere.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 Sphere::Sphere(Point3 origin, Vec3::RealType radius) : Shape(origin) {
     this->radius = radius;
@@ -35,3 +37,32 @@ bool Sphere::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& h
     }
     return delta >= 0;
 }
+
+void Sphere::translate(Vec3 v) {
+    // Get sphere origin
+    glm::vec4 origin(this->origin.x(), this->origin.y(), this->origin.z(), 1.f);
+    // Get translate factor
+    glm::vec3 translate_factor(v.x(), v.y(), v.z());
+    // Make translation
+    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), translate_factor);
+    glm::vec4 translation = translate_matrix * origin;
+    // Move sphere
+    this->origin = Point3(Vec3::RealType(translation[Vec3::X]),
+                          Vec3::RealType(translation[Vec3::Y]),
+                          Vec3::RealType(translation[Vec3::Z]));
+}
+
+void Sphere::rotate(Vec3 v) {
+    (void) v;
+}
+
+void Sphere::scale(Vec3 v) {
+    (void) v;
+}
+
+// void Sphere::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
+//     // Get transformations
+//     Transformation t;
+//     Vec3 v;
+//     std::tie(t, v) = ts;
+// }

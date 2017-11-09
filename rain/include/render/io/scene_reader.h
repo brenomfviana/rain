@@ -18,6 +18,7 @@
 #include "scene/components/shape/sphere.h"
 #include "scene/components/shape/materials/material.h"
 #include "vec3.h"
+#include "transformation.h"
 
 using namespace utils;
 
@@ -200,6 +201,15 @@ class SceneReader {
          * @return Triangle
          */
         static Triangle* get_triangle(std::list<std::string>& lines, bool md);
+
+        /*!
+         * Get transformations.
+         *
+         * @param lines File lines
+         *
+         * @return List of transformations
+         */
+        static std::list<std::tuple<Transformation, Vec3>>* get_transformations(std::list<std::string>& lines);
 
         /*!
          * Get material description.

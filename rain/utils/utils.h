@@ -59,6 +59,17 @@ namespace utils {
         is >> std::boolalpha >> b;
         return b;
     }
+
+    /*!
+     * User-define literal to convert from degrees to radian.
+     *
+     * @param deg Degrees
+     *
+     * @return Number converted to radians
+     */
+    constexpr long double operator""_deg(long double deg) {
+        return (deg * (3.141592 / 180));
+    }
 } // namespace utils
 
 #endif /* _UTILS_ */

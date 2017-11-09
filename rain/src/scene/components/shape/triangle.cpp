@@ -29,7 +29,7 @@ Triangle::~Triangle() {
 }
 
 bool Triangle::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) {
-    // 
+    //
     Vec3::RealType t;
     Vec3::RealType u;
     Vec3::RealType v;
@@ -108,3 +108,39 @@ bool Triangle::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord&
     }
     return false;
 }
+
+void Triangle::translate(Vec3 v) {
+    // Get triangle points
+    glm::vec4 v0(this->v0.x(), this->v0.y(), this->v0.z(), 1.f);
+    glm::vec4 v1(this->v1.x(), this->v1.y(), this->v1.z(), 1.f);
+    glm::vec4 v2(this->v2.x(), this->v2.y(), this->v2.z(), 1.f);
+    // Get translate factor
+    glm::vec3 translate_factor(v.x(), v.y(), v.z());
+    // Make translation
+    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), translate_factor);
+    glm::vec4 v0_translation = translate_matrix * v0;
+    glm::vec4 v1_translation = translate_matrix * v1;
+    glm::vec4 v2_translation = translate_matrix * v2;
+    // Move triangle
+    this->v0 = Point3(Vec3::RealType(v0_translation[Vec3::X]),
+                      Vec3::RealType(v0_translation[Vec3::Y]),
+                      Vec3::RealType(v0_translation[Vec3::Z]));
+    this->v1 = Point3(Vec3::RealType(v1_translation[Vec3::X]),
+                      Vec3::RealType(v1_translation[Vec3::Y]),
+                      Vec3::RealType(v1_translation[Vec3::Z]));
+    this->v2 = Point3(Vec3::RealType(v2_translation[Vec3::X]),
+                      Vec3::RealType(v2_translation[Vec3::Y]),
+                      Vec3::RealType(v2_translation[Vec3::Z]));
+}
+
+void Triangle::rotate(Vec3 v) {
+    (void) v;
+}
+
+void Triangle::scale(Vec3 v) {
+    (void) v;
+}
+
+// void Triangle::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
+//     (void) v;
+// }

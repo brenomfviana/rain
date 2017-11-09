@@ -36,6 +36,14 @@ class Triangle : public Shape {
         ~Triangle();
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
+
+        void translate(Vec3 v);
+
+        void rotate(Vec3 v);
+
+        void scale(Vec3 v);
+
+        // void transform(std::list<std::tuple<Transformation, Vec3>> ts);
 };
 
 #endif /* _TRIANGLE_H_ */

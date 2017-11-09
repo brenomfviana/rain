@@ -1,10 +1,14 @@
 #ifndef _SHAPE_H_
 #define _SHAPE_H_
 
-#include "vec3.h"
 #include "ray.h"
+#include "vec3.h"
+#include "transformation.h"
 #include "materials/material.h"
 #include "scene/components/hit_record.h"
+#include <tuple>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace utils;
 
@@ -69,6 +73,34 @@ class Shape {
          * @return True if the ray has hit the shape and false otherwise
          */
         virtual bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) = 0;
+
+        /*!
+         * .
+         *
+         * @param v .
+         */
+        virtual void translate(Vec3 v) = 0;
+
+        /*!
+         * .
+         *
+         * @param v .
+         */
+        virtual void rotate(Vec3 v) = 0;
+
+        /*!
+         * .
+         *
+         * @param v .
+         */
+        virtual void scale(Vec3 v) = 0;
+
+        /*!
+         * .
+         *
+         * @param ts .
+         */
+        // virtual void transform(std::list<std::tuple<Transformation, Vec3>> ts) = 0;
 };
 
 #include "sphere.h"

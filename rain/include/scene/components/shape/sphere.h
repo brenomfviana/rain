@@ -37,6 +37,14 @@ class Sphere : public Shape {
         ~Sphere();
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
+
+        void translate(Vec3 v);
+
+        void rotate(Vec3 v);
+
+        void scale(Vec3 v);
+
+        // void transform(std::list<std::tuple<Transformation, Vec3>> ts);
 };
 
 #endif /* _SPHERE_H_ */
