@@ -1,6 +1,6 @@
 #ifndef _TRANSFORMATION_
 #define _TRANSFORMATION_
 
-enum Transformation : int {TRANSLATE = 0, ROTATION, SCALE, CUSTOM_TRANSFORMATION};
+enum Transformation : int {TRANSLATE = 0, ROTATE, SCALE};
 
 #endif /* _TRANSFORMATION_ */

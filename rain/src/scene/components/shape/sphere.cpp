@@ -38,31 +38,37 @@ bool Sphere::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& h
     return delta >= 0;
 }
 
-void Sphere::translate(Vec3 v) {
-    // Get sphere origin
-    glm::vec4 origin(this->origin.x(), this->origin.y(), this->origin.z(), 1.f);
-    // Get translate factor
-    glm::vec3 translate_factor(v.x(), v.y(), v.z());
-    // Make translation
-    glm::mat4 translate_matrix = glm::translate(glm::mat4(1.0f), translate_factor);
-    glm::vec4 translation = translate_matrix * origin;
-    // Move sphere
-    this->origin = Point3(Vec3::RealType(translation[Vec3::X]),
-                          Vec3::RealType(translation[Vec3::Y]),
-                          Vec3::RealType(translation[Vec3::Z]));
+glm::mat4 Sphere::translate(glm::vec3 v) {
+    return glm::translate(glm::mat4(1.0f), v);
 }
 
-void Sphere::rotate(Vec3 v) {
+glm::mat4 Sphere::rotate(glm::vec3 v) {
     (void) v;
 }
 
-void Sphere::scale(Vec3 v) {
+glm::mat4 Sphere::scale(glm::vec3 v) {
     (void) v;
 }
 
-// void Sphere::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
-//     // Get transformations
-//     Transformation t;
-//     Vec3 v;
-//     std::tie(t, v) = ts;
-// }
+void Sphere::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
+    // Apply transformations
+    glm::mat4 transformations = glm::mat4(1.f);
+    for (t : ts) {
+        Transformation tn;
+        Vec3 v;
+        std::tie(tn, v) = t;
+        // Check transformation
+        if (tn == Transformation::TRANSLATE) {
+            glm::mat4 translate_matrix = translate(glm::vec3(v.x(), v.y(), v.z()));
+            // Get sphere origin
+            glm::vec4 origin(this->origin.x(), this->origin.y(), this->origin.z(), 1.f);
+            glm::vec4 translation = translate_matrix * origin;
+            // Move sphere
+            this->origin = Point3(Vec3::RealType(translation[Vec3::X]),
+                                  Vec3::RealType(translation[Vec3::Y]),
+                                  Vec3::RealType(translation[Vec3::Z]));
+        } else if (tn == Transformation::SCALE) {
+            // TODO
+        }
+    }
+}

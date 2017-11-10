@@ -6,6 +6,7 @@
 #include "transformation.h"
 #include "materials/material.h"
 #include "scene/components/hit_record.h"
+#include <list>
 #include <tuple>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -79,28 +80,28 @@ class Shape {
          *
          * @param v .
          */
-        virtual void translate(Vec3 v) = 0;
+        virtual glm::mat4 translate(glm::vec3 v) = 0;
 
         /*!
          * .
          *
          * @param v .
          */
-        virtual void rotate(Vec3 v) = 0;
+        virtual glm::mat4 rotate(glm::vec3 v) = 0;
 
         /*!
          * .
          *
          * @param v .
          */
-        virtual void scale(Vec3 v) = 0;
+        virtual glm::mat4 scale(glm::vec3 v) = 0;
 
         /*!
          * .
          *
          * @param ts .
          */
-        // virtual void transform(std::list<std::tuple<Transformation, Vec3>> ts) = 0;
+        virtual void transform(std::list<std::tuple<Transformation, Vec3>> ts) = 0;
 };
 
 #include "sphere.h"

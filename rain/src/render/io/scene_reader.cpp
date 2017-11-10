@@ -406,8 +406,12 @@ Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
     } else {
         s = new Sphere(get_vec3(v[0]), atof(v[1].c_str()));
     }
-    // Transformation
-    s->translate(Vec3(2, 0, 0));
+    // Transformations
+    std::list<std::tuple<Transformation, Vec3>> ts;
+    for(int i = 0; i < 2; i++) {
+        ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
+    }
+    s->transform(ts);
     return s;
 }
 
@@ -425,8 +429,12 @@ Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
         t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
             to_bool(v[3]));
     }
-    // Transformation
-    t->translate(Vec3(1, 0, 0));
+    // Transformations
+    std::list<std::tuple<Transformation, Vec3>> ts;
+    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
+    ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
+    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
+    t->transform(ts);
     return t;
 }
 

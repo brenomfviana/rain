@@ -38,13 +38,13 @@ class Sphere : public Shape {
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
 
-        void translate(Vec3 v);
+        glm::mat4 translate(glm::vec3 v);
 
-        void rotate(Vec3 v);
+        glm::mat4 rotate(glm::vec3 v);
 
-        void scale(Vec3 v);
+        glm::mat4 scale(glm::vec3 v);
 
-        // void transform(std::list<std::tuple<Transformation, Vec3>> ts);
+        void transform(std::list<std::tuple<Transformation, Vec3>> ts);
 };
 
 #endif /* _SPHERE_H_ */
