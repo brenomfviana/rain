@@ -11,11 +11,11 @@
 class Triangle : public Shape {
 
     private:
-        //
+        // Triangle vertices
         Point3 v0;
         Point3 v1;
         Point3 v2;
-        //
+        // To check whether the two sides of the triangle are shown
         bool back_facing_cull;
 
     public:
@@ -28,7 +28,8 @@ class Triangle : public Shape {
         /*!
          * Triangle constructor.
          */
-        Triangle(Point3 v0, Point3 v1, Point3 v2, bool back_facing_cull, Material* material);
+        Triangle(Point3 v0, Point3 v1, Point3 v2, bool back_facing_cull,
+            Material* material);
 
         /*!
          * Triangle destructor.

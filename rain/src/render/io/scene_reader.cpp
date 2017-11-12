@@ -311,8 +311,16 @@ Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
             } else if ((*(itr)).find("TRIANGLE:") == 0) {
                 // Erase
                 lines.erase(itr);
-                // Add sphere
+                // Add triangle
                 Triangle* t = get_triangle(lines, md);
+                scene->add_shape(t);
+                // Next component
+                itr = lines.begin();
+            } else if ((*(itr)).find("BOX:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add box
+                Box* t = get_box(lines, md);
                 scene->add_shape(t);
                 // Next component
                 itr = lines.begin();
@@ -406,12 +414,12 @@ Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
     } else {
         s = new Sphere(get_vec3(v[0]), atof(v[1].c_str()));
     }
-    // Transformations
-    std::list<std::tuple<Transformation, Vec3>> ts;
-    for(int i = 0; i < 2; i++) {
-        ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
-    }
-    s->transform(ts);
+    // // Transformations
+    // std::list<std::tuple<Transformation, Vec3>> ts;
+    // for(int i = 0; i < 2; i++) {
+    //     ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
+    // }
+    // s->transform(ts);
     return s;
 }
 
@@ -429,13 +437,34 @@ Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
         t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
             to_bool(v[3]));
     }
+    // // Transformations
+    // std::list<std::tuple<Transformation, Vec3>> ts;
+    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
+    // ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
+    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
+    // t->transform(ts);
+    return t;
+}
+
+Box* SceneReader::get_box(std::list<std::string>& lines, bool md) {
+    // Sphere format
+    std::string vformat[] = {"ORIGIN:", "SIZE:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the sphere and return it
+    std::vector<std::string>& v = *(get_content(format, lines));
+    Box* b;
+    if (md) {
+        b = new Box(get_vec3(v[0]), get_vec3(v[1]), get_material(lines));
+    } else {
+        b = new Box(get_vec3(v[0]), get_vec3(v[1]));
+    }
     // Transformations
     std::list<std::tuple<Transformation, Vec3>> ts;
-    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
+    ts.push_back(std::make_tuple(TRANSLATE, Vec3(-1, -1, 0)));
     ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
-    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
-    t->transform(ts);
-    return t;
+    ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
+    b->transform(ts);
+    return b;
 }
 
 std::list<std::tuple<Transformation, Vec3>>* SceneReader::get_transformations(std::list<std::string>& lines) {

@@ -192,7 +192,6 @@ class SceneReader {
          */
         static Sphere* get_sphere(std::list<std::string>& lines, bool md);
 
-
         /*!
          * Get triangle description.
          *
@@ -201,6 +200,15 @@ class SceneReader {
          * @return Triangle
          */
         static Triangle* get_triangle(std::list<std::string>& lines, bool md);
+
+        /*!
+         * Get box description.
+         *
+         * @param lines File lines
+         *
+         * @return Box
+         */
+        static Box* get_box(std::list<std::string>& lines, bool md);
 
         /*!
          * Get transformations.

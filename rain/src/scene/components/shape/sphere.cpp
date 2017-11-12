@@ -44,15 +44,16 @@ glm::mat4 Sphere::translate(glm::vec3 v) {
 
 glm::mat4 Sphere::rotate(glm::vec3 v) {
     (void) v;
+    return glm::mat4(1.f);
 }
 
 glm::mat4 Sphere::scale(glm::vec3 v) {
     (void) v;
+    return glm::mat4(1.f);
 }
 
 void Sphere::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
     // Apply transformations
-    glm::mat4 transformations = glm::mat4(1.f);
     for (t : ts) {
         Transformation tn;
         Vec3 v;
