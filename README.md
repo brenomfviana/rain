@@ -14,11 +14,13 @@ The name rain is an acronym for **RA**y trac**IN**g.
 
 - [ ] Ray Tracer
   - [x] Anti-aliasing
+  - [x] Threads
   - [ ] Shaders
     - [x] Background
-    - [x] Normal 2 RGB
+    - [x] Normal to RGB
     - [x] Depth Map
     - [x] Blinn-Phong
+    - [x] Toon (Cel)
     - [ ] Lambertian
 
 - [ ] Scene
@@ -26,17 +28,20 @@ The name rain is an acronym for **RA**y trac**IN**g.
   - [ ] Scene components
     - [ ] Light
       - [x] Directional Light
-      - [ ] Point Light
+      - [x] Point Light
+      - [x] Spotlight
+      - [ ] Area light
     - [ ] Shapes
       - [x] Sphere
-      - [ ] Flat
-      - [ ] Cube
-      - [ ] Cuboid
-      - [ ] Cone
+      - [x] Triangle
+      - [x] Box
       - [ ] Cylinder
+      - [ ] Cone
       - [ ] Materials
+        - [x] Blinn-Phong
         - [x] Diffuse
         - [x] Metal
+        - [x] Toon
         - [ ] Dielectrics
         - [ ] Texture
   - [ ] Camera
@@ -54,13 +59,13 @@ The name rain is an acronym for **RA**y trac**IN**g.
     - [ ] PNG
     - [ ] TIFF
     - [ ] GIF
-- [ ] Miscellaneous
+- [x] Miscellaneous
   - [x] Progress Bar
   - [x] Show render time
 
 ## Dependencies
 
-- C++11
+- C++17
 
 ## How to compile
 
