@@ -21,8 +21,9 @@ bool DielectricMaterial::refract(const Vec3& v, const Vec3& n, Vec3::RealType ni
     //
     Vec3::RealType discriminant = 1.f - (ni_over_nt * ni_over_nt * (1.f - dt * dt));
     //
-    if (discriminant > 0) {
-        refracted = ni_over_nt * (v - n * dt) - n * std::sqrt(discriminant);
+    if (discriminant > 0.f) {
+        Vec3::RealType cosT = std::sqrt(discriminant);
+        refracted = ni_over_nt * v + (ni_over_nt * cosT - cosT) * n;
         return true;
     } else {
         return false;

@@ -6,33 +6,34 @@
  */
 Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
     this->size = size;
-    Point3 sx = Point3(size.x(), 0, 0);
-    Point3 sy = Point3(0, size.y(), 0);
-    Point3 sz = Point3(0, 0, size.z());
+    Point3 x = Point3(size.x(), 0, 0);
+    Point3 y = Point3(0, size.y(), 0);
+    Point3 z = Point3(0, 0, size.z());
+    Point3 o = origin;
     // Create box
-    Triangle* t0 = new Triangle(origin, origin + sx, origin + sy, true);
+    Triangle* t0 = new Triangle(o, o + y, o + x, true);
     trs[0] = t0;
-    Triangle* t1 = new Triangle(origin + sx, origin + sx + sy, origin + sy, true);
+    Triangle* t1 = new Triangle(o + x, o + y, o + x + y, true);
     trs[1] = t1;
-    Triangle* t2 = new Triangle(origin + sx, origin + sx + sz, origin + sx + sy, true);
+    Triangle* t2 = new Triangle(o, o + x + z, o + z, true);
     trs[2] = t2;
-    Triangle* t3 = new Triangle(origin + sx + sz, origin + sz + sy + sz, origin + sx + sy, true);
+    Triangle* t3 = new Triangle(o, o + x, o + x + z, true);
     trs[3] = t3;
-    Triangle* t4 = new Triangle(origin + sx + sz, origin + sz, origin + sx + sy + sz, true);
+    Triangle* t4 = new Triangle(o, o + z, o + y + z, true);
     trs[4] = t4;
-    Triangle* t5 = new Triangle(origin + sz, origin + sy + sz, origin + sx + sy + sy, true);
+    Triangle* t5 = new Triangle(o, o + y + z, o + y, true);
     trs[5] = t5;
-    Triangle* t6 = new Triangle(origin + sz, origin, origin + sy + sz, true);
+    Triangle* t6 = new Triangle(o + x, o + x + y, o + x + z, true);
     trs[6] = t6;
-    Triangle* t7 = new Triangle(origin, origin + sy, origin + sy + sz, true);
+    Triangle* t7 = new Triangle(o + x + y, o + x + y + z, o + x + z, true);
     trs[7] = t7;
-    Triangle* t8 = new Triangle(origin, origin + sz, origin + sx + sz, true);
+    Triangle* t8 = new Triangle(o + y, o + y + z, o + x + y, true);
     trs[8] = t8;
-    Triangle* t9 = new Triangle(origin + sx + sz, origin + sx, origin, true);
+    Triangle* t9 = new Triangle(o + y + z, o + x + y + z, o + x + y, true);
     trs[9] = t9;
-    Triangle* tA = new Triangle(origin + sy, origin + sx + sy, origin + sy + sz, true);
+    Triangle* tA = new Triangle(o + y + z, o + z, o + x + y + z, true);
     trs[10] = tA;
-    Triangle* tB = new Triangle(origin + sx + sy, origin + sx + sy + sz, origin + sy + sz, true);
+    Triangle* tB = new Triangle(o + z, o + x + z, o + x + y + z, true);
     trs[11] = tB;
 }
 
@@ -42,33 +43,34 @@ Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
 Box::Box(Point3 origin, Vec3 size, Material* material) :
         Shape(origin, material) {
     this->size = size;
-    Point3 sx = Point3(size.x(), 0, 0);
-    Point3 sy = Point3(0, size.y(), 0);
-    Point3 sz = Point3(0, 0, size.z());
+    Point3 x = Point3(size.x(), 0, 0);
+    Point3 y = Point3(0, size.y(), 0);
+    Point3 z = Point3(0, 0, size.z());
+    Point3 o = origin;
     // Create box
-    Triangle* t0 = new Triangle(origin, origin + sx, origin + sy, true, material);
+    Triangle* t0 = new Triangle(o, o + y, o + x, true, material);
     trs[0] = t0;
-    Triangle* t1 = new Triangle(origin + sx, origin + sx + sy, origin + sy, true, material);
+    Triangle* t1 = new Triangle(o + x, o + y, o + x + y, true, material);
     trs[1] = t1;
-    Triangle* t2 = new Triangle(origin + sx, origin + sx + sz, origin + sx + sy, true, material);
+    Triangle* t2 = new Triangle(o, o + x + z, o + z, true, material);
     trs[2] = t2;
-    Triangle* t3 = new Triangle(origin + sx + sz, origin + sz + sy + sz, origin + sx + sy, true, material);
+    Triangle* t3 = new Triangle(o, o + x, o + x + z, true, material);
     trs[3] = t3;
-    Triangle* t4 = new Triangle(origin + sx + sz, origin + sz, origin + sx + sy + sz, true, material);
+    Triangle* t4 = new Triangle(o, o + z, o + y + z, true, material);
     trs[4] = t4;
-    Triangle* t5 = new Triangle(origin + sz, origin + sy + sz, origin + sx + sy + sy, true, material);
+    Triangle* t5 = new Triangle(o, o + y + z, o + y, true, material);
     trs[5] = t5;
-    Triangle* t6 = new Triangle(origin + sz, origin, origin + sy + sz, true, material);
+    Triangle* t6 = new Triangle(o + x, o + x + y, o + x + z, true, material);
     trs[6] = t6;
-    Triangle* t7 = new Triangle(origin, origin + sy, origin + sy + sz, true, material);
+    Triangle* t7 = new Triangle(o + x + y, o + x + y + z, o + x + z, true, material);
     trs[7] = t7;
-    Triangle* t8 = new Triangle(origin, origin + sz, origin + sx + sz, true, material);
+    Triangle* t8 = new Triangle(o + y, o + y + z, o + x + y, true, material);
     trs[8] = t8;
-    Triangle* t9 = new Triangle(origin + sx + sz, origin + sx, origin, true, material);
+    Triangle* t9 = new Triangle(o + y + z, o + x + y + z, o + x + y, true, material);
     trs[9] = t9;
-    Triangle* tA = new Triangle(origin + sy, origin + sx + sy, origin + sy + sz, true, material);
+    Triangle* tA = new Triangle(o + y + z, o + z, o + x + y + z, true, material);
     trs[10] = tA;
-    Triangle* tB = new Triangle(origin + sx + sy, origin + sx + sy + sz, origin + sy + sz, true, material);
+    Triangle* tB = new Triangle(o + z, o + x + z, o + x + y + z, true, material);
     trs[11] = tB;
 }
 
