@@ -459,11 +459,11 @@ Box* SceneReader::get_box(std::list<std::string>& lines, bool md) {
         b = new Box(get_vec3(v[0]), get_vec3(v[1]));
     }
     // Transformations
-    std::list<std::tuple<Transformation, Vec3>> ts;
-    ts.push_back(std::make_tuple(TRANSLATE, Vec3(-1, -1, 0)));
-    ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
-    ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
-    b->transform(ts);
+    // std::list<std::tuple<Transformation, Vec3>> ts;
+    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(-1, -1, 0)));
+    // ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
+    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
+    // b->transform(ts);
     return b;
 }
 
