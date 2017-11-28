@@ -37,10 +37,10 @@ COMPONENTS:
             KS: 1 1 1
             P: 5
     TRIANGLE:
-        V0: 1.5 -2 0
-        V1: -1.5 -2 0
-        V2: 0 2 -1
-        BACK_FACING_CULL: FALSE
+        V0: -1.5 -2 0
+        V1: 1.5 -2 0
+        V2: 0 2 1
+        BACK_FACING_CULL: TRUE
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
             KD: 0 0.3 0.8

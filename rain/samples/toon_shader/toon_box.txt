@@ -9,14 +9,14 @@ SAMPLES: 100 # Number of samples for anti-aliasing
 RAYS:    0 # Number of rays of the recursion
 # Camera
 CAMERA:
-    PARALLEL
-    LOOK_FROM: 0 0 5
+    PERSPECTIVE
+    LOOK_FROM: 0 0 -5
     LOOK_AT: 0 0 1
     VUP: 0 1 0
-    TOP: -2
-    LEFT: 2
-    RIGHT: -4
-    BOTTOM: 4
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
 # Scene description
 SHADER:
     TOON
@@ -45,7 +45,7 @@ COMPONENTS:
                 90
                 110
     BOX:
-        ORIGIN: -2 2 0
+        ORIGIN: 1 1 0
         SIZE: 1 1 1
         TOON_MATERIAL:
             COLORS: 5
