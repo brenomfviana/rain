@@ -46,3 +46,5 @@ COMPONENTS:
             KD: 0 0.3 0.8
             KS: 0.9 0.9 0.9
             P: 64
+        SCALE:
+            VALUE: 1 2 1

@@ -1,0 +1,43 @@
+# Output settings
+NAME: bunny.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 600
+HEIGHT: 300
+# Ray Tracer Settings
+SAMPLES: 10 # Number of samples for anti-aliasing
+RAYS:    0 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 4
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 20
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    BLINNPHONG
+    AMBIENT_LIGHT: 0.3 0.3 0.3
+BACKGROUND:
+    TOP: 0.8 0.8 0.8  # Top color
+    BOTTOM: 0 0.749 1 # Bottom color
+COMPONENTS:
+    DIRECTIONAL_LIGHT:
+        DIRECTION: -3 3 2
+        INTENSITY: 0.3 0.3 0.7
+    MESH:
+        FILE: samples/mesh/bunny.obj
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.73725490196 0.73725490196 0.73725490196
+            KS: 0.9 0.9 0.9
+            P: 64
+        SCALE:
+            VALUE: 7 7 7
+        TRANSLATE:
+            VALUE: 0 -0.75 0
+        ROTATE:
+            VALUE: 0 25 0

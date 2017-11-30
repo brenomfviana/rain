@@ -1,0 +1,43 @@
+# Output settings
+NAME: mesh_box.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    0 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 5
+    LOOK_AT: 0 0 1
+    VUP: 0 1 0
+    VFOV: 90
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    BLINNPHONG
+    AMBIENT_LIGHT: 0.3 0.3 0.3
+BACKGROUND:
+    TOP: 0.8 0.8 0.8  # Top color
+    BOTTOM: 0 0.749 1 # Bottom color
+COMPONENTS:
+    DIRECTIONAL_LIGHT:
+        DIRECTION: -3 3 2
+        INTENSITY: 0.3 0.3 0.7
+    MESH:
+        FILE: samples/mesh/box.obj
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0 0.3 0.8
+            KS: 0.9 0.9 0.9
+            P: 64
+        SCALE:
+            VALUE: 2 1 1
+        TRANSLATE:
+            VALUE: 4 -2 0
+#        ROTATE:
+#            VALUE: 45 25 15
