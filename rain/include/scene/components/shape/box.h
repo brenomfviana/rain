@@ -3,10 +3,11 @@
 
 class Triangle;
 
+#include <tuple>
 #include "shape.h"
 
 /*!
- * This class represents a sphere.
+ * This class represents a box.
  */
 class Box : public Shape {
 

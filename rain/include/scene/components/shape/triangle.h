@@ -6,7 +6,7 @@
 #define EPSILON 0.00000001
 
 /*!
- * This class represents a sphere.
+ * This class represents a triangle.
  */
 class Triangle : public Shape {
 

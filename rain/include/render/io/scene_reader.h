@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <tuple>
 #include <list>
 #include <string>
 #include <typeinfo>
@@ -209,6 +210,24 @@ class SceneReader {
          * @return Box
          */
         static Box* get_box(std::list<std::string>& lines, bool md);
+
+        /*!
+         * Get mesh content.
+         *
+         * @param mfile Mesh file
+         *
+         * @return Mesh content
+         */
+        static std::tuple<std::vector<Point3*>, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*>>* get_mesh_content(std::string mfile);
+
+        /*!
+         * Get mesh of triangles description.
+         *
+         * @param lines File lines
+         *
+         * @return Mesh of triangles
+         */
+        static Mesh* get_mesh(std::list<std::string>& lines, bool md);
 
         /*!
          * Get transformations.

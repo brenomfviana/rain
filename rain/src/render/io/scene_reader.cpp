@@ -13,12 +13,12 @@ void SceneReader::read(const std::string path, Scene& scene, Camera*& cam,
     // Check if the file exists
     if (!file) {
         // ERROR
-        throw "Error:The file is not exists!";
+        throw "Error: The file is not exists!";
     } else
         // Check if the file is open
         if (!file.is_open()) {
             // ERROR
-            throw "Error:The file could not be opened!";
+            throw "Error: The file could not be opened!";
         } else {
             // Get file lines
             std::list<std::string> lines;
@@ -324,6 +324,14 @@ Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
                 scene->add_shape(t);
                 // Next component
                 itr = lines.begin();
+            } else if ((*(itr)).find("MESH:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add box
+                Mesh* m = get_mesh(lines, md);
+                scene->add_shape(m);
+                // Next component
+                itr = lines.begin();
             }
         }
     }
@@ -414,20 +422,19 @@ Sphere* SceneReader::get_sphere(std::list<std::string>& lines, bool md) {
     } else {
         s = new Sphere(get_vec3(v[0]), atof(v[1].c_str()));
     }
-    // // Transformations
-    // std::list<std::tuple<Transformation, Vec3>> ts;
-    // for(int i = 0; i < 2; i++) {
-    //     ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
-    // }
-    // s->transform(ts);
+    // Transformations
+    std::list<std::tuple<Transformation, Vec3>> ts = *(get_transformations(lines));
+    if (!ts.empty()) {
+        s->transform(ts);
+    }
     return s;
 }
 
 Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
-    // Sphere format
+    // Triangle format
     std::string vformat[] = {"V0:", "V1:", "V2:", "BACK_FACING_CULL:"};
     std::vector<std::string> format(vformat, end(vformat));
-    // Create the sphere and return it
+    // Create the triangle and return it
     std::vector<std::string>& v = *(get_content(format, lines));
     Triangle* t;
     if (md) {
@@ -437,20 +444,19 @@ Triangle* SceneReader::get_triangle(std::list<std::string>& lines, bool md) {
         t = new Triangle(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
             to_bool(v[3]));
     }
-    // // Transformations
-    // std::list<std::tuple<Transformation, Vec3>> ts;
-    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(1, 0, 0)));
-    // ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
-    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
-    // t->transform(ts);
+    // Transformations
+    std::list<std::tuple<Transformation, Vec3>> ts = *(get_transformations(lines));
+    if (!ts.empty()) {
+        t->transform(ts);
+    }
     return t;
 }
 
 Box* SceneReader::get_box(std::list<std::string>& lines, bool md) {
-    // Sphere format
+    // Box format
     std::string vformat[] = {"ORIGIN:", "SIZE:"};
     std::vector<std::string> format(vformat, end(vformat));
-    // Create the sphere and return it
+    // Create the box and return it
     std::vector<std::string>& v = *(get_content(format, lines));
     Box* b;
     if (md) {
@@ -459,16 +465,119 @@ Box* SceneReader::get_box(std::list<std::string>& lines, bool md) {
         b = new Box(get_vec3(v[0]), get_vec3(v[1]));
     }
     // Transformations
-    // std::list<std::tuple<Transformation, Vec3>> ts;
-    // ts.push_back(std::make_tuple(TRANSLATE, Vec3(-1, -1, 0)));
-    // ts.push_back(std::make_tuple(ROTATE, Vec3(45, 0, 0)));
-    // ts.push_back(std::make_tuple(SCALE, Vec3(1, 2, 1)));
-    // b->transform(ts);
+    std::list<std::tuple<Transformation, Vec3>> ts = *(get_transformations(lines));
+    if (!ts.empty()) {
+        b->transform(ts);
+    }
     return b;
 }
 
+std::tuple<std::vector<Point3*>, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*>>* SceneReader::get_mesh_content(std::string mfile) {
+    // Open scene file
+    std::ifstream file(mfile.c_str());
+    // Check if the file exists
+    if (!file) {
+        // ERROR
+        throw "Error: The mesh file is not exists!";
+    } else
+        // Check if the file is open
+        if (!file.is_open()) {
+            // ERROR
+            throw "Error: The mesh file could not be opened!";
+        } else {
+            std::vector<Point3*> vs;
+            std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*> fs;
+            // Get mesh content
+            std::string line;
+            while (getline(file, line)) {
+                if (line.find("v") == 0) {
+                    line.replace(0, 1, "");
+                    Vec3 v = get_vec3(line);
+                    Point3* p = new Point3(v[0], v[1], v[2]);
+                    vs.push_back(p);
+                }
+                if (line.find("f") == 0) {
+                    line.replace(0, 1, "");
+                    Vec3 v = get_vec3(line);
+                    std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>* t = new std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>(v[0], v[1], v[2]);
+                    fs.push_back(t);
+                }
+            }
+            return (new std::tuple<std::vector<Point3*>, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*>>(vs, fs));
+        }
+}
+
+Mesh* SceneReader::get_mesh(std::list<std::string>& lines, bool md) {
+    // Mesh format
+    std::string vformat[] = {"FILE: "};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the mesh and return it
+    std::vector<std::string>& v = *(get_content(format, lines));
+    Mesh* m;
+    // Get mesh content
+    std::vector<Point3*> vs;
+    std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*> fs;
+    std::tie(vs, fs) = *(get_mesh_content(v[0]));
+    if (md) {
+        m = new Mesh(vs, fs, get_material(lines));
+    } else {
+        m = new Mesh(vs, fs);
+    }
+    // Check if scene description is empty
+    if (!lines.empty()) {
+        // Transformations
+        std::list<std::tuple<Transformation, Vec3>> ts = *(get_transformations(lines));
+        if (!ts.empty()) {
+            m->transform(ts);
+        }
+    }
+    return m;
+}
+
 std::list<std::tuple<Transformation, Vec3>>* SceneReader::get_transformations(std::list<std::string>& lines) {
+    // Interpret scene attributes
+    std::list<std::string>::iterator itr = lines.begin();
     std::list<std::tuple<Transformation, Vec3>>* transformations = new std::list<std::tuple<Transformation, Vec3>>();
+    // Get transformations
+    for (itr = lines.begin(); !lines.empty(); ) {
+        // Check all components
+        if ((*(itr)).find("TRANSLATE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"VALUE:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the sphere and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            transformations->push_back(std::make_tuple(TRANSLATE, get_vec3(v[0])));
+            // Next component
+            itr = lines.begin();
+        } else if ((*(itr)).find("ROTATE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"VALUE:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the sphere and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            transformations->push_back(std::make_tuple(ROTATE, get_vec3(v[0])));
+            // Next component
+            itr = lines.begin();
+        } else if ((*(itr)).find("SCALE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"VALUE:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the sphere and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            transformations->push_back(std::make_tuple(SCALE, get_vec3(v[0])));
+            // Next component
+            itr = lines.begin();
+        } else {
+            break;
+        }
+    }
     return transformations;
 }
 

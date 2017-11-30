@@ -1,9 +1,6 @@
 #include "scene/components/shape/box.h"
 #include "scene/components/shape/triangle.h"
 
-/*!
- * Box constructor.
- */
 Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
     this->size = size;
     Point3 x = Point3(size.x(), 0, 0);
@@ -37,9 +34,6 @@ Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
     trs[11] = tB;
 }
 
-/*!
- * Box constructor.
- */
 Box::Box(Point3 origin, Vec3 size, Material* material) :
         Shape(origin, material) {
     this->size = size;
@@ -74,9 +68,6 @@ Box::Box(Point3 origin, Vec3 size, Material* material) :
     trs[11] = tB;
 }
 
-/*!
- * Box destructor.
- */
 Box::~Box() {
     /* empty */
 }
