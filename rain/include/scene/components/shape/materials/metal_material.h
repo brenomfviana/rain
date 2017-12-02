@@ -2,6 +2,7 @@
 #define _METAL_MATERIAL_H_
 
 #include "material.h"
+#include "texture.h"
 
 using namespace utils;
 
@@ -12,7 +13,7 @@ class MetalMaterial : public Material {
 
     private:
         //
-        Vec3 albedo;
+        RGB albedo;
         Vec3::RealType fuzz;
 
         /*!
@@ -30,7 +31,7 @@ class MetalMaterial : public Material {
          * @param albedo Albedo
          * @param fuzz
          */
-        MetalMaterial(Vec3 albedo, Vec3::RealType fuzz);
+        MetalMaterial(RGB albedo, Vec3::RealType fuzz);
 
         /*!
          * Metal material destructor.

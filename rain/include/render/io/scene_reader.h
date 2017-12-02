@@ -18,6 +18,7 @@
 #include "scene/components/shape/shape.h"
 #include "scene/components/shape/sphere.h"
 #include "scene/components/shape/materials/material.h"
+#include "scene/components/shape/materials/texture.h"
 #include "vec3.h"
 #include "transformation.h"
 
@@ -309,6 +310,15 @@ class SceneReader {
          * @return Dielectric material
          */
         static DielectricMaterial* get_dielectric_material(std::list<std::string>& lines);
+
+        /*!
+         * Get texture.
+         *
+         * @param lines File lines
+         *
+         * @return texture
+         */
+        static Texture* get_texture(std::list<std::string>& lines);
 };
 
 #endif /* _SCENE_READER_H_ */

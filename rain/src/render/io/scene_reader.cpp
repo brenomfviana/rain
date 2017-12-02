@@ -663,12 +663,7 @@ std::vector<Vec3::RealType>* SceneReader::get_angles_toon_material(std::list<std
 }
 
 LambertianMaterial* SceneReader::get_lambertian_material(std::list<std::string>& lines) {
-    // Material format
-    std::string vformat[] = {"ALBEDO:"};
-    std::vector<std::string> format(vformat, end(vformat));
-    // Create the Lambertian material and return it
-    std::vector<std::string>& v = *(get_content(format, lines));
-    return (new LambertianMaterial(get_vec3(v[0])));
+    return (new LambertianMaterial(get_texture(lines)));
 }
 
 MetalMaterial* SceneReader::get_metal_material(std::list<std::string>& lines) {
@@ -687,4 +682,49 @@ DielectricMaterial* SceneReader::get_dielectric_material(std::list<std::string>&
     // Create the Dielectric material and return it
     std::vector<std::string>& v = *(get_content(format, lines));
     return (new DielectricMaterial(atof(v[0].c_str())));
+}
+
+Texture* SceneReader::get_texture(std::list<std::string>& lines) {
+    // Interpret scene attributes
+    std::list<std::string>::iterator itr = lines.begin();
+    Texture* texture;
+    // Get transformations
+    for (itr = lines.begin(); !lines.empty(); ) {
+        // Check all components
+        if ((*(itr)).find("ALBEDO:") == 0) {
+            // Material format
+            std::string vformat[] = {"ALBEDO:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the Metal material and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            texture = new ConstantTexture(get_vec3(v[0]));
+            // Next component
+            itr = lines.begin();
+        } else if ((*(itr)).find("CONSTANT_TEXTURE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"VALUE:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the texture and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            texture = new ConstantTexture(get_vec3(v[0]));
+            // Next component
+            itr = lines.begin();
+        } else if ((*(itr)).find("CHECKER_TEXTURE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"ODD:", "EVEN:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the texture and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            texture = new CheckerTexture((new ConstantTexture(get_vec3(v[0]))), (new ConstantTexture(get_vec3(v[1]))));
+            // Next component
+            itr = lines.begin();
+        } else {
+            break;
+        }
+    }
+    return texture;
 }

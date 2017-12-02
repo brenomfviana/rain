@@ -56,6 +56,15 @@ void RayTracer::raytrace(Image* img, Camera* cam, Scene& scene, Shader* shader,
             int ir = int(255.99f * c[RGB::R]);
             int ig = int(255.99f * c[RGB::G]);
             int ib = int(255.99f * c[RGB::B]);
+            if (ir < 0.f) {
+                ir = 0.f;
+            }
+            if (ig < 0.f) {
+                ig = 0.f;
+            }
+            if (ib < 0.f) {
+                ib = 0.f;
+            }
             // Print the pixel in the image
             img->pixels[((img->height - row - 1) * img->width * 3) + (col * 3)]     = ir;
             img->pixels[((img->height - row - 1) * img->width * 3) + (col * 3) + 1] = ig;

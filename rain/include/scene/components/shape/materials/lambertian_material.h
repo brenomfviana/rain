@@ -2,6 +2,7 @@
 #define _LAMBERTIAN_MATERIAL_H_
 
 #include "material.h"
+#include "texture.h"
 
 using namespace utils;
 
@@ -12,7 +13,7 @@ class LambertianMaterial : public Material {
 
     private:
         // Albedo
-        Vec3 albedo;
+        Texture* albedo;
 
         /*!
          * Get random direction of a scattered ray.
@@ -27,7 +28,7 @@ class LambertianMaterial : public Material {
          *
          * @param albedo Albedo
          */
-        LambertianMaterial(Vec3 albedo);
+        LambertianMaterial(Texture* albedo);
 
         /*!
          * Lambertian material destructor.

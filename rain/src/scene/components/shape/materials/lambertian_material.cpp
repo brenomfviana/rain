@@ -1,6 +1,6 @@
 #include "scene/components/shape/materials/lambertian_material.h"
 
-LambertianMaterial::LambertianMaterial(Vec3 albedo) {
+LambertianMaterial::LambertianMaterial(Texture* albedo) {
     this->albedo = albedo;
 }
 
@@ -21,6 +21,6 @@ bool LambertianMaterial::scatter(const Ray& r, const HitRecord& hr,
     (void) (r);
     Vec3 target = hr.point + hr.normal + random_in_unit_sphere();
     sray = Ray(hr.point, target - hr.point);
-    attenuation = this->albedo;
+    attenuation = this->albedo->value(0, 0, hr.point);
     return true;
 }

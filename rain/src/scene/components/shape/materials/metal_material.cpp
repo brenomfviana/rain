@@ -1,6 +1,6 @@
 #include "scene/components/shape/materials/metal_material.h"
 
-MetalMaterial::MetalMaterial(Vec3 albedo, Vec3::RealType fuzz) {
+MetalMaterial::MetalMaterial(RGB albedo, Vec3::RealType fuzz) {
     this->albedo = albedo;
     this->fuzz   = fuzz;
 }
