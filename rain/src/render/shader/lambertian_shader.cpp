@@ -3,14 +3,14 @@
 RGB LambertianShader::color(const Ray& r, const Scene& scene, int nrays) const {
     // Check hit
     HitRecord hr;
-    if (intersect(r, scene, 0, 10, hr)) {
+    if (intersect(r, scene, 0.001, 10, hr)) {
         //
-        Ray scattered_ray;
+        Ray sray;
         RGB attenuation;
         // Check if the ray will be scattered
-        if (nrays > 0 && hr.material->scatter(r, hr, attenuation, scattered_ray)) {
+        if (nrays > 0 && hr.material->scatter(r, hr, attenuation, sray)) {
             // Get the color from where the scattered ray reaches
-            return attenuation * color(scattered_ray, scene, nrays - 1);
+            return attenuation * color(sray, scene, nrays - 1);
         }
         return RGB(0, 0, 0);
     } else {

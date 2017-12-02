@@ -11,7 +11,7 @@ DielectricMaterial::~DielectricMaterial() {
 Vec3::RealType DielectricMaterial::schlick(Vec3::RealType cosine, Vec3::RealType ri) const {
     Vec3::RealType r = (1.f - ri) / (1.f + ri);
     r = r * r;
-    return (r + (1.f - r) * std::pow((1.f - cosine), 5.f));
+    return (r + ((1.f - r) * std::pow((1.f - cosine), 5.f)));
 }
 
 bool DielectricMaterial::refract(const Vec3& v, const Vec3& n, Vec3::RealType ni_over_nt,
@@ -61,7 +61,7 @@ bool DielectricMaterial::scatter(const Ray& r, const HitRecord& hr,
     Vec3::RealType reflect_prob;
     //
     if (refract(r.get_direction(), outward_normal, ni_over_nt, refracted)) {
-        reflect_prob = schlick(cosine, this->ri);
+        reflect_prob = schlick(cosine, ni_over_nt);
     } else {
         reflect_prob = 1.f;
     }

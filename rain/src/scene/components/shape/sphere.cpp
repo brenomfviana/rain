@@ -26,16 +26,24 @@ bool Sphere::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& h
         // Get smaller root
         Vec3::RealType t = (-b - sqrt(delta)) / (2 * a);
         // Check if the root is in range
-        if (t_min < t && t < t_max) {
+        if (t_max > t && t > t_min) {
             hr.t        = t;
             hr.point    = r.point_at(t);
-            hr.normal   = unit_vector((hr.point - this->origin) / this->radius);
+            hr.normal   = ((hr.point - this->origin) / this->radius);
             hr.material = this->material;
-        } else {
-            hr.t = -1;
+            return true;
+        }
+        t = (-b + sqrt(delta)) / (2 * a);
+        // Check if the root is in range
+        if (t_max > t && t > t_min) {
+            hr.t        = t;
+            hr.point    = r.point_at(t);
+            hr.normal   = ((hr.point - this->origin) / this->radius);
+            hr.material = this->material;
+            return true;
         }
     }
-    return delta >= 0;
+    return false;
 }
 
 glm::mat4 Sphere::translate(glm::vec3 v) {
