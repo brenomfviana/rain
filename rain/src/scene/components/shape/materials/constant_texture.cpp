@@ -13,5 +13,8 @@ ConstantTexture::ConstantTexture(RGB color) {
 }
 
 RGB ConstantTexture::value(Vec3::RealType u, Vec3::RealType v, const Vec3& p) const {
+    (void) u;
+    (void) v;
+    (void) p;
     return this->color;
 }

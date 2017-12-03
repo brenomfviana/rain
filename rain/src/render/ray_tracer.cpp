@@ -49,6 +49,15 @@ void RayTracer::raytrace(Image* img, Camera* cam, Scene& scene, Shader* shader,
             // Check shader
             if (typeid(*shader) == typeid(BlinnPhongShader) ||
                 typeid(*shader) == typeid(LambertianShader)) {
+                if (c[RGB::X] > 1.f) {
+                    c[RGB::X] = 1.f;
+                }
+                if (c[RGB::Y] > 1.f) {
+                    c[RGB::Y] = 1.f;
+                }
+                if (c[RGB::Z] > 1.f) {
+                    c[RGB::Z] = 1.f;
+                }
                 // Gamma correction
                 c = RGB(sqrt(c[RGB::X]), sqrt(c[RGB::Y]), sqrt(c[RGB::Z]));
             }

@@ -134,7 +134,7 @@ void Triangle::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
         glm::vec4 new_v2;
         // Apply transformations
         glm::mat4 transformations = glm::mat4(1.f);
-        for (t : ts) {
+        for (std::tuple<Transformation, Vec3> t : ts) {
             Transformation tn;
             Vec3 v;
             std::tie(tn, v) = t;

@@ -62,7 +62,7 @@ glm::mat4 Sphere::scale(glm::vec3 v) {
 
 void Sphere::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
     // Apply transformations
-    for (t : ts) {
+    for (std::tuple<Transformation, Vec3> t : ts) {
         Transformation tn;
         Vec3 v;
         std::tie(tn, v) = t;

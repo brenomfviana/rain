@@ -27,6 +27,13 @@ class Material {
          */
         virtual bool scatter(const Ray& incoming_ray, const HitRecord& hit_record,
             RGB& attenuation, Ray& scattered_ray) const = 0;
+
+        virtual Vec3 emitted(Vec3::RealType u, Vec3::RealType v, const Vec3& p) const {
+            (void) u;
+            (void) v;
+            (void) p;
+            return Vec3(0, 0, 0);
+        }
 };
 
 #include "blinn_phong_material.h"
@@ -34,5 +41,6 @@ class Material {
 #include "lambertian_material.h"
 #include "metal_material.h"
 #include "dielectric_material.h"
+#include "diffuse_light_material.h"
 
 #endif /* _MATERIAL_H_ */

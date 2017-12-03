@@ -601,6 +601,9 @@ Material* SceneReader::get_material(std::list<std::string>& lines) {
     } else
         if (aux.find("DIELECTRIC:") == 0) {
             return get_dielectric_material(lines);
+    } else
+        if (aux.find("DIFFUSE_LIGHT:") == 0) {
+            return get_diffuse_light_material(lines);
     } else {
         throw "Invalid material!";
     }
@@ -684,10 +687,19 @@ DielectricMaterial* SceneReader::get_dielectric_material(std::list<std::string>&
     return (new DielectricMaterial(atof(v[0].c_str())));
 }
 
+DiffuseLightMaterial* SceneReader::get_diffuse_light_material(std::list<std::string>& lines) {
+    // Material format
+    std::string vformat[] = {"EMIT:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the Dielectric material and return it
+    std::vector<std::string>& v = *(get_content(format, lines));
+    return (new DiffuseLightMaterial(get_vec3(v[0])));
+}
+
 Texture* SceneReader::get_texture(std::list<std::string>& lines) {
     // Interpret scene attributes
     std::list<std::string>::iterator itr = lines.begin();
-    Texture* texture;
+    Texture* texture = new ConstantTexture();
     // Get transformations
     for (itr = lines.begin(); !lines.empty(); ) {
         // Check all components

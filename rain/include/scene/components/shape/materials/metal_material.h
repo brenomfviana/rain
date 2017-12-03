@@ -2,7 +2,6 @@
 #define _METAL_MATERIAL_H_
 
 #include "material.h"
-#include "texture.h"
 
 using namespace utils;
 

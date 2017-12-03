@@ -312,6 +312,15 @@ class SceneReader {
         static DielectricMaterial* get_dielectric_material(std::list<std::string>& lines);
 
         /*!
+         * Get Diffuse Light material.
+         *
+         * @param lines File lines
+         *
+         * @return Diffuse Light material
+         */
+        static DiffuseLightMaterial* get_diffuse_light_material(std::list<std::string>& lines);
+
+        /*!
          * Get texture.
          *
          * @param lines File lines
