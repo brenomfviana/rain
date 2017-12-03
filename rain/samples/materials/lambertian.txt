@@ -1,22 +1,22 @@
 # Output settings
-NAME: dielectric.ppm
+NAME: lambertian.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
 HEIGHT: 600
 # Ray Tracer Settings
 SAMPLES: 100 # Number of samples for anti-aliasing
-RAYS:    25 # Number of rays of the recursion
+RAYS:    10 # Number of rays of the recursion
 # Camera
 CAMERA:
     PERSPECTIVE
-    LOOK_FROM: 0 0 0
-    LOOK_AT: 0 0 -1
+    LOOK_FROM: 0 0.55 4
+    LOOK_AT: 0 0.4 -1
     VUP: 0 1 0
-    VFOV: 90
+    VFOV: 20
     ASPECT_RATIO: 2
     APERTURE: 0
-    FOCAL_DISTANCE: 1
+    FOCAL_DISTANCE: 5
 # Scene description
 SHADER:
     LAMBERTIAN
@@ -28,25 +28,24 @@ COMPONENTS:
         ORIGIN: 0 -100.5 -1
         RADIUS: 100
         LAMBERTIAN:
-            ALBEDO: 0.8 0.8 0
+            CHECKER_TEXTURE:
+                ODD: 1 0 0
+                EVEN: 0 0 1
     SPHERE:
-        ORIGIN: 0 0 -1
+        ORIGIN: -0.7 0.5 -1
         RADIUS: 0.5
         LAMBERTIAN:
-            ALBEDO: 0.1 0.2 0.5
+            CONSTANT_TEXTURE:
+                VALUE: 0.2 0.9 0.2
     SPHERE:
-        ORIGIN: 1 0 -1
+        ORIGIN: 0.3 0.5 -2
+        RADIUS: 0.5
+        LAMBERTIAN:
+            CONSTANT_TEXTURE:
+                VALUE: 0.9 0.1 0.1
+    SPHERE:
+        ORIGIN: 0.7 0.5 -1
         RADIUS: 0.5
         METAL:
-            ALBEDO: 0.8 0.6 0.2
+            ALBEDO: 0.8 0.8 0.8
             FUZZ: 0
-    SPHERE:
-        ORIGIN: -1 0 -1
-        RADIUS: 0.5
-        DIELECTRIC:
-            RI: 1.5
-    SPHERE:
-        ORIGIN: -1 0 -1
-        RADIUS: -0.45
-        DIELECTRIC:
-            RI: 1.5

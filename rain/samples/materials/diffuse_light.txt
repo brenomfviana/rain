@@ -1,12 +1,12 @@
 # Output settings
-NAME: dielectric_2.ppm
+NAME: diffuse_light.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
 HEIGHT: 600
 # Ray Tracer Settings
-SAMPLES: 64 # Number of samples for anti-aliasing
-RAYS:    25 # Number of rays of the recursion
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
 # Camera
 CAMERA:
     PERSPECTIVE
@@ -21,15 +21,9 @@ CAMERA:
 SHADER:
     LAMBERTIAN
 BACKGROUND:
-    TOP: 0.8 0.8 0.8  # Top color
-    BOTTOM: 0 0.749 1 # Bottom color
+    TOP: 0 0 0 # Top color
+    BOTTOM: 0 0 0  # Bottom color
 COMPONENTS:
-    DIRECTIONAL_LIGHT:
-        DIRECTION: -3 3 2
-        INTENSITY: 0.3 0.3 0.7
-    DIRECTIONAL_LIGHT:
-        DIRECTION: 3 3 2
-        INTENSITY: 1 1 0.6
     TRIANGLE:
         V0: -1000 0  1000
         V1:  1000 0  1000
@@ -47,20 +41,11 @@ COMPONENTS:
     SPHERE:
         ORIGIN: -0.7 0.5 -1
         RADIUS: 0.5
-        LAMBERTIAN:
-            ALBEDO: 0.2 0.9 0.2
-    SPHERE:
-        ORIGIN: 0.7 0.5 -1
-        RADIUS: 0.5
-        DIELECTRIC:
-            RI: 1.2
-    SPHERE:
-        ORIGIN: 0.7 0.5 -1
-        RADIUS: -0.48
-        DIELECTRIC:
-            RI: 1.2
+        DIFFUSE_LIGHT:
+            EMIT: 4 4 4
     SPHERE:
         ORIGIN: 0.3 0.5 -2
         RADIUS: 0.5
         LAMBERTIAN:
-            ALBEDO: 0.9 0.1 0.1
+            CONSTANT_TEXTURE:
+                VALUE: 0.2 0.9 0.2
