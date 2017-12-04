@@ -109,6 +109,13 @@ bool Triangle::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord&
     return false;
 }
 
+Point3 Triangle::get_midpoint() const {
+    Vec3::RealType x = ((this->v0.x() + this->v1.x() + this->v2.x()) / 3);
+    Vec3::RealType y = ((this->v0.y() + this->v1.y() + this->v2.y()) / 3);
+    Vec3::RealType z = ((this->v0.z() + this->v1.z() + this->v2.z()) / 3);
+    return Point3(x, y, z);
+}
+
 glm::mat4 Triangle::translate(glm::vec3 v) {
     return glm::translate(glm::mat4(1.f), v);
 }

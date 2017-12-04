@@ -1,12 +1,15 @@
 #ifndef _MESH_H_
 #define _MESH_H_
 
+class Box;
 class Triangle;
+class KDNode;
 
 #include <list>
 #include <tuple>
 #include <vector>
 #include "shape.h"
+#include "scene/components/shape/kd_tree/kd_node.h"
 
 #define EPSILON 0.00000001
 
@@ -16,8 +19,12 @@ class Triangle;
 class Mesh : public Shape {
 
     private:
+        // KD-Tree
+        KDNode* root;
         // Triangles of mesh
-        std::list<Triangle*> trs;
+        std::vector<Triangle*> trs;
+        // Box
+        Box* bbox;
 
     public:
 

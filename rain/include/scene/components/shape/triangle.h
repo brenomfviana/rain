@@ -38,6 +38,8 @@ class Triangle : public Shape {
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
 
+        Point3 get_midpoint() const;
+
         glm::mat4 translate(glm::vec3 v);
 
         glm::mat4 rotate(glm::vec3 v);
