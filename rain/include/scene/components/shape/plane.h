@@ -1,5 +1,5 @@
-#ifndef _BOX_H_
-#define _BOX_H_
+#ifndef _PLANE_H_
+#define _PLANE_H_
 
 class Triangle;
 
@@ -9,29 +9,29 @@ class Triangle;
 /*!
  * This class represents a box.
  */
-class Box : public Shape {
+class Plane : public Shape {
 
     private:
-        // Box origin
+        // Plane origin
         Point3 origin;
         // Triangles
-        Triangle* trs[12];
+        Triangle* trs[2];
 
     public:
         /*!
-         * Box constructor.
+         * Plane constructor.
          */
-        Box(Point3 origin, Vec3 size);
+        Plane(Point3 p1, Point3 p2, Point3 p3, Point3 p4);
 
         /*!
-         * Box constructor.
+         * Plane constructor.
          */
-        Box(Point3 origin, Vec3 size, Material* material);
+        Plane(Point3 p1, Point3 p2, Point3 p3, Point3 p4, Material* material);
 
         /*!
-         * Box destructor.
+         * Plane destructor.
          */
-        ~Box();
+        ~Plane();
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
 
@@ -44,4 +44,4 @@ class Box : public Shape {
         void transform(std::list<std::tuple<Transformation, Vec3>> ts);
 };
 
-#endif /* _BOX_H_ */
+#endif /* _PLANE_H_ */

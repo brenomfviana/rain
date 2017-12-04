@@ -108,5 +108,6 @@ class Shape {
 #include "triangle.h"
 #include "box.h"
 #include "mesh.h"
+#include "plane.h"
 
 #endif /* _SHAPE_H_ */

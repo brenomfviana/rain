@@ -213,6 +213,15 @@ class SceneReader {
         static Box* get_box(std::list<std::string>& lines, bool md);
 
         /*!
+         * Get plane description.
+         *
+         * @param lines File lines
+         *
+         * @return Plane
+         */
+        static Plane* get_plane(std::list<std::string>& lines, bool md);
+
+        /*!
          * Get mesh content.
          *
          * @param mfile Mesh file

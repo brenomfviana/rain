@@ -324,6 +324,14 @@ Scene* SceneReader::interpret_scene(std::list<std::string>& lines, bool md) {
                 scene->add_shape(t);
                 // Next component
                 itr = lines.begin();
+            } else if ((*(itr)).find("PLANE:") == 0) {
+                // Erase
+                lines.erase(itr);
+                // Add plane
+                Plane* t = get_plane(lines, md);
+                scene->add_shape(t);
+                // Next component
+                itr = lines.begin();
             } else if ((*(itr)).find("MESH:") == 0) {
                 // Erase
                 lines.erase(itr);
@@ -470,6 +478,28 @@ Box* SceneReader::get_box(std::list<std::string>& lines, bool md) {
         b->transform(ts);
     }
     return b;
+}
+
+Plane* SceneReader::get_plane(std::list<std::string>& lines, bool md) {
+    // Plane format
+    std::string vformat[] = {"P1:", "P2:", "P3:", "P4:"};
+    std::vector<std::string> format(vformat, end(vformat));
+    // Create the plane and return it
+    std::vector<std::string>& v = *(get_content(format, lines));
+    Plane* p;
+    if (md) {
+        p = new Plane(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
+            get_vec3(v[3]), get_material(lines));
+    } else {
+        p = new Plane(get_vec3(v[0]), get_vec3(v[1]), get_vec3(v[2]),
+            get_vec3(v[3]));
+    }
+    // Transformations
+    std::list<std::tuple<Transformation, Vec3>> ts = *(get_transformations(lines));
+    if (!ts.empty()) {
+        p->transform(ts);
+    }
+    return p;
 }
 
 std::tuple<std::vector<Point3*>, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*>>* SceneReader::get_mesh_content(std::string mfile) {

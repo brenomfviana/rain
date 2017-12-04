@@ -2,7 +2,6 @@
 #include "scene/components/shape/triangle.h"
 
 Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
-    this->size = size;
     Point3 x = Point3(size.x(), 0, 0);
     Point3 y = Point3(0, size.y(), 0);
     Point3 z = Point3(0, 0, size.z());
@@ -36,7 +35,6 @@ Box::Box(Point3 origin, Vec3 size) : Shape(origin) {
 
 Box::Box(Point3 origin, Vec3 size, Material* material) :
         Shape(origin, material) {
-    this->size = size;
     Point3 x = Point3(size.x(), 0, 0);
     Point3 y = Point3(0, size.y(), 0);
     Point3 z = Point3(0, 0, size.z());
@@ -73,15 +71,12 @@ Box::~Box() {
 }
 
 bool Box::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) {
-    bool reached = false;
     // Check hit
     for (Triangle* t : trs) {
         if ((*t).hit(r, t_min, t_max, hr)) {
-            reached = true;
-            break;
+            return true;
         }
     }
-    return reached;
 }
 
 glm::mat4 Box::translate(glm::vec3 v) {
