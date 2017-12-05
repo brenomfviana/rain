@@ -7,7 +7,7 @@ Image* RayTracer::render(Camera* cam, Scene& scene, Shader* shader,
     Image* img = new Image(width, height);
     // Progress bar
     ProgressBar* p = new ProgressBar(70, width * height);
-    int n_ts = 4;
+    int n_ts = 8;
     std::vector<std::thread> ts(n_ts);
     int n = 1;
     while (n <= n_ts) {

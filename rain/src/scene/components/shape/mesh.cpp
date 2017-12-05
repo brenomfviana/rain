@@ -11,8 +11,25 @@ Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3:
         Triangle* t = new Triangle(*(vs[i]), *(vs[j]), *(vs[k]), true);
         this->trs.push_back(t);
     }
-    // Build kd-tree
-    this->root = this->root->build(this->trs, 0);
+    // Build box
+    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+    Vec3::RealType xmin = inf, xmax = -inf;
+    Vec3::RealType ymin = inf, ymax = -inf;
+    Vec3::RealType zmin = inf, zmax = -inf;
+    for (Point3* p : vs) {
+        xmin = std::min(p->x(), xmin);
+        ymin = std::min(p->y(), ymin);
+        zmin = std::min(p->z(), zmin);
+        xmax = std::max(p->x(), xmax);
+        ymax = std::max(p->y(), ymax);
+        zmax = std::max(p->z(), zmax);
+    }
+    Point3 bbox_origin = Point3(xmin, ymin, zmin);
+    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+    this->box = new Box(bbox_origin, bbox_size);
 }
 
 Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*> fs,
@@ -24,9 +41,25 @@ Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3:
         Triangle* t = new Triangle(*(vs[i - 1]), *(vs[j - 1]), *(vs[k - 1]), true, material);
         this->trs.push_back(t);
     }
-    // Build kd-tree
-    this->root = this->root->build(this->trs, 0);
-    std::cout << this->root->bbox->size << "\n";
+    // Build box
+    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+    Vec3::RealType xmin = inf, xmax = -inf;
+    Vec3::RealType ymin = inf, ymax = -inf;
+    Vec3::RealType zmin = inf, zmax = -inf;
+    for (Point3* p : vs) {
+        xmin = std::min(p->x(), xmin);
+        ymin = std::min(p->y(), ymin);
+        zmin = std::min(p->z(), zmin);
+        xmax = std::max(p->x(), xmax);
+        ymax = std::max(p->y(), ymax);
+        zmax = std::max(p->z(), zmax);
+    }
+    Point3 bbox_origin = Point3(xmin, ymin, zmin);
+    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+    this->box = new Box(bbox_origin, bbox_size);
 }
 
 /*!
@@ -37,8 +70,18 @@ Mesh::~Mesh() {
 }
 
 bool Mesh::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr) {
+    // if (this->box->hit(r, t_min, t_max, hr)) {
+    //     for (Triangle* t : this->trs) {
+    //         if (t->hit(r, t_min, t_max, hr)) {
+    //             return true;
+    //         }
+    //     }
+    // }
     // Check hit
-    return this->root->hit(this->root, r, t_min, t_max, hr);
+    if (this->box->hit(r, t_min, t_max, hr)) {
+        return this->root->hit(this->root, r, t_min, t_max, hr);
+    }
+    return false;
 }
 
 glm::mat4 Mesh::translate(glm::vec3 v) {
@@ -63,4 +106,6 @@ void Mesh::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
             (*t).transform(ts);
         }
     }
+    this->box->transform(ts);
+    this->root = this->root->build(this->trs, 0);
 }

@@ -23,6 +23,8 @@ class Mesh : public Shape {
         KDNode* root;
         // Triangles of mesh
         std::vector<Triangle*> trs;
+        //
+        Box* box;
 
     public:
 

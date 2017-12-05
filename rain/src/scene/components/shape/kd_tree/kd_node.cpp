@@ -10,7 +10,7 @@ KDNode* KDNode::build(std::vector<Triangle*>& ts, int depth) const {
     node->ts = ts;
     node->left = NULL;
     node->right = NULL;
-    node->bbox = new Box();
+    node->bbox = NULL;
     // If this node does not have any triangle
     if (ts.size() == 0) {
         return node;
@@ -64,34 +64,8 @@ KDNode* KDNode::build(std::vector<Triangle*>& ts, int depth) const {
                 break;
         }
     }
-    //
-    if ((left_ts.size() == 0) && (right_ts.size() > 0)) {
-        left_ts = right_ts;
-    }
-    //
-    if ((right_ts.size() == 0) && (left_ts.size() > 0)) {
-        right_ts = left_ts;
-    }
-    // If 50% of triangles match, do not subdivide any more
-    int matches = 0;
-    for (int i = 0; i < left_ts.size(); i++) {
-        for (int j = 0; j < right_ts.size(); j++) {
-            if (left_ts[i] == right_ts[j]) {
-                matches++;
-            }
-        }
-    }
-    //
-    if (((((float) matches) / left_ts.size())  < 0.5) &&
-        ((((float) matches) / right_ts.size()) < 0.5)) {
-            node->left = build(left_ts, depth + 1);
-            node->right = build(right_ts, depth + 1);
-    } else {
-        node->left = new KDNode();
-        node->right = new KDNode();
-        node->left->ts = std::vector<Triangle*>();
-        node->right->ts = std::vector<Triangle*>();
-    }
+    node->left = build(left_ts, depth + 1);
+    node->right = build(right_ts, depth + 1);
     return node;
 }
 
