@@ -1,6 +1,8 @@
 #ifndef _TRIANGLE_H_
 #define _TRIANGLE_H_
 
+class Box;
+
 #include "shape.h"
 
 #define EPSILON 0.00000001
@@ -37,6 +39,8 @@ class Triangle : public Shape {
         ~Triangle();
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
+
+        Box* get_bounding_box();
 
         Point3 get_midpoint() const;
 

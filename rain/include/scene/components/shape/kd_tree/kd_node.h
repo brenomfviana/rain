@@ -6,6 +6,7 @@
 #include "vec3.h"
 #include "scene/components/hit_record.h"
 #include "scene/components/shape/triangle.h"
+#include "scene/components/shape/box.h"
 
 using namespace utils;
 
@@ -18,6 +19,8 @@ class KDNode {
         // Nodes
         KDNode* left;
         KDNode* right;
+        // Bounding box
+        Box* bbox;
         // Triangles of this node
         std::vector<Triangle*> ts;
 

@@ -11,13 +11,21 @@ class Triangle;
  */
 class Box : public Shape {
 
-    private:
+    public:
         // Box origin
         Point3 origin;
+        // Box origin
+        Point3 end;
+        // Box origin
+        Vec3 size;
         // Triangles
         Triangle* trs[12];
 
-    public:
+        /*!
+         * Box constructor.
+         */
+        Box();
+
         /*!
          * Box constructor.
          */
@@ -34,6 +42,10 @@ class Box : public Shape {
         ~Box();
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
+
+        void expand(Box* box);
+
+        int longest_axis();
 
         glm::mat4 translate(glm::vec3 v);
 

@@ -116,6 +116,32 @@ Point3 Triangle::get_midpoint() const {
     return Point3(x, y, z);
 }
 
+Box* Triangle::get_bounding_box() {
+    // Build box
+    std::vector<Point3> ps;
+    ps.push_back(this->v0);
+    ps.push_back(this->v1);
+    ps.push_back(this->v2);
+    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+    Vec3::RealType xmin = inf, xmax = -inf;
+    Vec3::RealType ymin = inf, ymax = -inf;
+    Vec3::RealType zmin = inf, zmax = -inf;
+    for (Point3 p : ps) {
+        xmin = std::min(p.x(), xmin);
+        ymin = std::min(p.y(), ymin);
+        zmin = std::min(p.z(), zmin);
+        xmax = std::max(p.x(), xmax);
+        ymax = std::max(p.y(), ymax);
+        zmax = std::max(p.z(), zmax);
+    }
+    Point3 bbox_origin = Point3(xmin, ymin, zmin);
+    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+    return (new Box(bbox_origin, bbox_size));
+}
+
 glm::mat4 Triangle::translate(glm::vec3 v) {
     return glm::translate(glm::mat4(1.f), v);
 }
