@@ -30,6 +30,7 @@ Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3:
     Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
     Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
     this->box = new Box(bbox_origin, bbox_size);
+    this->root = this->root->build(this->trs, 0);
 }
 
 Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3::RealType, Vec3::RealType>*> fs,
@@ -41,6 +42,7 @@ Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3:
         Triangle* t = new Triangle(*(vs[i - 1]), *(vs[j - 1]), *(vs[k - 1]), true, material);
         this->trs.push_back(t);
     }
+
     // Build box
     Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
     Vec3::RealType xmin = inf, xmax = -inf;
@@ -60,6 +62,7 @@ Mesh::Mesh(std::vector<Point3*> vs, std::vector<std::tuple<Vec3::RealType, Vec3:
     Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
     Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
     this->box = new Box(bbox_origin, bbox_size);
+    this->root = this->root->build(this->trs, 0);
 }
 
 /*!
@@ -78,9 +81,7 @@ bool Mesh::hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr)
     //     }
     // }
     // Check hit
-    if (this->box->hit(r, t_min, t_max, hr)) {
-        return this->root->hit(this->root, r, t_min, t_max, hr);
-    }
+    return this->root->hit(this->root, r, t_min, t_max, hr);
     return false;
 }
 
@@ -102,10 +103,10 @@ glm::mat4 Mesh::scale(glm::vec3 v) {
 void Mesh::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
     // Check if the list is not empty
     if (!ts.empty()) {
-        for (Triangle* t : trs) {
+        for (Triangle* t : this->trs) {
             (*t).transform(ts);
         }
+        this->box->transform(ts);
     }
-    this->box->transform(ts);
     this->root = this->root->build(this->trs, 0);
 }

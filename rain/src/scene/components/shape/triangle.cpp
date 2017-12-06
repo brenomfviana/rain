@@ -1,29 +1,84 @@
 #include "scene/components/shape/triangle.h"
+#include "scene/components/shape/box.h"
 
-/*!
- * Triangle constructor.
- */
+
+Triangle::Triangle(Point3 v0, Point3 v1, Point3 v2) : Shape(v0) {
+    this->v0 = v0;
+    this->v1 = v1;
+    this->v2 = v2;
+    this->back_facing_cull = false;
+    this->box = NULL;
+}
+
 Triangle::Triangle(Point3 v0, Point3 v1, Point3 v2, bool back_facing_cull) : Shape(v0) {
     this->v0 = v0;
     this->v1 = v1;
     this->v2 = v2;
     this->back_facing_cull = back_facing_cull;
+    // Build box
+    std::vector<Point3> ps;
+    ps.push_back(v0);
+    ps.push_back(v1);
+    ps.push_back(v2);
+    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+    Vec3::RealType xmin = inf, xmax = -inf;
+    Vec3::RealType ymin = inf, ymax = -inf;
+    Vec3::RealType zmin = inf, zmax = -inf;
+    for (Point3 p : ps) {
+        xmin = std::min(p.x(), xmin);
+        ymin = std::min(p.y(), ymin);
+        zmin = std::min(p.z(), zmin);
+        xmax = std::max(p.x(), xmax);
+        ymax = std::max(p.y(), ymax);
+        zmax = std::max(p.z(), zmax);
+    }
+    Point3 bbox_origin = Point3(xmin, ymin, zmin);
+    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+    this->box = new Box(bbox_origin, bbox_size);
 }
 
-/*!
- * Triangle constructor.
- */
+Triangle::Triangle(Point3 v0, Point3 v1, Point3 v2, Material* material) : Shape(v0, material) {
+    this->v0 = v0;
+    this->v1 = v1;
+    this->v2 = v2;
+    this->back_facing_cull = false;
+    this->box = NULL;
+}
+
 Triangle::Triangle(Point3 v0, Point3 v1, Point3 v2, bool back_facing_cull,
         Material* material) : Shape(v0, material) {
     this->v0 = v0;
     this->v1 = v1;
     this->v2 = v2;
     this->back_facing_cull = back_facing_cull;
+    // Build box
+    std::vector<Point3> ps;
+    ps.push_back(v0);
+    ps.push_back(v1);
+    ps.push_back(v2);
+    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+    Vec3::RealType xmin = inf, xmax = -inf;
+    Vec3::RealType ymin = inf, ymax = -inf;
+    Vec3::RealType zmin = inf, zmax = -inf;
+    for (Point3 p : ps) {
+        xmin = std::min(p.x(), xmin);
+        ymin = std::min(p.y(), ymin);
+        zmin = std::min(p.z(), zmin);
+        xmax = std::max(p.x(), xmax);
+        ymax = std::max(p.y(), ymax);
+        zmax = std::max(p.z(), zmax);
+    }
+    Point3 bbox_origin = Point3(xmin, ymin, zmin);
+    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+    this->box = new Box(bbox_origin, bbox_size);
 }
 
-/*!
- * Triangle destructor.
- */
 Triangle::~Triangle() {
     /* empty */
 }
@@ -117,29 +172,7 @@ Point3 Triangle::get_midpoint() const {
 }
 
 Box* Triangle::get_bounding_box() {
-    // Build box
-    std::vector<Point3> ps;
-    ps.push_back(this->v0);
-    ps.push_back(this->v1);
-    ps.push_back(this->v2);
-    Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
-    Vec3::RealType xmin = inf, xmax = -inf;
-    Vec3::RealType ymin = inf, ymax = -inf;
-    Vec3::RealType zmin = inf, zmax = -inf;
-    for (Point3 p : ps) {
-        xmin = std::min(p.x(), xmin);
-        ymin = std::min(p.y(), ymin);
-        zmin = std::min(p.z(), zmin);
-        xmax = std::max(p.x(), xmax);
-        ymax = std::max(p.y(), ymax);
-        zmax = std::max(p.z(), zmax);
-    }
-    Point3 bbox_origin = Point3(xmin, ymin, zmin);
-    Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
-    Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
-    Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
-    Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
-    return (new Box(bbox_origin, bbox_size));
+    return this->box;
 }
 
 glm::mat4 Triangle::translate(glm::vec3 v) {
@@ -197,5 +230,30 @@ void Triangle::transform(std::list<std::tuple<Transformation, Vec3>> ts) {
         this->v2 = Point3(Vec3::RealType(new_v2[Vec3::X]),
                           Vec3::RealType(new_v2[Vec3::Y]),
                           Vec3::RealType(new_v2[Vec3::Z]));
+        if (this->box != NULL) {
+            // Build box
+            std::vector<Point3> ps;
+            ps.push_back(v0);
+            ps.push_back(v1);
+            ps.push_back(v2);
+            Vec3::RealType inf = std::numeric_limits<Vec3::RealType>::infinity();
+            Vec3::RealType xmin = inf, xmax = -inf;
+            Vec3::RealType ymin = inf, ymax = -inf;
+            Vec3::RealType zmin = inf, zmax = -inf;
+            for (Point3 p : ps) {
+                xmin = std::min(p.x(), xmin);
+                ymin = std::min(p.y(), ymin);
+                zmin = std::min(p.z(), zmin);
+                xmax = std::max(p.x(), xmax);
+                ymax = std::max(p.y(), ymax);
+                zmax = std::max(p.z(), zmax);
+            }
+            Point3 bbox_origin = Point3(xmin, ymin, zmin);
+            Vec3::RealType bbox_xsize = (bbox_origin - Vec3(xmax, ymin, zmin)).length();
+            Vec3::RealType bbox_ysize = (bbox_origin - Vec3(xmin, ymax, zmin)).length();
+            Vec3::RealType bbox_zsize = (bbox_origin - Vec3(xmin, ymin, zmax)).length();
+            Vec3 bbox_size = Vec3(bbox_xsize, bbox_ysize, bbox_zsize);
+            this->box = new Box(bbox_origin, bbox_size);
+        }
     }
 }

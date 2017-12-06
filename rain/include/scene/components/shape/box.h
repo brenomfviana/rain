@@ -11,20 +11,17 @@ class Triangle;
  */
 class Box : public Shape {
 
-    public:
-        // Box origin
-        Point3 origin;
-        // Box origin
-        Point3 end;
-        // Box origin
-        Vec3 size;
+    private:
         // Triangles
         Triangle* trs[12];
 
-        /*!
-         * Box constructor.
-         */
-        Box();
+    public:
+        // Box origin
+        Point3 o;
+        // Box end
+        Point3 end;
+        // Box size
+        Vec3 size;
 
         /*!
          * Box constructor.
@@ -43,7 +40,7 @@ class Box : public Shape {
 
         bool hit(Ray r, Vec3::RealType t_min, Vec3::RealType t_max, HitRecord& hr);
 
-        void expand(Box* box);
+        Box* expand(Box* box);
 
         int longest_axis();
 

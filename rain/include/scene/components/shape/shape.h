@@ -19,10 +19,10 @@ using namespace utils;
 class Shape {
 
     protected:
-        // Shape origin
-        Vec3 origin;
         // Shape material
         Material* material;
+        // Shape origin
+        Vec3 origin;
 
     public:
 

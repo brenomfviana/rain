@@ -17,6 +17,8 @@ class Triangle : public Shape {
         Point3 v0;
         Point3 v1;
         Point3 v2;
+        //
+        Box* box;
         // To check whether the two sides of the triangle are shown
         bool back_facing_cull;
 
@@ -25,7 +27,17 @@ class Triangle : public Shape {
         /*!
          * Triangle constructor.
          */
+        Triangle(Point3 v0, Point3 v1, Point3 v2);
+
+        /*!
+         * Triangle constructor.
+         */
         Triangle(Point3 v0, Point3 v1, Point3 v2, bool back_facing_cull);
+
+        /*!
+         * Triangle constructor.
+         */
+        Triangle(Point3 v0, Point3 v1, Point3 v2, Material* material);
 
         /*!
          * Triangle constructor.
