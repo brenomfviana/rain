@@ -97,8 +97,9 @@ KDNode* KDNode::build(std::vector<Triangle*>& ts, int depth) const {
 bool KDNode::hit(KDNode* node, Ray r, Vec3::RealType t_min, Vec3::RealType t_max,
         HitRecord& hr) const {
     if (node->bbox != NULL) {
+        HitRecord shr;
         // Check if the ray intersects the bounding box of the given node
-        if (node->bbox->hit(r, t_min, t_max, hr)) {
+        if (node->bbox->hit(r, t_min, t_max, shr)) {
             // If either child still has triangles recurse down both sides and check for intersections
             if ((node->left->ts.size() > 0) || (node->right->ts.size() > 0)) {
                 bool hit_left = hit(node->left, r, t_min, t_max, hr);
