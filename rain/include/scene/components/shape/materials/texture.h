@@ -22,5 +22,6 @@ class Texture {
 
 #include "constant_texture.h"
 #include "checker_texture.h"
+#include "perlin_texture.h"
 
 #endif /* _TEXTURE_H_ */

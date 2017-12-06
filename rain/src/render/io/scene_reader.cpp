@@ -764,6 +764,17 @@ Texture* SceneReader::get_texture(std::list<std::string>& lines) {
             texture = new CheckerTexture((new ConstantTexture(get_vec3(v[0]))), (new ConstantTexture(get_vec3(v[1]))));
             // Next component
             itr = lines.begin();
+        } else if ((*(itr)).find("PERLIN_TEXTURE:") == 0) {
+            // Erase
+            lines.erase(itr);
+            // Add transformation
+            std::string vformat[] = {"VALUE:"};
+            std::vector<std::string> format(vformat, end(vformat));
+            // Create the texture and return it
+            std::vector<std::string>& v = *(get_content(format, lines));
+            texture = new PerlinTexture(atof(v[0].c_str()));
+            // Next component
+            itr = lines.begin();
         } else {
             break;
         }
