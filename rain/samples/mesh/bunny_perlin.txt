@@ -1,0 +1,46 @@
+# Output settings
+NAME: bunny_perlin.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 600
+HEIGHT: 300
+# Ray Tracer Settings
+SAMPLES: 10 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 4
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 20
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    LAMBERTIAN
+BACKGROUND:
+    TOP: 0.8 0.8 0.8  # Top color
+    BOTTOM: 0 0.749 1 # Bottom color
+COMPONENTS:
+    PLANE:
+        P1: -100 -0.5 100
+        P2: 100 -0.5 100
+        P3: 100 -0.5 -100
+        P4: -100 -0.5 -100
+        LAMBERTIAN:
+            CHECKER_TEXTURE:
+                ODD: 0.3 0.3 0.3
+                EVEN: 0 0 0
+    MESH:
+        FILE: samples/mesh/bunny.obj
+        LAMBERTIAN:
+            PERLIN_TEXTURE:
+                VALUE: 2
+        SCALE:
+            VALUE: 7 7 7
+        TRANSLATE:
+            VALUE: 0 -0.75 0
+        ROTATE:
+            VALUE: 0 25 0

@@ -1,5 +1,5 @@
 # Output settings
-NAME: bunnies.ppm
+NAME: bunny_glass.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -39,46 +39,14 @@ COMPONENTS:
         P3: 0.5 0.6 -2
         P4: -0.5 0.6 -2
         DIFFUSE_LIGHT:
-            EMIT: 10 10 10
-    SPHERE:
-        ORIGIN: 1 0 -1
-        RADIUS: 0.5
-        DIELECTRIC:
-            RI: 1.2
-    SPHERE:
-        ORIGIN: 1 0 -1
-        RADIUS: -0.48
-        DIELECTRIC:
-            RI: 1.2
+            EMIT: 4 4 4
     MESH:
         FILE: samples/mesh/bunny.obj
-        LAMBERTIAN:
-            ALBEDO: 0.4 0.4 0.4
+        DIELECTRIC:
+            RI: 1.2
         SCALE:
             VALUE: 4 4 4
         TRANSLATE:
             VALUE: 0.2 -0.5 0
         ROTATE:
             VALUE: 0 25 0
-    MESH:
-        FILE: samples/mesh/bunny.obj
-        METAL:
-            ALBEDO: 1 0 0
-            FUZZ: 0
-        SCALE:
-            VALUE: 4 4 4
-        TRANSLATE:
-            VALUE: -0.4 -0.5 1
-        ROTATE:
-            VALUE: 0 -60 0
-    MESH:
-        FILE: samples/mesh/bunny.obj
-        METAL:
-            ALBEDO: 0.8 0.6 0.2
-            FUZZ: 1
-        SCALE:
-            VALUE: 4 4 4
-        TRANSLATE:
-            VALUE: -0.5 -0.5 0
-        ROTATE:
-            VALUE: 0 60 0
