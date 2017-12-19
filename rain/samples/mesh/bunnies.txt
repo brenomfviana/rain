@@ -21,8 +21,8 @@ CAMERA:
 SHADER:
     LAMBERTIAN
 BACKGROUND:
-    TOP: 0.47450980392 0.11764705882 0.00392156862   # Top color
-    BOTTOM: 0.22745098039 0.07843137254 0.0431372549 # Bottom color
+    TOP: 0.09803921568 0.09803921568 0.43921568627   # Top color
+    BOTTOM: 0 0 0 # Bottom color
 COMPONENTS:
     PLANE:
         P1: -100 -0.5 100
@@ -41,6 +41,12 @@ COMPONENTS:
         DIFFUSE_LIGHT:
             EMIT: 10 10 10
     SPHERE:
+        ORIGIN: -1 0 -1
+        RADIUS: 0.5
+        LAMBERTIAN:
+            PERLIN_TEXTURE:
+                VALUE: 1
+    SPHERE:
         ORIGIN: 1 0 -1
         RADIUS: 0.5
         DIELECTRIC:
@@ -52,8 +58,9 @@ COMPONENTS:
             RI: 1.2
     MESH:
         FILE: samples/mesh/bunny.obj
-        LAMBERTIAN:
-            ALBEDO: 0.4 0.4 0.4
+        METAL:
+            ALBEDO: 0.8 0.6 0.2
+            FUZZ: 1
         SCALE:
             VALUE: 4 4 4
         TRANSLATE:
@@ -65,17 +72,6 @@ COMPONENTS:
         METAL:
             ALBEDO: 1 0 0
             FUZZ: 0
-        SCALE:
-            VALUE: 4 4 4
-        TRANSLATE:
-            VALUE: -0.4 -0.5 1
-        ROTATE:
-            VALUE: 0 -60 0
-    MESH:
-        FILE: samples/mesh/bunny.obj
-        METAL:
-            ALBEDO: 0.8 0.6 0.2
-            FUZZ: 1
         SCALE:
             VALUE: 4 4 4
         TRANSLATE:
