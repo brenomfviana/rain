@@ -35,6 +35,7 @@ The name rain is an acronym for **RA**y trac**IN**g.
       - [x] Sphere
       - [x] Triangle
       - [x] Box
+      - [x] Mesh
       - [x] Materials
         - [x] Blinn-Phong
         - [x] Diffuse
