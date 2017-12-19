@@ -12,16 +12,16 @@ The name rain is an acronym for **RA**y trac**IN**g.
 
 ## Features and TO DOs
 
-- [ ] Ray Tracer
+- [x] Ray Tracer
   - [x] Anti-aliasing
   - [x] Threads
-  - [ ] Shaders
+  - [x] Shaders
     - [x] Background
     - [x] Normal to RGB
     - [x] Depth Map
     - [x] Blinn-Phong
     - [x] Toon (Cel)
-    - [ ] Lambertian
+    - [x] Lambertian
 
 - [ ] Scene
   - [x] Scene reader
@@ -31,41 +31,35 @@ The name rain is an acronym for **RA**y trac**IN**g.
       - [x] Point Light
       - [x] Spotlight
       - [ ] Area light
-    - [ ] Shapes
+    - [x] Shapes
       - [x] Sphere
       - [x] Triangle
       - [x] Box
-      - [ ] Cylinder
-      - [ ] Cone
-      - [ ] Materials
+      - [x] Materials
         - [x] Blinn-Phong
         - [x] Diffuse
         - [x] Metal
         - [x] Toon
-        - [ ] Dielectrics
-        - [ ] Texture
-  - [ ] Camera
-    - [ ] Perspective
-    - [ ] Orthogonal
+        - [x] Dielectrics
+        - [x] Texture
+          - [x] Simple Texture
+          - [x] Perlin Noise Texture
+  - [x] Camera
+    - [x] Perspective
+    - [x] Orthogonal
 
 - [x] Printer
-  - [x] ASCII
+  - [x] ASCI
   - [x] Binary
-  - [ ] Choose location to save the image file
-  - [ ] Supported image file formats
+  - [x] Supported image file formats
     - [x] PPM
-    - [ ] BMP
-    - [ ] JPG
-    - [ ] PNG
-    - [ ] TIFF
-    - [ ] GIF
 - [x] Miscellaneous
   - [x] Progress Bar
   - [x] Show render time
 
 ## Dependencies
 
-- C++17
+- C++11
 
 ## How to compile
 
@@ -124,14 +118,14 @@ BACKGROUND:
 
 #### Image
 
-![alt text](imgs/blinn-phong1.png)
+![alt text](imgs/point_light_1_perspective.png)
 > NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
 
 ```txt
 # Output settings
-NAME: blinn_phong_1.ppm
+NAME: point_light_1_perspective.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 1200
@@ -142,7 +136,7 @@ RAYS:    0   # Number of rays of the recursion
 # Camera
 CAMERA:
     PERSPECTIVE
-    LOOK_FROM: 0 0 0
+    LOOK_FROM: 3 3 2
     LOOK_AT: 0 0 -1
     VUP: 0 1 0
     VFOV: 90
@@ -157,25 +151,142 @@ BACKGROUND:
     TOP: 0.5 0.7 1 # Top color
     BOTTOM: 1 1 1  # Bottom color
 COMPONENTS:
-    DIRECTIONAL_LIGHT:
-        DIRECTION: 20 10 5
+    POINT_LIGHT:
+        ORIGIN: 0 0 0
         INTENSITY: 1 1 1
     SPHERE:
-        ORIGIN: 0 -100.5 -1
+        ORIGIN: 0 -100.5 0
         RADIUS: 100
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
             KD: 0.3 0.3 0.3
             KS: 1 1 1
-            P: 5
+            P: 64
     SPHERE:
-        ORIGIN: 0 0 -1
+        ORIGIN: 1 0 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.3 0 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: -1 0 0
         RADIUS: 0.5
         BLINN_PHONG_MATERIAL:
             KA: 0.1 0.1 0.1
             KD: 0 0.3 0.8
             KS: 0.9 0.9 0.9
             P: 64
+    SPHERE:
+        ORIGIN: 0 0 1
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0.5 0.5 0
+            KS: 0.9 0.9 0.9
+            P: 64
+    SPHERE:
+        ORIGIN: 0 1 0
+        RADIUS: 0.5
+        BLINN_PHONG_MATERIAL:
+            KA: 0.1 0.1 0.1
+            KD: 0 0.2 0
+            KS: 0.9 0.9 0.9
+            P: 64
+
+```
+
+### Lambertian Shader
+
+#### Image
+
+![alt text](imgs/bunnies.png)
+> NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
+
+#### Scene Description File
+
+```txt
+# Output settings
+NAME: bunnies.ppm
+TYPE: PPM
+CODIFICATION: binary # or ascii
+WIDTH: 1200
+HEIGHT: 600
+# Ray Tracer Settings
+SAMPLES: 100 # Number of samples for anti-aliasing
+RAYS:    100 # Number of rays of the recursion
+# Camera
+CAMERA:
+    PERSPECTIVE
+    LOOK_FROM: 0 0 4
+    LOOK_AT: 0 0 -1
+    VUP: 0 1 0
+    VFOV: 20
+    ASPECT_RATIO: 2
+    APERTURE: 0
+    FOCAL_DISTANCE: 1
+# Scene description
+SHADER:
+    LAMBERTIAN
+BACKGROUND:
+    TOP: 0.09803921568 0.09803921568 0.43921568627   # Top color
+    BOTTOM: 0 0 0 # Bottom color
+COMPONENTS:
+    PLANE:
+        P1: -100 -0.5 100
+        P2: 100 -0.5 100
+        P3: 100 -0.5 -100
+        P4: -100 -0.5 -100
+        LAMBERTIAN:
+            CHECKER_TEXTURE:
+                ODD: 0.3 0.3 0.3
+                EVEN: 0 0 0
+    PLANE:
+        P1: -0.5 0.6 -1
+        P2: 0.5 0.6 -1
+        P3: 0.5 0.6 -2
+        P4: -0.5 0.6 -2
+        DIFFUSE_LIGHT:
+            EMIT: 10 10 10
+    SPHERE:
+        ORIGIN: -1 0 -1
+        RADIUS: 0.5
+        LAMBERTIAN:
+            PERLIN_TEXTURE:
+                VALUE: 1
+    SPHERE:
+        ORIGIN: 1 0 -1
+        RADIUS: 0.5
+        DIELECTRIC:
+            RI: 1.2
+    SPHERE:
+        ORIGIN: 1 0 -1
+        RADIUS: -0.48
+        DIELECTRIC:
+            RI: 1.2
+    MESH:
+        FILE: samples/mesh/bunny.obj
+        METAL:
+            ALBEDO: 0.8 0.6 0.2
+            FUZZ: 1
+        SCALE:
+            VALUE: 4 4 4
+        TRANSLATE:
+            VALUE: 0.2 -0.5 0
+        ROTATE:
+            VALUE: 0 25 0
+    MESH:
+        FILE: samples/mesh/bunny.obj
+        METAL:
+            ALBEDO: 1 0 0
+            FUZZ: 0
+        SCALE:
+            VALUE: 4 4 4
+        TRANSLATE:
+            VALUE: -0.5 -0.5 0
+        ROTATE:
+            VALUE: 0 60 0
 
 ```
 
