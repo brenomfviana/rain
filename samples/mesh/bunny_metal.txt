@@ -1,5 +1,5 @@
 # Output settings
-NAME: bunny.ppm
+NAME: bunny_metal.ppm
 TYPE: PPM
 CODIFICATION: binary # or ascii
 WIDTH: 600

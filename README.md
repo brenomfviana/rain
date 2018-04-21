@@ -2,7 +2,7 @@
 
 ## Description
 
-Rain is an image renderer that uses the [_ray tracing_](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) technique.
+Rain is an image renderer that uses [_ray casting_](https://en.wikipedia.org/wiki/Ray_casting) and [_ray tracing_](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)) techniques.
 
 ### About
 
@@ -23,14 +23,13 @@ The name rain is an acronym for **RA**y trac**IN**g.
     - [x] Toon (Cel)
     - [x] Lambertian
 
-- [ ] Scene
+- [x] Scene
   - [x] Scene reader
-  - [ ] Scene components
-    - [ ] Light
+  - [x] Scene components
+    - [x] Light
       - [x] Directional Light
       - [x] Point Light
       - [x] Spotlight
-      - [ ] Area light
     - [x] Shapes
       - [x] Sphere
       - [x] Triangle
@@ -50,7 +49,7 @@ The name rain is an acronym for **RA**y trac**IN**g.
     - [x] Orthogonal
 
 - [x] Printer
-  - [x] ASCI
+  - [x] ASCII
   - [x] Binary
   - [x] Supported image file formats
     - [x] PPM
@@ -61,6 +60,7 @@ The name rain is an acronym for **RA**y trac**IN**g.
 ## Dependencies
 
 - C++11
+- GLM 0.9.9
 
 ## How to compile
 
@@ -68,7 +68,7 @@ Use the ```make``` command to compile the renderer.
 
 ## How to use
 
-Choose a scene and run the renderer passing the file path of the scene as an argument to render an image.
+Choose a scene and run the renderer passing the file path of the scene as an argument to render an image. See [_here_](https://github.com/brenov/rain/samples) all the images rendered by rain
 
 ```bash
 # ./render scenefile.txt
@@ -81,7 +81,7 @@ Choose a scene and run the renderer passing the file path of the scene as an arg
 
 #### Image
 
-![alt text](imgs/sky.png)
+![alt text](samples/results/bg-sky.png)
 > NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
@@ -119,7 +119,7 @@ BACKGROUND:
 
 #### Image
 
-![alt text](imgs/point_light_1_perspective.png)
+![alt text](samples/results/pointlightperspective.png)
 > NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
@@ -202,7 +202,7 @@ COMPONENTS:
 
 #### Image
 
-![alt text](imgs/bunnies.png)
+![alt text](samples/results/bunnies.png)
 > NOTE: The image was converted to png format to be shown here, the renderer does not generate images in that format.
 
 #### Scene Description File
