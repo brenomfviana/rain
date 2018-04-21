@@ -68,7 +68,7 @@ Use the ```make``` command to compile the renderer.
 
 ## How to use
 
-Choose a scene and run the renderer passing the file path of the scene as an argument to render an image. See [_here_](https://github.com/brenov/rain/samples) all the images rendered by rain
+Choose a scene and run the renderer passing the file path of the scene as an argument to render an image. See [_here_](https://github.com/brenov/rain/tree/master/samples) all the images rendered by rain
 
 ```bash
 # ./render scenefile.txt
