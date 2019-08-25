@@ -258,7 +258,10 @@ COMPONENTS:
                 VALUE: 1
     SPHERE:
         ORIGIN: 1 0 -1
-        RADIUS: 0.5
+        RADIUS: 0.5## License
+
+        This project is licensed under MIT license - see the [MIT](LICENSE) file for details.
+
         DIELECTRIC:
             RI: 1.2
     SPHERE:
@@ -291,8 +294,6 @@ COMPONENTS:
 
 ```
 
-## Author
+## License
 
-[<img src="https://avatars2.githubusercontent.com/u/17532418?v=3&s=400" width="100"/>](https://github.com/brenov) |
----|
-[Breno Viana](https://github.com/brenov) |
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
