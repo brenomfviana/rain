@@ -112,7 +112,6 @@ SHADER:
 BACKGROUND:
     TOP: 0.5 0.7 1 # Top color
     BOTTOM: 1 1 1  # Bottom color
-
 ```
 
 ### Blinn-Phong Shader
@@ -195,7 +194,6 @@ COMPONENTS:
             KD: 0 0.2 0
             KS: 0.9 0.9 0.9
             P: 64
-
 ```
 
 ### Lambertian Shader
@@ -291,7 +289,6 @@ COMPONENTS:
             VALUE: -0.5 -0.5 0
         ROTATE:
             VALUE: 0 60 0
-
 ```
 
 ## License
